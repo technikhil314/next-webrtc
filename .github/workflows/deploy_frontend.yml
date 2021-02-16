@@ -20,7 +20,7 @@ jobs:
 
       - name: Build
         run: |
-          echo "NEXT_PUBLIC_WEBSOCKET_URL=wss://webrtc-next-demo.herokuapp.com/" > .env
+          export NEXT_PUBLIC_WEBSOCKET_URL=wss://webrtc-next-demo.herokuapp.com/
           npm ci
           npm install sharp --prefix packages/frontend
           npm run build --prefix packages/frontend
