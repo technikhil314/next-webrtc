@@ -2,7 +2,7 @@ name: deploy_backend
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
