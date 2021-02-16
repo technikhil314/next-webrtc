@@ -79,10 +79,16 @@ fastify.get('/', { websocket: true }, (connection /* SocketStream */, req /* Fas
         fastify.log.info({
             msg: `Client disconnected ${disconnectedUserId}`,
         })
+        currentRoom.forEach((socket, index) => {
+            index !== disconnectedUserId && socket.send(JSON.stringify({
+                rtcContent: "deletedPeer",
+                peerId: disconnectedUserId
+            }))
+        });
     })
 })
 // Run the server!
-fastify.listen(4000, function (err, address) {
+fastify.listen(process.env.PORT || 4000, function (err, address) {
     if (err) {
         fastify.log.error(err)
         process.exit(1)

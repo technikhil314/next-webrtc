@@ -33,9 +33,11 @@ export default function Main() {
         setPeerStreams((peerStreams) => {
           const newPeerStreams = [...peerStreams];
           newPeerStreams.push(event.stream);
-          console.log(newPeerStreams, "newPeerStreams");
           return newPeerStreams;
         });
+      };
+      newPeerConnection.onremovestream = (event) => {
+        console.log("removed stream");
       };
       peers[peerId] = newPeerConnection;
     }
