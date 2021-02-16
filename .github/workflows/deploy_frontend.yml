@@ -20,9 +20,9 @@ jobs:
 
       - name: Build
         run: |
-          cd packages/frontend
           echo "NEXT_PUBLIC_WEBSOCKET_URL=wss://webrtc-next-demo.herokuapp.com/" > .env
           npm ci
+          cd packages/frontend
           npx next build
           npx next export
           cp out/index.html out/200.html
