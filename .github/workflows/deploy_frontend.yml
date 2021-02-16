@@ -32,4 +32,6 @@ jobs:
         run: npm install -g surge
 
       - name: Deploy
-        run: surge out/ https://webrtc-next-demo.surge.sh --token ${{secrets.SURGE_TOKEN}}
+        run: |
+          cd packages/frontend
+          surge out/ https://webrtc-next-demo.surge.sh --token ${{secrets.SURGE_TOKEN}}
