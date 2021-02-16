@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Deploy to webrtc-demo.surge.sh
+    name: Deploy to webrtc-next-demo.surge.sh
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +22,7 @@ jobs:
         run: |
           echo "NEXT_PUBLIC_WEBSOCKET_URL=wss://webrtc-next-demo.herokuapp.com/" > .env
           npm ci
+          npm install sharp --prefix packages/frontend
           npm run build --prefix packages/frontend
           cd packages/frontend
           npx next export
@@ -31,4 +32,4 @@ jobs:
         run: npm install -g surge
 
       - name: Deploy
-        run: surge out/ https://webrtc-demo.surge.sh --token ${{secrets.SURGE_TOKEN}}
+        run: surge out/ https://webrtc-next-demo.surge.sh --token ${{secrets.SURGE_TOKEN}}
