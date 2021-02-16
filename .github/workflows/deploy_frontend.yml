@@ -1,0 +1,34 @@
+name: deploy_frontend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Deploy to webrtc-demo.surge.sh
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "15.x"
+
+      - name: Build
+        run: |
+          cd packages/frontend
+          echo "NEXT_PUBLIC_WEBSOCKET_URL=wss://webrtc-next-demo.herokuapp.com/" > .env
+          npm ci
+          npx next build
+          npx next export
+          cp out/index.html out/200.html
+
+      - name: Install Surge
+        run: npm install -g surge
+
+      - name: Deploy
+        run: surge out/ https://webrtc-demo.surge.sh --token ${{secrets.SURGE_TOKEN}}
