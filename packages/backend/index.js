@@ -9,6 +9,7 @@ const rooms = {
     //     }
     // ]
 };
+console.log(process.env.PORT);
 const fastify = require('fastify')({
     logger: true,
     https: {
