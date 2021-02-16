@@ -23,6 +23,7 @@ jobs:
           echo "NEXT_PUBLIC_WEBSOCKET_URL=wss://webrtc-next-demo.herokuapp.com/" > .env
           npm ci
           npm run build --prefix packages/frontend
+          cd packages/frontend
           npx next export
           cp out/index.html out/200.html
 
