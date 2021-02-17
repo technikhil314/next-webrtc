@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
-import { iceConfig, userMediaConstraints } from "../utils/constants";
 import Video from '../components/video';
+import { iceConfig, userMediaConstraints } from "../utils/constants";
 let currentUserId;
 let peers = {};
 let localStream = null
@@ -169,14 +169,18 @@ export default function Main() {
   };
   console.log(peerStreams, "render", peers);
   return (
-    <div>
-      <button onClick={handleStart}>Start</button>
-      <video ref={selfStream}></video>
-      {
-        peerStreams.map(stream => (
-          <Video stream={stream}></Video>
-        ))
-      }
-    </div>
+    <>
+
+      <div>
+        <button onClick={handleStart}>Start</button>
+        <video ref={selfStream}></video>
+        {
+          peerStreams.map(stream => (
+            <Video stream={stream}></Video>
+          ))
+        }
+      </div>
+    </>
   );
 }
+Main.title = "A webrtc demo built with nextjs"
