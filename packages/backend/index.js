@@ -1,25 +1,21 @@
 const fs = require('fs')
 const path = require('path')
 const cryptoRandomString = require("crypto-random-string");
-const rooms = {
-    // roomId: [
-    //     {
-    //         userId: 0,
-    //         socket: socket
-    //     }
-    // ]
-};
 console.log(process.env.PORT);
-const fastify = require('fastify')({
+let rooms = {}
+const fastifyOptions = {
     logger: true,
-    https: {
+}
+if (process.env.NODE_ENV !== 'production') {
+    fastifyOptions.https = {
         key: fs.readFileSync(path.join(__dirname, 'https', 'domain.key')),
         cert: fs.readFileSync(path.join(__dirname, 'https', 'domain.crt')),
     }
-})
+}
+const fastify = require('fastify')(fastifyOptions)
 fastify.register(require('fastify-websocket'))
 
-fastify.get('/', { websocket: true }, (connection /* SocketStream */, req /* FastifyRequest */) => {
+fastify.get('/', { websocket: true }, (connection /* SocketStream */, req /* FastifyRequest */, reply) => {
     let currentRoom = [];
     function handleConnect(serializedData) {
         const socket = connection.socket;
