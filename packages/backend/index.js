@@ -18,7 +18,6 @@ const fastify = require('fastify')({
     }
 })
 fastify.register(require('fastify-websocket'))
-fastify.setTimeout(10000);
 
 fastify.get('/', { websocket: true }, (connection /* SocketStream */, req /* FastifyRequest */) => {
     let currentRoom = [];
