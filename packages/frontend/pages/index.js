@@ -10,12 +10,19 @@ let socket;
 export default function Main() {
   const selfStream = useRef();
   const router = useRouter();
+  const [sendValue, setSendValue] = useState();
   const [peerStreams, setPeerStreams] = useState([]);
   const getPeerConnection = (peerId) => {
     const peer = peers[peerId];
+    let sendChannel, receiveChannel;
     if (!peer) {
+      const channelCallback = (event) => {
+        receiveChannel = event.channel;
+        receiveChannel.onmessage = (event) => console.log(event.data);
+      }
       const newPeerConnection = new RTCPeerConnection(iceConfig);
-      console.log(localStream, newPeerConnection);
+      sendChannel = newPeerConnection.createDataChannel("sendChannel");
+      newPeerConnection.ondatachannel = channelCallback;
       newPeerConnection.addStream(localStream);
       newPeerConnection.onicecandidate = (e) => {
         socket.send(
@@ -39,10 +46,18 @@ export default function Main() {
       newPeerConnection.onremovestream = (event) => {
         console.log("removed stream");
       };
-      peers[peerId] = newPeerConnection;
+      peers[peerId] = {
+        connection: newPeerConnection,
+        sendChannel: sendChannel,
+        receiveChannel: receiveChannel,
+      };
     }
     return peers[peerId];
   };
+  const sendMessage = (e) => {
+    console.log(peers);
+    Object.values(peers).map(peer => peer.sendChannel).forEach(sendChannel => sendChannel.send(sendValue));
+  }
   const getAndShowVideoAudioStream = async () => {
     const stream = await navigator.mediaDevices.getUserMedia(
       userMediaConstraints
@@ -89,7 +104,7 @@ export default function Main() {
     if (peerId === currentUserId) {
       return;
     }
-    let currentPeerConnection = getPeerConnection(peerId);
+    let currentPeerConnection = getPeerConnection(peerId).connection;
     currentPeerConnection.createOffer(
       (sdp) => {
         currentPeerConnection.setLocalDescription(sdp);
@@ -112,7 +127,7 @@ export default function Main() {
   const setRemoteDescription = ({ by, to, sdp }) => {
     console.log("object remote");
     return new Promise((resolve, reject) => {
-      const currentPeerConnection = getPeerConnection(by);
+      const currentPeerConnection = getPeerConnection(by).connection;
       currentPeerConnection.setRemoteDescription(
         new RTCSessionDescription(sdp),
         () => {
@@ -124,7 +139,7 @@ export default function Main() {
     });
   };
   const sendAnswer = ({ by, to, sdp }) => {
-    const currentPeerConnection = getPeerConnection(by);
+    const currentPeerConnection = getPeerConnection(by).connection;
     console.log("sending answer", currentPeerConnection);
     currentPeerConnection.createAnswer((sdp) => {
       console.log("sending answer");
@@ -139,7 +154,7 @@ export default function Main() {
     }, (e) => { console.log(e); });
   };
   const addIceCandidate = ({ by, to, ice }) => {
-    const currentPeerConnection = getPeerConnection(by);
+    const currentPeerConnection = getPeerConnection(by).connection;
     ice && currentPeerConnection.addIceCandidate(new RTCIceCandidate(ice));
   };
   const addSocketMessageHandlers = () => {
@@ -173,6 +188,8 @@ export default function Main() {
 
       <div>
         <button onClick={handleStart}>Start</button>
+        <input type="text" onChange={(e) => setSendValue(e.target.value)} defaultValue={sendValue} />
+        <button type="button" onClick={sendMessage}>Send</button>
         <video ref={selfStream}></video>
         {
           peerStreams.map(stream => (
