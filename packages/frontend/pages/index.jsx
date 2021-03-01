@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { LocalVideo } from "../components/localVideos";
+import { RemoteStreams } from "../components/remoteStreams";
 import Video from "../components/video";
 import useRTCSignaling from "../hooks/RTCSignaling";
 import useSocketConnection from "../hooks/socketConnection";
@@ -11,19 +12,19 @@ export default function Main(params) {
     setIsStarted(!isStarted);
   };
   const { userId: myUserId, socket } = useSocketConnection(isStarted);
-  const peers = useRTCSignaling({
-    myUserId,
-    socket,
-    localStream,
-  });
-  console.log(peers, "index");
   return (
     <>
       <button onClick={startMeetingRoom}>{isStarted ? "Stop" : "Start"}</button>
+      <LocalVideo ref={localStream} isStarted={isStarted}></LocalVideo>
       {isStarted && (
         <>
-          <LocalVideo ref={localStream}></LocalVideo>
-          {peers.map((x) => x && x.stream && <Video peer={x} />)}
+          {socket && localStream && (
+            <RemoteStreams
+              socket={socket}
+              localStream={localStream}
+              myUserId={myUserId}
+            />
+          )}
         </>
       )}
     </>

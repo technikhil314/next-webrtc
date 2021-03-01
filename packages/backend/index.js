@@ -80,6 +80,10 @@ fastify.get('/', { websocket: true }, (connection /* SocketStream */, req /* Fas
             msg: `Client disconnected ${disconnectedUserId}`,
         })
         currentRoom.forEach((socket, index) => {
+            console.log(JSON.stringify({
+                rtcContent: "deletedPeer",
+                peerId: disconnectedUserId
+            }));
             index !== disconnectedUserId && socket.send(JSON.stringify({
                 rtcContent: "deletedPeer",
                 peerId: disconnectedUserId

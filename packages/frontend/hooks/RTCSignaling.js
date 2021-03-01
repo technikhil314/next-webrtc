@@ -3,136 +3,131 @@ import { iceConfig } from '../utils/constants';
 
 let peers = [];
 
-const getPeerConnection = (peerId) => {
-    return peers[peerId];
-};
-
-const makeOffer = ({ by, currentUserId, socket }) => {
-    if (by === currentUserId) {
-        return;
-    }
-    let currentPeerConnection = getPeerConnection(by).connection;
-    currentPeerConnection.createOffer(
-        (sdp) => {
-            currentPeerConnection.setLocalDescription(sdp);
-            socket.send(
-                JSON.stringify({
-                    by: currentUserId,
-                    to: by,
-                    sdp: sdp,
-                    type: "message",
-                    rtcContent: "peerOffer",
-                })
-            );
-        },
-        (error) => { },
-        { mandatory: { offerToReceiveVideo: true, offerToReceiveAudio: true } }
-    );
-};
-const setRemoteDescription = ({ currentUserId, by, to, sdp, socket }) => {
-    return new Promise((resolve, reject) => {
-        const currentPeerConnection = getPeerConnection(by).connection;
-        currentPeerConnection.setRemoteDescription(
-            new RTCSessionDescription(sdp),
-            () => {
-                resolve();
-            },
-            reject
-        );
-    });
-};
-const sendAnswer = ({ currentUserId, by, to, sdp, socket }) => {
-    const currentPeerConnection = getPeerConnection(by).connection;
-    currentPeerConnection.createAnswer(
-        (sdp) => {
-            currentPeerConnection.setLocalDescription(sdp);
-            socket.send(
-                JSON.stringify({
-                    by: currentUserId,
-                    to: by,
-                    sdp: sdp,
-                    type: "message",
-                    rtcContent: "peerAnswer",
-                })
-            );
-        },
-        (e) => { }
-    );
-};
-const addIceCandidate = ({ by, to, ice, socket }) => {
-    const currentPeerConnection = getPeerConnection(by).connection;
-    ice && currentPeerConnection.addIceCandidate(new RTCIceCandidate(ice));
-};
-
-const createNewPeerConnection = ({ peerId, setPeers, localStream, currentUserId, socket }) => {
-    let sendChannel, receiveChannel;
-    const newPeerConnection = new RTCPeerConnection(iceConfig);
-    sendChannel = newPeerConnection.createDataChannel("sendChannel");
-    const channelCallback = (event) => {
-        receiveChannel = event.channel;
-        receiveChannel.onmessage = () => { };
-    };
-    newPeerConnection.ondatachannel = channelCallback;
-    newPeerConnection.addStream(localStream);
-    newPeerConnection.onicecandidate = (e) => {
-        socket.send(
-            JSON.stringify({
-                by: currentUserId,
-                to: peerId,
-                ice: e.candidate,
-                type: "message",
-                rtcContent: "ice",
-            })
-        );
-    };
-    newPeerConnection.onaddstream = (event) => {
-        peers[peerId].stream = event.stream;
-        setPeers([...peers])
-    };
-    newPeerConnection.onremovestream = () => {
-        peers[peerId].stream = null;
-    };
-    peers[peerId] = {
-        connection: newPeerConnection,
-        sendChannel,
-        receiveChannel
-    };
-    setPeers([...peers]);
-}
-export default function useRTCSignaling({
-    myUserId,
+const useRTCSignaling = ({
+    myUserId: currentUserId,
     socket,
     localStream,
-}) {
+}) => {
     const [peers, setPeers] = useState([]);
     useEffect(() => {
-        if (socket && localStream && myUserId) {
+        if (socket && localStream && currentUserId) {
             socket.onmessage = async (event) => {
-                const { rtcContent, type, ...rest } = JSON.parse(event.data);
-                if (rest.by === myUserId) {
+                const { rtcContent, by, ice, sdp } = JSON.parse(event.data);
+                if (by === currentUserId) {
                     return;
                 }
-                if (!peers[rest.by]) {
-                    createNewPeerConnection({ peerId: rest.by, localStream: localStream.current, currentUserId: myUserId, setPeers, socket });
-                    setPeers([...peers])
+                const makeOffer = () => {
+                    let currentPeerConnection = peers[by].connection;
+                    currentPeerConnection.createOffer(
+                        (sdp) => {
+                            currentPeerConnection.setLocalDescription(sdp);
+                            socket.send(
+                                JSON.stringify({
+                                    by: currentUserId,
+                                    to: by,
+                                    sdp: sdp,
+                                    type: "message",
+                                    rtcContent: "peerOffer",
+                                })
+                            );
+                        },
+                        (error) => { },
+                        { mandatory: { offerToReceiveVideo: true, offerToReceiveAudio: true } }
+                    );
+                };
+                const setRemoteDescription = () => {
+                    return new Promise((resolve, reject) => {
+                        const currentPeerConnection = peers[by].connection;
+                        currentPeerConnection.setRemoteDescription(
+                            new RTCSessionDescription(sdp),
+                            () => {
+                                resolve();
+                            },
+                            reject
+                        );
+                    });
+                };
+                const sendAnswer = () => {
+                    const currentPeerConnection = peers[by].connection;
+                    currentPeerConnection.createAnswer(
+                        (sdp) => {
+                            currentPeerConnection.setLocalDescription(sdp);
+                            socket.send(
+                                JSON.stringify({
+                                    by: currentUserId,
+                                    to: by,
+                                    sdp: sdp,
+                                    type: "message",
+                                    rtcContent: "peerAnswer",
+                                })
+                            );
+                        },
+                        (e) => { }
+                    );
+                };
+                const addIceCandidate = () => {
+                    const currentPeerConnection = peers[by].connection;
+                    ice && currentPeerConnection.addIceCandidate(new RTCIceCandidate(ice));
+                };
+
+                const createNewPeerConnection = () => {
+                    let sendChannel, receiveChannel;
+                    const newPeerConnection = new RTCPeerConnection(iceConfig);
+                    sendChannel = newPeerConnection.createDataChannel("sendChannel");
+                    const channelCallback = (event) => {
+                        receiveChannel = event.channel;
+                        receiveChannel.onmessage = () => { };
+                    };
+                    newPeerConnection.ondatachannel = channelCallback;
+                    newPeerConnection.addStream(localStream.current);
+                    newPeerConnection.onicecandidate = (e) => {
+                        socket.send(
+                            JSON.stringify({
+                                by: currentUserId,
+                                to: by,
+                                ice: e.candidate,
+                                type: "message",
+                                rtcContent: "ice",
+                            })
+                        );
+                    };
+                    newPeerConnection.onaddstream = (event) => {
+                        peers[by].stream = event.stream;
+                        setPeers([...peers])
+                    };
+                    newPeerConnection.onremovestream = () => {
+                        peers[by].stream = null;
+                    };
+                    peers[by] = {
+                        connection: newPeerConnection,
+                        sendChannel,
+                        receiveChannel
+                    };
+                    setPeers([...peers]);
+                }
+                if (!peers[by]) {
+                    console.log("object");
+                    createNewPeerConnection();
                 }
                 switch (rtcContent) {
                     case "newPeer":
-                        makeOffer({ ...rest, currentUserId: myUserId, socket });
+                        makeOffer();
                         break;
                     case "peerOffer":
-                        await setRemoteDescription({ ...rest, currentUserId: myUserId, socket });
+                        await setRemoteDescription();
                         sendAnswer(rest);
                         break;
                     case "peerAnswer":
-                        await setRemoteDescription({ ...rest, currentUserId: myUserId, socket });
+                        await setRemoteDescription();
                         break;
                     case "ice":
-                        addIceCandidate({ ...rest, currentUserId: myUserId, socket });
+                        addIceCandidate();
                 }
             }
             return () => socket.onmessage = null;
         }
-    }, [peers, socket, localStream, myUserId]);
+    }, [peers, socket, localStream, currentUserId]);
     return peers;
 };
+
+export default useRTCSignaling;
