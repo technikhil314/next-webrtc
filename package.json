@@ -10,12 +10,6 @@
   "engines": {
     "node": ">=12.0.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged -p true",
-      "commit-msg": "./node_modules/.bin/commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "keywords": [],
   "author": "technikhil314",
   "license": "ISC",
@@ -29,5 +23,8 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^5.1.2",
     "lint-staged": "^10.5.4"
+  },
+  "scripts": {
+    "prepare": "husky install"
   }
 }
