@@ -1,16 +1,33 @@
 {
   "name": "webrtc-demo",
   "version": "1.0.0",
-  "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
+  "description": "A webrtc demo with nextjs",
   "main": "index.js",
   "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "workspaces": [
     "packages/*"
   ],
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged -p true",
+      "commit-msg": "./node_modules/.bin/commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "technikhil314",
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-conventional": "^12.0.1",
+    "eslint": "^7.21.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^5.1.2",
+    "lint-staged": "^10.5.4"
+  }
 }
