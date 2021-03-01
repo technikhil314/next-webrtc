@@ -1,5 +1,7 @@
 # A webrtc demo with nextjs
 
+#### :warning: This is a demo. Please dont use it production. And if you want to use it in production remove change certificate keys
+
 ### Requirements
 
 1. Node >= v15.x
