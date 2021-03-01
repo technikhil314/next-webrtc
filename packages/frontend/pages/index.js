@@ -1,3 +1,4 @@
+import { tw } from 'twind'
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import Video from '../components/video';
@@ -190,7 +191,7 @@ export default function Main() {
         <button onClick={handleStart}>Start</button>
         <input type="text" onChange={(e) => setSendValue(e.target.value)} defaultValue={sendValue} />
         <button type="button" onClick={sendMessage}>Send</button>
-        <video ref={selfStream}></video>
+        <video ref={selfStream} className={tw`bg-black border-2	`}></video>
         {
           peerStreams.map(stream => (
             <Video stream={stream}></Video>
