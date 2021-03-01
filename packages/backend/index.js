@@ -45,11 +45,12 @@ fastify.get('/', { websocket: true }, (connection /* SocketStream */, req /* Fas
     }
 
     function broadcastNewConnection(userId) {
+        console.log("broadcastNewConnection", userId);
         currentRoom.forEach((socket, index) => {
             console.log(index, userId);
             index !== userId && socket.send(JSON.stringify({
                 rtcContent: "newPeer",
-                peerId: userId
+                by: userId
             }))
         });
     }
@@ -61,14 +62,16 @@ fastify.get('/', { websocket: true }, (connection /* SocketStream */, req /* Fas
             console.log(`from ${rest.by} to ${rest.to} of type ${type}`)
         }
         switch (type) {
-            case 'connect':
+            case 'connect': {
                 const userId = handleConnect(serializedData);
                 broadcastNewConnection(userId);
                 break;
-            case "message":
+            }
+            case "message": {
                 const destinationUser = currentRoom[rest.to];
                 destinationUser.send(serializedData);
                 break;
+            }
         }
     })
     connection.socket.on('close', () => {
