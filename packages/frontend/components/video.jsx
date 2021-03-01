@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 
 export default function Video({ stream }) {
-  console.log("object Video comp");
   const vRef = useRef();
   useEffect(() => {
     vRef.current.srcObject = stream;

@@ -13,7 +13,6 @@ export default function Main() {
   const peersRef = useRef();
   const localStream = useRef();
   const getPeerConnection = (peerId) => {
-    console.log(peers, peerId);
     const peer = peers[peerId];
     if (!peer) {
       const newPeerConnection = new RTCPeerConnection(iceConfig);
@@ -57,7 +56,6 @@ export default function Main() {
     selfStream.current.play();
   };
   const createSocketConnection = () => {
-    console.log(process.env.NEXT_PUBLIC_WEBSOCKET_URL);
     socket.current = new WebSocket(process.env.NEXT_PUBLIC_WEBSOCKET_URL);
   };
   const makeOffer = ({ peerId }) => {
@@ -76,7 +74,6 @@ export default function Main() {
         );
       },
       (error) => {
-        console.log(error);
       },
       { mandatory: { offerToReceiveVideo: true, offerToReceiveAudio: true } }
     );
@@ -118,7 +115,6 @@ export default function Main() {
       socket.current.send(JSON.stringify(initialData));
     };
     socket.current.onmessage = async function (event) {
-      console.log(event.data);
       const { type, ...rest } = JSON.parse(event.data);
       switch (type) {
         case "connectSuccess":
@@ -134,7 +130,6 @@ export default function Main() {
               `?roomId=${roomId}`
             );
           }
-          console.log(currentUserId);
           break;
         case "newPeer":
           makeOffer(rest);
@@ -157,7 +152,6 @@ export default function Main() {
       createSocketConnection();
       addSocketMessageHandlers();
     }
-    console.log(localStream, currentUserId, peers);
   };
   return (
     <div>
