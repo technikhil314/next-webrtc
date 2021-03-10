@@ -1,5 +1,5 @@
 module.exports = {
-  "**/*.ts?(x)": (filenames) => {
+  "**/*.js?(x)": (filenames) => {
     let concatedFileNames = filenames
       .map((filename) => `"${filename}"`)
       .join(" ");

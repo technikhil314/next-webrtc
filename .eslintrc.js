@@ -25,7 +25,7 @@ module.exports = {
   },
   parser: "babel-eslint",
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2017,
     sourceType: "module",
     ecmaFeatures: {
       jsx: true,
@@ -33,7 +33,7 @@ module.exports = {
   },
   rules: {
     "no-alert": 0,
-    "no-console": ["error", { allow: ["error"] }],
+    "no-console": ["error", { allow: ["error", "info"] }],
     "react/prop-types": 0,
     "react/sort-prop-types": 0,
     "import/order": 0,
@@ -42,6 +42,8 @@ module.exports = {
     "react/no-children-prop": "error",
     "react/jsx-no-target-blank": "error",
     "react/jsx-key": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off",
     "react/jsx-tag-spacing": ["error"],
     "react/jsx-filename-extension": ["error"],
     "no-useless-constructor": ["error"],

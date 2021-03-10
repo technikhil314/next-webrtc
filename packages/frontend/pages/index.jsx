@@ -1,8 +1,6 @@
 import { useRef, useState } from "react";
 import { LocalVideo } from "../components/localVideos";
 import { RemoteStreams } from "../components/remoteStreams";
-import Video from "../components/video";
-import useRTCSignaling from "../hooks/RTCSignaling";
 import useSocketConnection from "../hooks/socketConnection";
 
 export default function Main(params) {

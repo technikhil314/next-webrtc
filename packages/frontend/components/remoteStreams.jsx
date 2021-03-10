@@ -9,13 +9,28 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
     if (!peer) {
       const channelCallback = (event) => {
         receiveChannel = event.channel;
-        receiveChannel.onmessage = (event) => console.log(event.data);
+        receiveChannel.onmessage = (event) => console.info(event.data);
       };
       const newPeerConnection = new RTCPeerConnection(iceConfig);
       sendChannel = newPeerConnection.createDataChannel("sendChannel");
       newPeerConnection.ondatachannel = channelCallback;
-      console.log(localStream, "adding localStream");
       newPeerConnection.addStream(localStream.current);
+      const setNewPeers = (stream) => {
+        setPeers((peers) => {
+          if (!peers[peerId] || stream) {
+            peers[peerId] = {
+              connection: newPeerConnection,
+              sendChannel: sendChannel,
+              receiveChannel: receiveChannel,
+              stream,
+            };
+            return {
+              ...peers,
+            };
+          }
+          return peers;
+        });
+      };
       newPeerConnection.onicecandidate = (e) => {
         socket.send(
           JSON.stringify({
@@ -26,54 +41,40 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
             rtcContent: "ice",
           })
         );
-        setPeers((peers) => {
-          return {
-            ...peers,
-          };
-        });
+        setNewPeers();
       };
       newPeerConnection.onaddstream = (event) => {
-        peers[peerId].stream = event.stream;
-        setPeers((peers) => {
-          return {
-            ...peers,
-          };
-        });
+        setNewPeers(event.stream);
       };
       newPeerConnection.onremovestream = (event) => {
-        console.log("object removestream");
-        peers[peerId].stream = null;
         setPeers((peers) => {
+          peers[peerId].stream = null;
           return {
             ...peers,
           };
         });
       };
+      setNewPeers();
       peers[peerId] = {
         connection: newPeerConnection,
         sendChannel: sendChannel,
         receiveChannel: receiveChannel,
       };
-      setPeers((peers) => {
-        return {
-          ...peers,
-        };
-      });
     }
     return peers[peerId];
   };
-  const makeOffer = ({ peerId }) => {
-    if (peerId === myUserId) {
+  const makeOffer = ({ by }) => {
+    if (by === myUserId) {
       return;
     }
-    let currentPeerConnection = getPeerConnection(peerId).connection;
+    let currentPeerConnection = getPeerConnection(by).connection;
     currentPeerConnection.createOffer(
       (sdp) => {
         currentPeerConnection.setLocalDescription(sdp);
         socket.send(
           JSON.stringify({
             by: myUserId,
-            to: peerId,
+            to: by,
             sdp: sdp,
             type: "message",
             rtcContent: "peerOffer",
@@ -81,7 +82,7 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
         );
       },
       (error) => {
-        console.log(error, "createOffer");
+        console.error(error, "createOffer");
       },
       { mandatory: { offerToReceiveVideo: true, offerToReceiveAudio: true } }
     );
@@ -95,7 +96,7 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
           resolve();
         },
         (error) => {
-          console.log(error, "setRemoteDescription");
+          console.error(error, "setRemoteDescription");
           reject();
         }
       );
@@ -117,7 +118,7 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
         );
       },
       (e) => {
-        console.log(e, "setLocalDescription");
+        console.error(e, "setLocalDescription");
       }
     );
   };
@@ -135,7 +136,6 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
   };
   const addSocketMessageHandlers = () => {
     socket.onmessage = async function (event) {
-      console.log(event);
       const { rtcContent, type, ...rest } = JSON.parse(event.data);
       switch (rtcContent) {
         case "newPeer":
@@ -160,7 +160,6 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
   useLayoutEffect(() => {
     addSocketMessageHandlers();
   }, []);
-  console.log(peers, "peers");
   return Object.values(peers).map((peer) => (
     <Video peer={peer} key={peer.stream ? peer.stream.id : Date.now()} />
   ));
