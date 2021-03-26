@@ -1,0 +1,29 @@
+@import "../../../node_modules/modern-normalize/modern-normalize.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+  font-family: Roboto, sans-serif;
+  background-color: #fff;
+  height: 100%;
+}
+
+#__next {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 60px 1fr;
+  grid-template-areas:
+    "nav"
+    "body";
+  min-height: 100vh;
+}
+
+nav {
+  grid-area: "nav";
+}
+
+main {
+  grid-area: "body";
+}
