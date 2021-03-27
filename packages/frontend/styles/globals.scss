@@ -17,13 +17,14 @@ html {
   grid-template-areas:
     "nav"
     "body";
-  min-height: 100vh;
+  min-height: 100%;
 }
 
 nav {
-  grid-area: "nav";
+  grid-area: nav;
 }
 
 main {
-  grid-area: "body";
+  grid-area: body;
+  min-height: calc(100% - 60px - 4rem);
 }
