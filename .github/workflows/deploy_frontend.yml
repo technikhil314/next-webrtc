@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - master
-
+      - declarative-rtc
+      
 jobs:
   build:
     name: Deploy to webrtc-next-demo.surge.sh
