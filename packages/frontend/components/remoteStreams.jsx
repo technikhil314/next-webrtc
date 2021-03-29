@@ -161,7 +161,11 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
   useLayoutEffect(() => {
     addSocketMessageHandlers();
   }, []);
-  return Object.values(peers).map((peer) => (
-    <Video peer={peer} key={peer.stream ? peer.stream.id : Date.now()} />
-  ));
+  return (
+    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      {Object.values(peers).map((peer) => (
+        <Video peer={peer} key={peer.stream ? peer.stream.id : Date.now()} />
+      ))}
+    </section>
+  );
 };
