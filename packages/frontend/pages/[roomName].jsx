@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { LocalVideo } from "../components/localVideos";
 import { RemoteStreams } from "../components/remoteStreams";
-import RoomDetails from "../components/roomDetails";
+import UserDetails from "../components/userDetails";
 import useSocketConnection from "../hooks/socketConnection";
 import { useRhinoState } from "../store/states";
 
@@ -18,7 +18,7 @@ export default function Main() {
             <h1 className="text-2xl font-bold text-center md:mb-8">
               An open source alternative to video conferencing
             </h1>
-            <RoomDetails />
+            <UserDetails />
           </div>
           <article className="w-full md:w-2/3 text-center mx-auto flex flex-col justify-center min-h-full">
             <h1 className="text-2xl font-bold text-center md:mb-8">

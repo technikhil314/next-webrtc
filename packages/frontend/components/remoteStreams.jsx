@@ -3,7 +3,7 @@ import { iceConfig } from "../utils/constants";
 import Video from "./video";
 export const RemoteStreams = ({ myUserId, localStream, socket }) => {
   const [peers, setPeers] = useState({});
-  const getPeerConnection = (peerId) => {
+  const getPeerConnection = (peerId, userName) => {
     const peer = peers[peerId];
     let sendChannel, receiveChannel;
     if (!peer) {
@@ -15,6 +15,7 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
       sendChannel = newPeerConnection.createDataChannel("sendChannel");
       newPeerConnection.ondatachannel = channelCallback;
       newPeerConnection.addStream(localStream.current);
+      newPeerConnection.userName = userName;
       const setNewPeers = (stream) => {
         setPeers((peers) => {
           if (!peers[peerId] || stream) {
@@ -63,11 +64,11 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
     }
     return peers[peerId];
   };
-  const makeOffer = ({ by }) => {
+  const makeOffer = ({ by, userName }) => {
     if (by === myUserId) {
       return;
     }
-    let currentPeerConnection = getPeerConnection(by).connection;
+    let currentPeerConnection = getPeerConnection(by, userName).connection;
     currentPeerConnection.createOffer(
       (sdp) => {
         currentPeerConnection.setLocalDescription(sdp);

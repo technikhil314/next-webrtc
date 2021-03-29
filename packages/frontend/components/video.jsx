@@ -8,5 +8,11 @@ export default function Video({ peer }) {
       vRef.current.play();
     }
   }, [peer]);
-  return peer ? <video className="remote1" ref={vRef}></video> : null;
+  return peer ? (
+    <video
+      className="remote1"
+      ref={vRef}
+      data-userName={peer.connection.userName}
+    ></video>
+  ) : null;
 }

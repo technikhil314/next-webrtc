@@ -47,7 +47,7 @@ fastify.get("/", { websocket: true }, (
     return currentUserId;
   }
 
-  function broadcastNewConnection(userId) {
+  function broadcastNewConnection(userId, userName) {
     console.info("newPeer", userId);
     currentRoom.forEach((socket, index) => {
       index !== userId &&
@@ -55,6 +55,7 @@ fastify.get("/", { websocket: true }, (
           JSON.stringify({
             rtcContent: "newPeer",
             by: userId,
+            userName: userName,
           })
         );
     });
@@ -71,7 +72,7 @@ fastify.get("/", { websocket: true }, (
     switch (type) {
       case "connect": {
         const userId = handleConnect(serializedData);
-        broadcastNewConnection(userId);
+        broadcastNewConnection(userId, rest.userName);
         break;
       }
       case "message": {
