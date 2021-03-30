@@ -1,7 +1,8 @@
 import Head from "next/head";
+import Footer from "../components/footer";
 import Navbar from "../components/navbar";
-import "../styles/globals.scss";
 import { RhinoProvider } from "../store/states";
+import "../styles/globals.scss";
 function MyApp({ Component, pageProps }) {
   return (
     <>
@@ -20,7 +21,7 @@ function MyApp({ Component, pageProps }) {
       <RhinoProvider>
         <Navbar />
         <main
-          className="my-8"
+          className="my-8 mb-6"
           onDrop={(event) => {
             var data = event.dataTransfer.getData("text/plain").split(",");
             let dm = document.getElementById(data[0]);
@@ -34,6 +35,7 @@ function MyApp({ Component, pageProps }) {
         >
           <Component {...pageProps} />
         </main>
+        <Footer />
       </RhinoProvider>
     </>
   );
