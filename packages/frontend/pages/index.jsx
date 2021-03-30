@@ -17,3 +17,7 @@ export default function Main() {
     </section>
   );
 }
+
+Main.title = "OpenRTC | An open source alternative to video conferencing.";
+Main.description =
+  "OpenRTC is an attempt to bring privacy first video conferencing to the world.";

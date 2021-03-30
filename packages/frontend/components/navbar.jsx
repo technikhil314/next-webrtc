@@ -53,7 +53,7 @@ export default function Navbar() {
           </div>
           <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
             <h1 className="text-xl text-bold text-white flex-shrink-0 flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-2">
-              <a href="/">WebRTC</a>
+              <a href="/">OpenRTC</a>
             </h1>
             <div className="hidden sm:block sm:ml-6">
               <div className="flex space-x-4">
