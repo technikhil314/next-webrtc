@@ -1,8 +1,13 @@
+import { useEffect, useRef } from "react";
 import { useRhinoState } from "../store/states";
 
 export default function UserDetails() {
   const [, setIsStarted] = useRhinoState("isStarted");
   const [, setUserName] = useRhinoState("userName");
+  const input = useRef();
+  useEffect(() => {
+    input.current.focus();
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -16,6 +21,8 @@ export default function UserDetails() {
       className="w-full lg:w-1/2 text-center mx-auto flex flex-col justify-center"
     >
       <input
+        ref={input}
+        autoFocus
         type="text"
         name="userName"
         className="w-full px-3 py-2 border border-gray-500 rounded-md mb-4 shadow-sm"
