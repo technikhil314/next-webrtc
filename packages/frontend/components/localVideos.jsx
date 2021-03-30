@@ -15,7 +15,7 @@ export const LocalVideo = forwardRef((data, ref) => {
   return isStarted ? (
     <video
       id="localVideo"
-      className="absolute cursor-move right-2 bottom-2 md:right-10 md:bottom-10 rounded w-1/4 md:w-1/5 lg:w-1/6"
+      className="z-50	absolute cursor-move right-2 bottom-2 md:right-10 md:bottom-10 rounded w-1/4 md:w-1/5 lg:w-1/6"
       width={200}
       height={100}
       draggable

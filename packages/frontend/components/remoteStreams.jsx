@@ -162,9 +162,13 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
     addSocketMessageHandlers();
   }, []);
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+    <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
       {Object.values(peers).map((peer) => (
-        <Video peer={peer} key={peer.stream ? peer.stream.id : Date.now()} />
+        <Video
+          className="w-full shadow-md"
+          peer={peer}
+          key={peer.stream ? peer.stream.id : Date.now()}
+        />
       ))}
     </section>
   );
