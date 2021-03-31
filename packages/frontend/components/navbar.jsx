@@ -1,7 +1,9 @@
 import { useRouter } from "next/router";
 import { useRhinoState } from "../store/states";
+import { classNames } from "../helpers/classNames";
 export default function Navbar() {
   const [isStarted, setIsStarted] = useRhinoState("isStarted");
+  const [shareScreen, setShareScreen] = useRhinoState("shareScreen");
   const router = useRouter();
   const stop = () => {
     router.push("/");
@@ -58,13 +60,26 @@ export default function Navbar() {
             <div className="hidden sm:block sm:ml-6">
               <div className="flex space-x-4">
                 {isStarted && (
-                  <button
-                    type="submit"
-                    className="bg-red-500 flex-grow-0 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={stop}
-                  >
-                    Stop
-                  </button>
+                  <>
+                    <button
+                      type="submit"
+                      className="bg-red-500 flex-grow-0 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
+                      onClick={stop}
+                    >
+                      Stop
+                    </button>
+                    <button
+                      type="submit"
+                      className={`${classNames({
+                        "flex-grow-0 text-white font-bold py-2 px-4 rounded transition": true,
+                        "bg-green-500 hover:bg-green-700": !shareScreen,
+                        "bg-red-500 hover:bg-red-700": shareScreen,
+                      })}`}
+                      onClick={() => setShareScreen(!shareScreen)}
+                    >
+                      {shareScreen ? "Stop share" : "Share screen"}
+                    </button>
+                  </>
                 )}
               </div>
             </div>

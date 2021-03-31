@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { LocalVideo } from "../components/localVideos";
 import { RemoteStreams } from "../components/remoteStreams";
 import UserDetails from "../components/userDetails";
@@ -8,7 +7,7 @@ import { useRhinoState } from "../store/states";
 export default function Main() {
   const [isStarted] = useRhinoState("isStarted");
   const [userName] = useRhinoState("userName");
-  const localStream = useRef();
+  const [localStream] = useRhinoState("localStream");
   const { userId: myUserId, socket } = useSocketConnection(isStarted, userName);
   if (!isStarted) {
     return (
@@ -29,13 +28,9 @@ export default function Main() {
   }
   return (
     <>
-      <LocalVideo ref={localStream}></LocalVideo>
+      <LocalVideo />
       {socket && localStream && (
-        <RemoteStreams
-          socket={socket}
-          localStream={localStream}
-          myUserId={myUserId}
-        />
+        <RemoteStreams socket={socket} myUserId={myUserId} />
       )}
     </>
   );

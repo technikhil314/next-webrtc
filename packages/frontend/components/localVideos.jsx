@@ -1,23 +1,49 @@
-import { forwardRef, useEffect, useRef } from "react";
-import useLocalStream from "../hooks/localStream";
+import { useEffect, useRef } from "react";
 import { useRhinoState } from "../store/states";
-export const LocalVideo = forwardRef((data, ref) => {
-  const [isStarted] = useRhinoState("isStarted");
-  const localStream = useLocalStream();
+import { userMediaConstraints } from "../utils/constants";
+export const LocalVideo = (data) => {
   const localVideoElement = useRef();
+  const [localStream, setLocalStream] = useRhinoState("localStream");
+  const [screenStream, setScreenStream] = useRhinoState("screenStream");
+  const [shareScreen] = useRhinoState("shareScreen");
+  const [isStarted] = useRhinoState("isStarted");
+
   useEffect(() => {
-    ref.current = localStream;
+    let stream = {};
+    (async () => {
+      if (shareScreen) {
+        let stream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: true,
+        });
+        setScreenStream(stream);
+      } else if (!stream || !shareScreen) {
+        let stream = await navigator.mediaDevices.getUserMedia(
+          userMediaConstraints
+        );
+        setScreenStream(null);
+        setLocalStream(stream);
+      }
+    })();
+    // return () => {
+    //   stream.getTracks().forEach((x) => x.stop());
+    // };
+  }, [shareScreen, isStarted]);
+  useEffect(() => {
     if (isStarted) {
-      localVideoElement.current.srcObject = localStream;
+      localVideoElement.current.srcObject = screenStream
+        ? screenStream
+        : localStream;
       localVideoElement.current.play();
     }
-  }, [localStream, isStarted]);
+  }, [localStream, screenStream]);
   return isStarted ? (
     <video
       id="localVideo"
       className="z-50	absolute cursor-move right-2 bottom-2 md:right-10 md:bottom-10 rounded w-1/4 md:w-1/5 lg:w-1/6"
       width={200}
       height={100}
+      muted
       draggable
       onDragStart={(event) => {
         var style = getComputedStyle(event.target, null);
@@ -31,6 +57,6 @@ export const LocalVideo = forwardRef((data, ref) => {
       ref={localVideoElement}
     ></video>
   ) : null;
-});
+};
 
 LocalVideo.displayName = "LocalVideo";

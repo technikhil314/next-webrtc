@@ -1,8 +1,11 @@
 import { useLayoutEffect, useState } from "react";
+import { useRhinoState } from "../store/states";
 import { iceConfig } from "../utils/constants";
 import Video from "./video";
-export const RemoteStreams = ({ myUserId, localStream, socket }) => {
+export const RemoteStreams = ({ myUserId, socket }) => {
   const [peers, setPeers] = useState({});
+  const [localStream] = useRhinoState("localStream");
+  const [screenStream] = useRhinoState("screenStream");
   const getPeerConnection = (peerId, userName) => {
     const peer = peers[peerId];
     let sendChannel, receiveChannel;
@@ -14,7 +17,11 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
       const newPeerConnection = new RTCPeerConnection(iceConfig);
       sendChannel = newPeerConnection.createDataChannel("sendChannel");
       newPeerConnection.ondatachannel = channelCallback;
-      newPeerConnection.addStream(localStream.current);
+      // newPeerConnection.addStream(localStream);
+      let camVideoTrack = localStream.getVideoTracks()[0];
+      let camAudioTrack = localStream.getAudioTracks()[0];
+      newPeerConnection.addTrack(camVideoTrack, localStream);
+      newPeerConnection.addTrack(camAudioTrack, localStream);
       newPeerConnection.userName = userName;
       const setNewPeers = (stream) => {
         setPeers((peers) => {
@@ -161,14 +168,25 @@ export const RemoteStreams = ({ myUserId, localStream, socket }) => {
   useLayoutEffect(() => {
     addSocketMessageHandlers();
   }, []);
+  useLayoutEffect(() => {
+    for (let prop in peers) {
+      const peerConnection = peers[prop].connection;
+      let videoSender = peerConnection
+        .getSenders()
+        .find((x) => x.track.kind === "video");
+      if (screenStream) {
+        let newVideoTrack = screenStream.getVideoTracks()[0];
+        videoSender.replaceTrack(newVideoTrack);
+      } else {
+        let newVideoTrack = localStream.getVideoTracks()[0];
+        videoSender.replaceTrack(newVideoTrack);
+      }
+    }
+  }, [screenStream]);
   return (
     <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
       {Object.values(peers).map((peer) => (
-        <Video
-          className="w-full shadow-md"
-          peer={peer}
-          key={peer.stream ? peer.stream.id : Date.now()}
-        />
+        <Video peer={peer} key={peer.stream ? peer.stream.id : Date.now()} />
       ))}
     </section>
   );
