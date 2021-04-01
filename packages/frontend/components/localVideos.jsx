@@ -5,7 +5,7 @@ export const LocalVideo = (data) => {
   const localVideoElement = useRef();
   const [localStream, setLocalStream] = useRhinoState("localStream");
   const [screenStream, setScreenStream] = useRhinoState("screenStream");
-  const [shareScreen] = useRhinoState("shareScreen");
+  const [shareScreen, setShareScreen] = useRhinoState("shareScreen");
   const [isStarted] = useRhinoState("isStarted");
 
   useEffect(() => {
@@ -14,9 +14,12 @@ export const LocalVideo = (data) => {
       if (shareScreen) {
         let stream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
-          audio: true,
         });
         setScreenStream(stream);
+        stream.oninactive = () => {
+          setScreenStream(null);
+          setShareScreen(false);
+        };
       } else if (!stream || !shareScreen) {
         let stream = await navigator.mediaDevices.getUserMedia(
           userMediaConstraints
