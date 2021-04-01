@@ -19,6 +19,11 @@ jobs:
         with:
           node-version: "15.x"
 
+      - name: Install
+        run: |
+          npm ci
+          npm install sharp --prefix packages/frontend
+
       - name: Deploy
         uses: amondnet/vercel-action@v20
         with:
