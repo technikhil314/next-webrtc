@@ -21,8 +21,7 @@ jobs:
 
       - name: Install
         run: |
-          npm ci
-          npm install sharp --prefix packages/frontend
+          yarn --frozen-lockfile
 
       - name: Deploy
         uses: amondnet/vercel-action@v20
