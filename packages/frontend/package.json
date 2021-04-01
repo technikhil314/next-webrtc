@@ -1,7 +1,8 @@
 {
-  "name": "webrtc-demo-fe",
+  "name": "@openrtc/frontend",
   "version": "0.1.0",
   "private": true,
+  "description": "Frontend for openrtc",
   "scripts": {
     "serve": "next start",
     "build": "next build",

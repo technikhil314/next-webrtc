@@ -1,7 +1,7 @@
 {
-  "name": "webrtc-demo",
+  "name": "openrtc",
   "version": "1.0.0",
-  "description": "A webrtc demo with nextjs",
+  "description": "An open source webrtc demo built with nextjs and tailwind",
   "main": "index.js",
   "private": true,
   "workspaces": [

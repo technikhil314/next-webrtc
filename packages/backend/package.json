@@ -1,7 +1,8 @@
 {
-  "name": "webrtc-demo-backend",
+  "name": "@openrtc/backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend for openrtc",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "start": "npx nodemon ./index.js"
