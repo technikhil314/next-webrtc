@@ -28,6 +28,7 @@ jobs:
           cd packages/frontend
           npx next export
           cp out/index.html out/200.html
+          cp out/index.html out/404.html
 
       - name: Install Surge
         run: npm install -g surge
