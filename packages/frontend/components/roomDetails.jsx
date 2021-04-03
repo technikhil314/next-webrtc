@@ -9,7 +9,11 @@ export default function RoomDetails() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const roomName = formData.get("roomName");
+    const roomName = formData
+      .get("roomName")
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .trim();
     router.push(`/${roomName}`);
     setRoomName(roomName);
   };

@@ -1,6 +1,8 @@
 # A webrtc demo with nextjs
 
-#### :warning: This is a demo. Please dont use it production. And if you want to use it in production remove change certificate keys
+### This can be an open source alternative to [loom](https://www.loom.com/screen-recorder)
+
+If you are using mac book you can use it to do screen recording just like loom without any installation. All you need is chrome and quicktime player thats it.
 
 ### Requirements
 

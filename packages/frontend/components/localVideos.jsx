@@ -48,6 +48,7 @@ export const LocalVideo = (data) => {
       height={100}
       muted
       draggable
+      controls
       onDragStart={(event) => {
         var style = getComputedStyle(event.target, null);
         event.dataTransfer.setData(
