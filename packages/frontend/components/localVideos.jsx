@@ -42,8 +42,9 @@ export const LocalVideo = (data) => {
   }, [localStream, screenStream]);
   return isStarted ? (
     <article
-      className="z-50	absolute cursor-move right-2 bottom-2 md:right-10 md:bottom-10 rounded w-1/4 md:w-1/5 lg:w-1/6 local-video"
+      className="z-1 absolute cursor-move right-2 bottom-2 md:right-10 md:bottom-10 rounded w-1/4 md:w-1/5 lg:w-1/6 local-video"
       id="localVideo"
+      data-userName="you"
       draggable
       onDragStart={(event) => {
         var style = getComputedStyle(event.target, null);
@@ -56,7 +57,7 @@ export const LocalVideo = (data) => {
       }}
     >
       <video
-        className="z-50	absolute cursor-move right-0 bottom-0 rounded w-full"
+        className="z-1 absolute cursor-move right-0 bottom-0 rounded w-full"
         width={200}
         height={100}
         muted

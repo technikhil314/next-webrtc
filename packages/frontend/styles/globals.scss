@@ -29,13 +29,14 @@ main {
   min-height: calc(100% - 60px - 4rem);
 }
 
-.remote-video {
+.remote-video,
+.local-video {
   position: relative;
   &::after {
     position: absolute;
     bottom: 0;
     right: 0;
-    padding: 2px 5px;
+    padding: 5px 10px;
     width: min-content;
     background-color: black;
     color: white;
@@ -45,5 +46,11 @@ main {
     line-height: 1.1em;
     vertical-align: middle;
     text-align: center;
+    z-index: 2;
+    text-transform: capitalize;
   }
+}
+
+.local-video {
+  position: absolute;
 }
