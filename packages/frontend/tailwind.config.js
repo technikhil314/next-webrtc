@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       gridAutoRows: {
-        "1fr": "minmax(350px, 1fr)",
+        "350px": "350px",
       },
     },
   },
