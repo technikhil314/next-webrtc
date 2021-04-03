@@ -1,28 +1,40 @@
 import { useLayoutEffect, useState } from "react";
 import { useRhinoState } from "../store/states";
 import { iceConfig } from "../utils/constants";
-import Video from "./video";
+import RemoteVideos from "./remoteVideos";
 export const RemoteStreams = ({ myUserId, socket }) => {
   const [peers, setPeers] = useState({});
+  const [userNames, setUserNames] = useState([]);
   const [localStream] = useRhinoState("localStream");
   const [screenStream] = useRhinoState("screenStream");
-  const getPeerConnection = (peerId, userName) => {
+  const [userName] = useRhinoState("userName");
+  const getPeerConnection = (peerId) => {
     const peer = peers[peerId];
     let sendChannel, receiveChannel;
     if (!peer) {
+      const newPeerConnection = new RTCPeerConnection(iceConfig);
       const channelCallback = (event) => {
         receiveChannel = event.channel;
-        receiveChannel.onmessage = (event) => console.info(event.data);
+        receiveChannel.onmessage = (event) => {
+          setUserNames((userNames) => {
+            userNames[peerId] = JSON.parse(event.data).userName;
+            return [...userNames];
+          });
+        };
       };
-      const newPeerConnection = new RTCPeerConnection(iceConfig);
       sendChannel = newPeerConnection.createDataChannel("sendChannel");
+      sendChannel.onopen = () => {
+        sendChannel.send(
+          JSON.stringify({
+            userName,
+          })
+        );
+      };
       newPeerConnection.ondatachannel = channelCallback;
-      // newPeerConnection.addStream(localStream);
       let camVideoTrack = localStream.getVideoTracks()[0];
       let camAudioTrack = localStream.getAudioTracks()[0];
       newPeerConnection.addTrack(camVideoTrack, localStream);
       newPeerConnection.addTrack(camAudioTrack, localStream);
-      newPeerConnection.userName = userName;
       const setNewPeers = (stream) => {
         setPeers((peers) => {
           if (!peers[peerId] || stream) {
@@ -71,11 +83,11 @@ export const RemoteStreams = ({ myUserId, socket }) => {
     }
     return peers[peerId];
   };
-  const makeOffer = ({ by, userName }) => {
+  const makeOffer = ({ by }) => {
     if (by === myUserId) {
       return;
     }
-    let currentPeerConnection = getPeerConnection(by, userName).connection;
+    let currentPeerConnection = getPeerConnection(by).connection;
     currentPeerConnection.createOffer(
       (sdp) => {
         currentPeerConnection.setLocalDescription(sdp);
@@ -185,9 +197,7 @@ export const RemoteStreams = ({ myUserId, socket }) => {
   }, [screenStream]);
   return (
     <section className="container mx-auto grid grid-cols-1 auto-rows-350px md:grid-cols-2 lg:grid-cols-3 gap-3">
-      {Object.values(peers).map((peer) => (
-        <Video peer={peer} key={peer.stream ? peer.stream.id : Date.now()} />
-      ))}
+      <RemoteVideos peers={peers} userNames={userNames} />
     </section>
   );
 };

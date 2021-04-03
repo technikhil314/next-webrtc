@@ -41,15 +41,10 @@ export const LocalVideo = (data) => {
     }
   }, [localStream, screenStream]);
   return isStarted ? (
-    <video
+    <article
+      className="z-50	absolute cursor-move right-2 bottom-2 md:right-10 md:bottom-10 rounded w-1/4 md:w-1/5 lg:w-1/6 local-video"
       id="localVideo"
-      className="z-50	absolute cursor-move right-2 bottom-2 md:right-10 md:bottom-10 rounded w-1/4 md:w-1/5 lg:w-1/6"
-      width={200}
-      height={100}
-      muted
       draggable
-      controls
-      playsInline
       onDragStart={(event) => {
         var style = getComputedStyle(event.target, null);
         event.dataTransfer.setData(
@@ -59,8 +54,17 @@ export const LocalVideo = (data) => {
           },${parseInt(style.getPropertyValue("top"), 10) - event.clientY}`
         );
       }}
-      ref={localVideoElement}
-    ></video>
+    >
+      <video
+        className="z-50	absolute cursor-move right-0 bottom-0 rounded w-full"
+        width={200}
+        height={100}
+        muted
+        controls
+        playsInline
+        ref={localVideoElement}
+      ></video>
+    </article>
   ) : null;
 };
 
