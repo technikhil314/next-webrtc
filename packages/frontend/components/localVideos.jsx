@@ -49,6 +49,7 @@ export const LocalVideo = (data) => {
       muted
       draggable
       controls
+      playsInline
       onDragStart={(event) => {
         var style = getComputedStyle(event.target, null);
         event.dataTransfer.setData(

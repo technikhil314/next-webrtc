@@ -184,7 +184,7 @@ export const RemoteStreams = ({ myUserId, socket }) => {
     }
   }, [screenStream]);
   return (
-    <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+    <section className="container mx-auto grid grid-cols-1 auto-rows-1fr md:grid-cols-2 lg:grid-cols-3 gap-3">
       {Object.values(peers).map((peer) => (
         <Video peer={peer} key={peer.stream ? peer.stream.id : Date.now()} />
       ))}

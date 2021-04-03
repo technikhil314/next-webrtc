@@ -11,6 +11,7 @@ export default function Video({ peer }) {
   return peer && peer.stream ? (
     <video
       className="w-full rounded-lg shadow-md min-h-full"
+      playsInline
       ref={vRef}
       data-userName={peer.connection.userName}
       controls
