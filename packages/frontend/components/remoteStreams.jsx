@@ -6,7 +6,6 @@ export const RemoteStreams = ({ myUserId, socket }) => {
   const [peers, setPeers] = useState({});
   const [userNames, setUserNames] = useState([]);
   const [localStream] = useRhinoState("localStream");
-  const [screenStream] = useRhinoState("screenStream");
   const [userName] = useRhinoState("userName");
   const getPeerConnection = (peerId) => {
     const peer = peers[peerId];
@@ -186,15 +185,15 @@ export const RemoteStreams = ({ myUserId, socket }) => {
       let videoSender = peerConnection
         .getSenders()
         .find((x) => x.track.kind === "video");
-      if (screenStream) {
-        let newVideoTrack = screenStream.getVideoTracks()[0];
+      if (localStream) {
+        let newVideoTrack = localStream.getVideoTracks()[0];
         videoSender.replaceTrack(newVideoTrack);
       } else {
         let newVideoTrack = localStream.getVideoTracks()[0];
         videoSender.replaceTrack(newVideoTrack);
       }
     }
-  }, [screenStream]);
+  }, [localStream]);
   return (
     <section className="container mx-auto grid grid-cols-1 auto-rows-350px md:grid-cols-2 lg:grid-cols-3 gap-3">
       <RemoteVideos peers={peers} userNames={userNames} />

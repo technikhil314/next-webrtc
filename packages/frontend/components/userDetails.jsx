@@ -1,12 +1,16 @@
 import { useEffect, useRef } from "react";
 import { useRhinoState } from "../store/states";
+import { useRouter } from "next/router";
 
 export default function UserDetails() {
   const [, setIsStarted] = useRhinoState("isStarted");
   const [, setUserName] = useRhinoState("userName");
+  const [, setRoomName] = useRhinoState("roomName");
+  const router = useRouter();
   const input = useRef();
   useEffect(() => {
     input.current.focus();
+    setRoomName(router.query.roomName);
   });
   const handleSubmit = (e) => {
     e.preventDefault();

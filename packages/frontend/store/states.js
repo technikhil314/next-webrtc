@@ -6,7 +6,6 @@ const { RhinoProvider, useRhinoState } = createRhinoState({
   shareScreen: false,
   userName: "",
   localStream: null,
-  screenStream: null,
 });
 
 export { RhinoProvider, useRhinoState };

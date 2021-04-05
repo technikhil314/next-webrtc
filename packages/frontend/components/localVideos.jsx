@@ -1,46 +1,52 @@
 import { useEffect, useRef } from "react";
 import { useRhinoState } from "../store/states";
 import { userMediaConstraints } from "../utils/constants";
-export const LocalVideo = (data) => {
+export const LocalVideo = ({ isVlog }) => {
   const localVideoElement = useRef();
   const [localStream, setLocalStream] = useRhinoState("localStream");
-  const [screenStream, setScreenStream] = useRhinoState("screenStream");
   const [shareScreen, setShareScreen] = useRhinoState("shareScreen");
   const [isStarted] = useRhinoState("isStarted");
-
   useEffect(() => {
     let stream = {};
     (async () => {
-      if (shareScreen) {
-        let stream = await navigator.mediaDevices.getDisplayMedia({
+      let videoTrack, audioTrack;
+      let normalLocalStream = await navigator.mediaDevices.getUserMedia(
+        userMediaConstraints
+      );
+      if (isVlog || shareScreen) {
+        stream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
         });
-        setScreenStream(stream);
         stream.oninactive = () => {
-          setScreenStream(null);
           setShareScreen(false);
         };
-      } else if (!stream || !shareScreen) {
-        let stream = await navigator.mediaDevices.getUserMedia(
-          userMediaConstraints
-        );
-        setScreenStream(null);
-        setLocalStream(stream);
+        videoTrack = stream.getVideoTracks()[0];
+      } else {
+        videoTrack = normalLocalStream.getVideoTracks()[0];
       }
+      audioTrack = normalLocalStream.getAudioTracks()[0];
+      setLocalStream(new MediaStream([audioTrack, videoTrack]));
     })();
-    // return () => {
-    //   stream.getTracks().forEach((x) => x.stop());
-    // };
   }, [shareScreen, isStarted]);
   useEffect(() => {
-    if (isStarted) {
-      localVideoElement.current.srcObject = screenStream
-        ? screenStream
-        : localStream;
+    if (isStarted || isVlog) {
+      localVideoElement.current.srcObject = localStream;
       localVideoElement.current.play();
     }
-  }, [localStream, screenStream]);
-  return isStarted ? (
+    if (isVlog) {
+      localVideoElement.current.onloadedmetadata = async () => {
+        !document.pictureInPictureElement &&
+          localVideoElement.current.requestPictureInPicture();
+      };
+    }
+    return async () => {
+      if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
+      }
+      localStream && localStream.getTracks().forEach((x) => x.stop());
+    };
+  }, [localStream]);
+  return isStarted || isVlog ? (
     <article
       className="z-10 absolute cursor-move right-2 bottom-2 md:right-10 md:bottom-10 rounded w-1/4 md:w-1/5 lg:w-1/6 local-video"
       id="localVideo"
@@ -60,7 +66,7 @@ export const LocalVideo = (data) => {
         className="absolute right-0 bottom-0 rounded w-full"
         width={200}
         height={100}
-        muted
+        muted={!isVlog}
         controls
         playsInline
         ref={localVideoElement}

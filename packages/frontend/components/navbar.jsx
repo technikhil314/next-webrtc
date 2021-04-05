@@ -4,7 +4,9 @@ import { classNames } from "../helpers/classNames";
 export default function Navbar() {
   const [isStarted, setIsStarted] = useRhinoState("isStarted");
   const [shareScreen, setShareScreen] = useRhinoState("shareScreen");
+  const [roomName] = useRhinoState("roomName");
   const router = useRouter();
+  const isVlog = router.pathname === "/vlog";
   const stop = () => {
     router.push("/");
     setIsStarted(false);
@@ -59,6 +61,21 @@ export default function Navbar() {
             </h1>
             <div className="hidden sm:block sm:ml-6">
               <div className="flex space-x-4">
+                {!roomName && (
+                  <button
+                    type="submit"
+                    className={`${classNames({
+                      "flex-grow-0 text-white font-bold py-2 px-4 rounded transition": true,
+                      "bg-green-500 hover:bg-green-700": !isVlog,
+                      "bg-red-500 hover:bg-red-700": isVlog,
+                    })}`}
+                    onClick={() => {
+                      router.push("/vlog");
+                    }}
+                  >
+                    {isVlog ? "Recording" : "Record Vlog"}
+                  </button>
+                )}
                 {isStarted && (
                   <>
                     <button
