@@ -62,21 +62,21 @@ export default function Navbar() {
               open: isOpen,
             })}
           >
-            <div className="bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white flex h-full items-center">
+            <div className="bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white flex h-full w-full items-center md:w-auto">
               <Link href="/vlog" passHref>
                 <a
                   href="/"
-                  className="inline-block py-full my-4 text-md font-semibold bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white md:my-0 md:mx-4 focus:bg-gray-700 focus:outline-none focus:shadow-outline"
+                  className="inline-block mx-auto my-4 text-md font-semibold bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white md:my-0 md:mx-4 focus:bg-gray-700 focus:outline-none focus:shadow-outline"
                 >
                   Record vlog
                 </a>
               </Link>
             </div>
-            <div className="bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white flex h-full items-center">
+            <div className="bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white flex h-full w-full items-center md:w-auto">
               <Link href="/" passHref>
                 <a
                   href="/"
-                  className="my-4 text-md font-semibold bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white md:my-0 md:mx-4 focus:bg-gray-700 focus:outline-none focus:shadow-outline"
+                  className="inline-block mx-auto my-4 text-md font-semibold bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white md:my-0 md:mx-4 focus:bg-gray-700 focus:outline-none focus:shadow-outline"
                 >
                   Create Meeting
                 </a>
