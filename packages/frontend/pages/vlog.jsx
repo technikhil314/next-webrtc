@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { classNames } from "../helpers/classNames";
 import usePageVisibility from "../hooks/pageVisibility";
 import {
+  text,
   userMediaConstraints,
   vlogRecordingVideoCodecType,
 } from "../utils/constants";
@@ -87,7 +88,7 @@ export default function Vlog() {
   return (
     <>
       <Head>
-        <title>{`${pageTitle || "Vlog"} | OpenRTC`}</title>
+        <title>{`${pageTitle || "Vlog"} | ${text.appName}`}</title>
       </Head>
       <section className="w-full container mx-auto px-4 flex flex-wrap items-center justify-center h-full">
         <div className="w-full text-center">
@@ -120,7 +121,7 @@ export default function Vlog() {
         </div>
         <video
           muted
-          playsinline
+          playsInline
           className="hidden"
           ref={localVideoElement}
         ></video>

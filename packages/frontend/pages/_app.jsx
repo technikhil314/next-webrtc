@@ -3,6 +3,7 @@ import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 import { RhinoProvider } from "../store/states";
 import "../styles/globals.scss";
+import { text } from "../utils/constants";
 function MyApp({ Component, pageProps }) {
   return (
     <>
@@ -14,18 +15,9 @@ function MyApp({ Component, pageProps }) {
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
         <meta property="og:type" content="website" />
-        <meta
-          name="description"
-          content="OpenRTC is an attempt to bring privacy first video conferencing and web based vlog recording to the world."
-        />
-        <meta
-          name="og:description"
-          content="OpenRTC is an attempt to bring privacy first video conferencing and web based vlog recording to the world."
-        />
-        <meta
-          name="twitter:description"
-          content="OpenRTC is an attempt to bring privacy first video conferencing and web based vlog recording to the world."
-        />
+        <meta name="description" content={text.seoTagLine} />
+        <meta name="og:description" content={text.seoTagLine} />
+        <meta name="twitter:description" content={text.seoTagLine} />
         <meta name="og:url" content={process.env.NEXT_PUBLIC_URL} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@technikhil314" />

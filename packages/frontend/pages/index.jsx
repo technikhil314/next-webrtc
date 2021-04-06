@@ -1,7 +1,7 @@
 import RoomDetails from "../components/roomDetails";
 import Head from "next/head";
-const pageTitle =
-  "OpenRTC | An open source alternative to video conferencing and vlogging.";
+import { text } from "../utils/constants";
+const pageTitle = `${text.appName} | ${text.titleDesc}`;
 export default function Main() {
   return (
     <>

@@ -6,6 +6,7 @@ import UserDetails from "../components/userDetails";
 import { classNames } from "../helpers/classNames";
 import useSocketConnection from "../hooks/socketConnection";
 import { useRhinoState } from "../store/states";
+import { text } from "../utils/constants";
 import { capitalize } from "../utils/helpers";
 
 export default function Main() {
@@ -22,7 +23,9 @@ export default function Main() {
   };
   const PageHead = () => (
     <Head>
-      <title>{`${capitalize(roomName || "Your room")} | OpenRTC`}</title>
+      <title>{`${capitalize(roomName || "Your room")} | ${
+        text.appName
+      }`}</title>
     </Head>
   );
   if (!isStarted) {

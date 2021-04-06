@@ -41,7 +41,7 @@ main {
     background-color: black;
     color: white;
     border-radius: 10px 0 10px 0;
-    content: attr(data-userName);
+    content: attr(data-username);
     height: min-content;
     line-height: 1.1em;
     vertical-align: middle;

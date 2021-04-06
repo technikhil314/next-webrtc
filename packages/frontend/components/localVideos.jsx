@@ -47,7 +47,7 @@ export const LocalVideo = ({ isVlog }) => {
     <article
       className="z-10 absolute cursor-move right-2 bottom-2 md:right-10 md:bottom-10 rounded w-1/4 md:w-1/5 lg:w-1/6 local-video"
       id="localVideo"
-      data-userName="you"
+      data-username="you"
       draggable
       onDragStart={(event) => {
         var style = getComputedStyle(event.target, null);

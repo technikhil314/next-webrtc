@@ -11,7 +11,7 @@ export default function Video({ peer, userName }) {
   return peer && peer.stream ? (
     <article
       className="remote-video w-full rounded-lg shadow-md h-full bg-black"
-      data-userName={userName}
+      data-username={userName}
     >
       <video
         className="w-full rounded-lg shadow-md h-full bg-black"

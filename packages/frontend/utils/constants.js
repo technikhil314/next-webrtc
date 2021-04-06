@@ -1,3 +1,10 @@
+export const text = {
+  seoTagLine:
+    "OpenRTC is an attempt to bring privacy first video conferencing and web based vlog recording to the world.",
+  titleDesc: "An open source alternative to video conferencing and vlogging.",
+  appName: "OpenRTC",
+};
+
 export const userMediaConstraints = {
   video: true,
   audio: {
