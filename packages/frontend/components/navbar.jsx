@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { classNames } from "../helpers/classNames";
+import { text } from "../utils/constants";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,7 +57,7 @@ export default function Navbar() {
           <div className="h-full flex items-center hover:bg-gray-700 hover:text-white">
             <h1 className="text-xl font-bold text-white flex-shrink-0 flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-2">
               <a href="/" className="h-full">
-                OpenRTC
+                {text.appName}
               </a>
             </h1>
           </div>
