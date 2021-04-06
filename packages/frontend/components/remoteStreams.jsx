@@ -188,9 +188,6 @@ export const RemoteStreams = ({ myUserId, socket }) => {
       if (localStream) {
         let newVideoTrack = localStream.getVideoTracks()[0];
         videoSender.replaceTrack(newVideoTrack);
-      } else {
-        let newVideoTrack = localStream.getVideoTracks()[0];
-        videoSender.replaceTrack(newVideoTrack);
       }
     }
   }, [localStream]);

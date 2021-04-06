@@ -14,13 +14,19 @@ function MyApp({ Component, pageProps }) {
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
         <meta property="og:type" content="website" />
-        {Component.title && <title>{Component.title}</title>}
-        <meta property="og:title" content={Component.title} />
-        <meta property="twitter:title" content={Component.title} />
-        <meta name="description" content={Component.description} />
-        <meta name="og:description" content={Component.description} />
-        <meta name="twitter:description" content={Component.description} />
-        <meta name="og:url" content="https://webrtc-next-demo.surge.sh/" />
+        <meta
+          name="description"
+          content="OpenRTC is an attempt to bring privacy first video conferencing and web based vlog recording to the world."
+        />
+        <meta
+          name="og:description"
+          content="OpenRTC is an attempt to bring privacy first video conferencing and web based vlog recording to the world."
+        />
+        <meta
+          name="twitter:description"
+          content="OpenRTC is an attempt to bring privacy first video conferencing and web based vlog recording to the world."
+        />
+        <meta name="og:url" content={process.env.NEXT_PUBLIC_URL} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@technikhil314" />
       </Head>

@@ -7,6 +7,10 @@ export const userMediaConstraints = {
   },
 };
 
+export const vlogRecordingVideoCodecType = {
+  mimeType: "video/webm; codecs=vp9",
+};
+
 export const iceConfig = {
   iceServers: [
     {
