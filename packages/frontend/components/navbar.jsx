@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { useState } from "react";
+import { classNames } from "../helpers/classNames";
 
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <nav className="bg-gray-800 text-white">
       <div className="container mx-auto px-4 h-full">
@@ -10,10 +13,14 @@ export default function Navbar() {
             className="md:hidden inline-flex items-center justify-center rounded-md text-gray-400 active:hover:text-white active:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
             aria-controls="mobile-menu"
             aria-expanded="false"
+            onClick={() => setIsOpen(!isOpen)}
           >
             <span className="sr-only">Open main menu</span>
             <svg
-              className="block h-6 w-6"
+              className={classNames({
+                "h-6 w-6": true,
+                hidden: isOpen,
+              })}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -28,7 +35,10 @@ export default function Navbar() {
               />
             </svg>
             <svg
-              className="hidden h-6 w-6"
+              className={classNames({
+                "h-6 w-6": true,
+                hidden: !isOpen,
+              })}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -46,7 +56,12 @@ export default function Navbar() {
           <h1 className="text-xl font-semibold text-white flex-shrink-0 flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-2">
             <a href="/">OpenRTC</a>
           </h1>
-          <div className="absolute shadow-xl top-full items-center justify-center bg-gray-800 w-full rounded-lg flex flex-col md:ml-8 md:top-auto md:relative md:flex-row md:flex-1 md:items-stretch md:justify-start md:h-full">
+          <div
+            className={classNames({
+              "nav-menu absolute shadow-xl top-full items-center justify-center bg-gray-800 w-full rounded-lg flex flex-col md:ml-8 md:top-auto md:relative md:flex-row md:flex-1 md:items-stretch md:justify-start md:h-full": true,
+              open: isOpen,
+            })}
+          >
             <div className="bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white flex h-full items-center">
               <Link href="/vlog" passHref>
                 <a
@@ -90,12 +105,6 @@ export default function Navbar() {
             </a>
           </div>
         </div>
-        {/* <div className="relative flex items-center justify-between">
-          
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            
-          </div>
-        </div> */}
       </div>
     </nav>
   );
