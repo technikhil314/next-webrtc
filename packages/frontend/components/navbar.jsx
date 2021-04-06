@@ -1,107 +1,74 @@
-import { useRouter } from "next/router";
-import { useRhinoState } from "../store/states";
-import { classNames } from "../helpers/classNames";
+import Link from "next/link";
+
 export default function Navbar() {
-  const [isStarted, setIsStarted] = useRhinoState("isStarted");
-  const [shareScreen, setShareScreen] = useRhinoState("shareScreen");
-  const [roomName] = useRhinoState("roomName");
-  const router = useRouter();
-  const isVlog = router.pathname === "/vlog";
-  const stop = () => {
-    router.push("/");
-    setIsStarted(false);
-  };
   return (
-    <nav className="bg-gray-800">
-      <div className="container w-full mx-auto px-4">
-        <div className="relative flex items-center justify-between h-16">
-          <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-              aria-controls="mobile-menu"
-              aria-expanded="false"
+    <nav className="bg-gray-800 text-white">
+      <div className="container mx-auto px-4 h-full">
+        <div className="relative flex items-center justify-between h-full">
+          <button
+            type="button"
+            className="md:hidden inline-flex items-center justify-center rounded-md text-gray-400 active:hover:text-white active:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            aria-controls="mobile-menu"
+            aria-expanded="false"
+          >
+            <span className="sr-only">Open main menu</span>
+            <svg
+              className="block h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
             >
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className="block h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-              <svg
-                className="hidden h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-          <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-            <h1 className="text-xl text-bold text-white flex-shrink-0 flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-2">
-              <a href="/">OpenRTC</a>
-            </h1>
-            <div className="hidden sm:block sm:ml-6">
-              <div className="flex space-x-4">
-                {!roomName && (
-                  <button
-                    type="submit"
-                    className={`${classNames({
-                      "flex-grow-0 text-white font-bold py-2 px-4 rounded transition": true,
-                      "bg-green-500 hover:bg-green-700": !isVlog,
-                      "bg-red-500 hover:bg-red-700": isVlog,
-                    })}`}
-                    onClick={() => {
-                      router.push("/vlog");
-                    }}
-                  >
-                    {isVlog ? "Recording" : "Record Vlog"}
-                  </button>
-                )}
-                {isStarted && (
-                  <>
-                    <button
-                      type="submit"
-                      className="bg-red-500 flex-grow-0 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
-                      onClick={stop}
-                    >
-                      Stop
-                    </button>
-                    <button
-                      type="submit"
-                      className={`${classNames({
-                        "flex-grow-0 text-white font-bold py-2 px-4 rounded transition": true,
-                        "bg-green-500 hover:bg-green-700": !shareScreen,
-                        "bg-red-500 hover:bg-red-700": shareScreen,
-                      })}`}
-                      onClick={() => setShareScreen(!shareScreen)}
-                    >
-                      {shareScreen ? "Stop share" : "Share screen"}
-                    </button>
-                  </>
-                )}
-              </div>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+            <svg
+              className="hidden h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+          <h1 className="text-xl text-bold text-white flex-shrink-0 flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-2">
+            <a href="/">OpenRTC</a>
+          </h1>
+          <div className="absolute shadow-xl top-full items-center justify-center bg-gray-800 w-full rounded-lg flex flex-col md:ml-8 md:top-auto md:relative md:flex-row md:flex-1 md:items-stretch md:justify-start md:h-full">
+            <div className="bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white flex h-full items-center">
+              <Link href="/vlog" passHref>
+                <a
+                  href="/"
+                  className="inline-block py-full my-4 text-md font-semibold bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white md:my-0 md:mx-4 focus:bg-gray-700 focus:outline-none focus:shadow-outline"
+                >
+                  Record vlog
+                </a>
+              </Link>
+            </div>
+            <div className="bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white flex h-full items-center">
+              <Link href="/" passHref>
+                <a
+                  href="/"
+                  className="my-4 text-md font-semibold bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white md:my-0 md:mx-4 focus:bg-gray-700 focus:outline-none focus:shadow-outline"
+                >
+                  Create Meeting
+                </a>
+              </Link>
             </div>
           </div>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          <div>
             <a
               className="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white md:mt-0 md:ml-4 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
               target="_blank"
@@ -123,12 +90,12 @@ export default function Navbar() {
             </a>
           </div>
         </div>
-      </div>
-      <div
-        className="sm:hidden bg-white absolute left-1/2 transform -translate-x-1/2 shadow-lg w-4/5 top-16 rounded-xl"
-        id="mobile-menu"
-      >
-        <div className="px-2 pt-2 pb-3 space-y-1 bg-white rounded-xl"></div>
+        {/* <div className="relative flex items-center justify-between">
+          
+          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            
+          </div>
+        </div> */}
       </div>
     </nav>
   );

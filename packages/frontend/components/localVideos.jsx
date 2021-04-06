@@ -6,14 +6,16 @@ export const LocalVideo = ({ isVlog }) => {
   const [localStream, setLocalStream] = useRhinoState("localStream");
   const [shareScreen, setShareScreen] = useRhinoState("shareScreen");
   const [isStarted] = useRhinoState("isStarted");
+
   useEffect(() => {
-    let stream = {};
+    let stream = {},
+      normalLocalStream;
     (async () => {
       let videoTrack, audioTrack;
       let normalLocalStream = await navigator.mediaDevices.getUserMedia(
         userMediaConstraints
       );
-      if (isVlog || shareScreen) {
+      if (shareScreen) {
         stream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
         });
@@ -27,26 +29,21 @@ export const LocalVideo = ({ isVlog }) => {
       audioTrack = normalLocalStream.getAudioTracks()[0];
       setLocalStream(new MediaStream([audioTrack, videoTrack]));
     })();
-  }, [shareScreen, isStarted]);
+    return () => {
+      normalLocalStream &&
+        normalLocalStream.getTracks().forEach((x) => x.stop());
+    };
+  }, [shareScreen, isStarted, isVlog]);
   useEffect(() => {
-    if (isStarted || isVlog) {
+    if (isStarted) {
       localVideoElement.current.srcObject = localStream;
       localVideoElement.current.play();
     }
-    if (isVlog) {
-      localVideoElement.current.onloadedmetadata = async () => {
-        !document.pictureInPictureElement &&
-          localVideoElement.current.requestPictureInPicture();
-      };
-    }
     return async () => {
-      if (document.pictureInPictureElement) {
-        await document.exitPictureInPicture();
-      }
       localStream && localStream.getTracks().forEach((x) => x.stop());
     };
   }, [localStream]);
-  return isStarted || isVlog ? (
+  return isStarted ? (
     <article
       className="z-10 absolute cursor-move right-2 bottom-2 md:right-10 md:bottom-10 rounded w-1/4 md:w-1/5 lg:w-1/6 local-video"
       id="localVideo"
@@ -66,7 +63,7 @@ export const LocalVideo = ({ isVlog }) => {
         className="absolute right-0 bottom-0 rounded w-full"
         width={200}
         height={100}
-        muted={!isVlog}
+        muted
         controls
         playsInline
         ref={localVideoElement}

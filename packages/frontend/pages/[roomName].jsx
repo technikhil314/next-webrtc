@@ -1,14 +1,22 @@
+import { useRouter } from "next/router";
 import { LocalVideo } from "../components/localVideos";
 import { RemoteStreams } from "../components/remoteStreams";
 import UserDetails from "../components/userDetails";
+import { classNames } from "../helpers/classNames";
 import useSocketConnection from "../hooks/socketConnection";
 import { useRhinoState } from "../store/states";
 
 export default function Main() {
-  const [isStarted] = useRhinoState("isStarted");
+  const [isStarted, setIsStarted] = useRhinoState("isStarted");
   const [userName] = useRhinoState("userName");
   const [localStream] = useRhinoState("localStream");
+  const [shareScreen, setShareScreen] = useRhinoState("shareScreen");
   const { userId: myUserId, socket } = useSocketConnection(isStarted, userName);
+  const router = useRouter();
+  const stop = () => {
+    router.push("/");
+    setIsStarted(false);
+  };
   if (!isStarted) {
     return (
       <section className="w-full container mx-auto px-4 grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 min-h-full">
@@ -28,6 +36,26 @@ export default function Main() {
   }
   return (
     <>
+      <div className="w-full container mx-auto px-4 flex justify-center items-center">
+        <button
+          type="submit"
+          className="bg-red-500 flex-grow-0 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
+          onClick={stop}
+        >
+          Stop
+        </button>
+        <button
+          type="submit"
+          className={`${classNames({
+            "flex-grow-0 text-white font-bold py-2 px-4 rounded transition": true,
+            "bg-green-500 hover:bg-green-700": !shareScreen,
+            "bg-red-500 hover:bg-red-700": shareScreen,
+          })}`}
+          onClick={() => setShareScreen(!shareScreen)}
+        >
+          {shareScreen ? "Stop share" : "Share screen"}
+        </button>
+      </div>
       <LocalVideo />
       {socket && localStream && (
         <RemoteStreams socket={socket} myUserId={myUserId} />
