@@ -78,7 +78,12 @@ export default function Vlog() {
       >
         {isRecording ? "Stop recording" : "Start recording"}
       </button>
-      <video className="hidden" ref={localVideoElement}></video>
+      <video
+        muted
+        playsinline
+        className="hidden"
+        ref={localVideoElement}
+      ></video>
     </section>
   );
 }
