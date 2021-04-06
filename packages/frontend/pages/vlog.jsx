@@ -78,6 +78,7 @@ export default function Vlog() {
           setRecorderState("");
         }
       };
+      setRecorderState(capitalize(mediaRecorder.state));
     }
   }, [mediaRecorder]);
   useEffect(() => {
@@ -127,15 +128,22 @@ export default function Vlog() {
           >
             {`${pageTitle || "Start recording"}...`}
           </button>
-          <ul className="text-sm w-full text-center">
+          <h3 className="text-lg font-semibold">
+            Read this before clicking on the button above
+          </h3>
+          <ul className="text-md mx-auto w-10/12 text-left list-outside list-decimal md:list-inside md:text-center md:w-8/12 lg:w-5/12">
             <li>
               The recording will automatically pause when you focus on this
-              window
+              window.
             </li>
+            <li>The title of this browser window will tell you the status.</li>
             <li>
               The recording will start/resume when you focus on other windows.
             </li>
-            <li>Click on the button above anytime to download the recording</li>
+            <li>
+              Click on the button above anytime to stop and download the
+              recording.
+            </li>
           </ul>
         </div>
         <video
