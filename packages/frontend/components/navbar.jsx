@@ -62,8 +62,9 @@ export default function Navbar() {
           </div>
           <div
             className={classNames({
-              "nav-menu absolute shadow-xl top-full items-center justify-center bg-gray-800 w-full rounded-lg flex flex-col md:ml-8 md:top-auto md:relative md:flex-row md:flex-1 md:items-stretch md:justify-start md:h-full": true,
-              open: isOpen,
+              "transition transition-transform ease-in-out duration-300	transform absolute shadow-xl top-full items-center justify-center bg-gray-800 w-full rounded-lg flex flex-col md:translate-y-0 md:ml-8 md:top-auto md:relative md:flex-row md:flex-1 md:items-stretch md:justify-start md:h-full": true,
+              "translate-y-0": isOpen,
+              "-translate-y-screen": !isOpen,
             })}
           >
             <div className="bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white flex h-full w-full items-center md:w-auto">

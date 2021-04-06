@@ -9,6 +9,9 @@ module.exports = {
       zIndex: {
         "-1": -1,
       },
+      translate: {
+        "-screen": "-100vw",
+      },
     },
   },
   variants: {

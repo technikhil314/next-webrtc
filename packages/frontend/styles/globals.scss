@@ -63,14 +63,3 @@ main {
   border-radius: 50%;
   border: 10px solid green;
 }
-
-.nav-menu {
-  transition: transform 0.3s ease;
-  transform: translateY(-200%);
-  &.open {
-    transform: translateY(0%);
-  }
-  @media (min-width: 768px) {
-    transform: translateY(0%);
-  }
-}
