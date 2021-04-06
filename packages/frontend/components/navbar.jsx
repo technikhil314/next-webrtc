@@ -43,7 +43,7 @@ export default function Navbar() {
               />
             </svg>
           </button>
-          <h1 className="text-xl text-bold text-white flex-shrink-0 flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-2">
+          <h1 className="text-xl font-semibold text-white flex-shrink-0 flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-2">
             <a href="/">OpenRTC</a>
           </h1>
           <div className="absolute shadow-xl top-full items-center justify-center bg-gray-800 w-full rounded-lg flex flex-col md:ml-8 md:top-auto md:relative md:flex-row md:flex-1 md:items-stretch md:justify-start md:h-full">

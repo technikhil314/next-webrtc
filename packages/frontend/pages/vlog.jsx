@@ -8,13 +8,21 @@ import {
   vlogRecordingVideoCodecType,
 } from "../utils/constants";
 import { capitalize } from "../utils/helpers";
-
+import { useRouter } from "next/router";
+import Modal from "../components/modal";
 export default function Vlog() {
+  const router = useRouter();
   const [isRecording, setIsRecording] = useState(false);
+  const [showError, setShowError] = useState();
   const [mediaRecorder, setMediaRecorder] = useState();
   const [recorderState, setRecorderState] = useState();
   const isPageVisible = usePageVisibility();
   const localVideoElement = useRef();
+  useEffect(() => {
+    if (!document.pictureInPictureEnabled) {
+      setShowError(true);
+    }
+  }, []);
   useEffect(() => {
     let stream, normalLocalStream;
     (async () => {
@@ -84,6 +92,9 @@ export default function Vlog() {
       setRecorderState(capitalize(mediaRecorder.state));
     }
   }, [isPageVisible]);
+  const onModalClose = () => {
+    router.push("/");
+  };
   const pageTitle = mediaRecorder && recorderState;
   return (
     <>
@@ -91,6 +102,14 @@ export default function Vlog() {
         <title>{`${pageTitle || "Vlog"} | ${text.appName}`}</title>
       </Head>
       <section className="w-full container mx-auto px-4 flex flex-wrap items-center justify-center h-full">
+        {showError && (
+          <Modal title="Oops..." onClose={onModalClose}>
+            <p>
+              Opps.... You browser does not support required features to record
+              vlog. We recommend using latest version of chrome.
+            </p>
+          </Modal>
+        )}
         <div className="w-full text-center">
           <button
             type="submit"
