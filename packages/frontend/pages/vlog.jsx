@@ -115,7 +115,7 @@ export default function Vlog() {
           <button
             type="submit"
             className={`${classNames({
-              "flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full md:w-1/4 lg:w-1/6 mb-5": true,
+              "flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full md:w-1/4 lg:w-1/6 mb-8": true,
               "bg-green-500 hover:bg-green-700": !isRecording,
               "bg-red-500 hover:bg-red-700": isRecording,
             })}`}
@@ -128,10 +128,14 @@ export default function Vlog() {
           >
             {`${pageTitle || "Start recording"}...`}
           </button>
-          <h3 className="text-lg font-semibold">
+          <h3 className="text-lg font-semibold mb-5">
             Read this before clicking on the button above
           </h3>
-          <ul className="text-md mx-auto w-10/12 text-left list-outside list-decimal md:list-inside md:text-center md:w-8/12 lg:w-5/12">
+          <ul className="text-md mx-auto w-10/12 text-left list-outside list-decimal md:list-inside md:text-center md:w-8/12 lg:w-5/12 flex flex-col gap-1.5">
+            <li>
+              This works all on your device locally. No data is sent to any
+              server.
+            </li>
             <li>
               The recording will automatically pause when you focus on this
               window.

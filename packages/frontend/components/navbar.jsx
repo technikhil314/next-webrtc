@@ -53,9 +53,13 @@ export default function Navbar() {
               />
             </svg>
           </button>
-          <h1 className="text-xl font-semibold text-white flex-shrink-0 flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-2">
-            <a href="/">OpenRTC</a>
-          </h1>
+          <div className="h-full flex items-center hover:bg-gray-700 hover:text-white">
+            <h1 className="text-xl font-bold text-white flex-shrink-0 flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-2">
+              <a href="/" className="h-full">
+                OpenRTC
+              </a>
+            </h1>
+          </div>
           <div
             className={classNames({
               "nav-menu absolute shadow-xl top-full items-center justify-center bg-gray-800 w-full rounded-lg flex flex-col md:ml-8 md:top-auto md:relative md:flex-row md:flex-1 md:items-stretch md:justify-start md:h-full": true,
@@ -83,9 +87,9 @@ export default function Navbar() {
               </Link>
             </div>
           </div>
-          <div>
+          <div className="h-full flex items-center">
             <a
-              className="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white md:mt-0 md:ml-4 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+              className="inline-block h-full flex items-center text-sm font-semibold bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-gray-700 focus:text-white focus:outline-none focus:shadow-outline"
               target="_blank"
               rel="noreferrer noopener"
               href="https://github.com/technikhil314/next-webrtc"
