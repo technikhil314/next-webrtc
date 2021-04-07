@@ -33,3 +33,7 @@ If you are using mac book you can use it to do screen recording just like loom w
 1. Handle if someone stops screen share in recording vlog
    - This currently stops recording
    - Ideally it should keep on recording but change video from screen to user
+1. First time visitor faces lag in audio recording
+1. First time visitor can not see small PiP video
+1. Microphone volume control
+1. Ability to name the downloadable file - Currently it uses ISO date time string
