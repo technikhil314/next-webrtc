@@ -1,4 +1,4 @@
-# A webrtc demo with nextjs
+# A video conferencing and screen/vlog recording web app for live coders with nextjs
 
 ### This can be an open source alternative to [loom](https://www.loom.com/screen-recorder)
 
