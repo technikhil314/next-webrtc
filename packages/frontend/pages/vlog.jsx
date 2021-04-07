@@ -18,44 +18,51 @@ export default function Vlog() {
   const [recorderState, setRecorderState] = useState();
   const isPageVisible = usePageVisibility();
   const localVideoElement = useRef();
+  let stream = useRef(),
+    normalLocalStream = useRef();
   useEffect(() => {
     if (!document.pictureInPictureEnabled) {
       setShowError(true);
     }
   }, []);
-  useEffect(() => {
-    let stream, normalLocalStream;
-    (async () => {
-      if (isRecording) {
-        stream = await navigator.mediaDevices.getDisplayMedia({
+
+  const handleRecording = async () => {
+    let currentNormalLocalStream = normalLocalStream.current;
+    let currentStream = stream.current;
+    if (!isRecording) {
+      try {
+        currentStream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
         });
-        normalLocalStream = await navigator.mediaDevices.getUserMedia(
+        currentNormalLocalStream = await navigator.mediaDevices.getUserMedia(
           userMediaConstraints
         );
-        stream.addTrack(normalLocalStream.getAudioTracks()[0]);
+        currentStream.addTrack(currentNormalLocalStream.getAudioTracks()[0]);
         setMediaRecorder(
-          new MediaRecorder(stream, vlogRecordingVideoCodecType)
+          new MediaRecorder(currentStream, vlogRecordingVideoCodecType)
         );
-        localVideoElement.current.srcObject = normalLocalStream;
+        localVideoElement.current.srcObject = currentNormalLocalStream;
         localVideoElement.current.play();
         localVideoElement.current.onloadedmetadata = async () => {
           !document.pictureInPictureElement &&
             localVideoElement.current.requestPictureInPicture();
         };
+        setIsRecording(true);
+      } catch (err) {
+        currentStream = currentNormalLocalStream = null;
+        setIsRecording(false);
       }
-    })();
-    return async () => {
-      if (isRecording) {
-        if (document.pictureInPictureElement) {
-          await document.exitPictureInPicture();
-        }
-        stream && stream.getTracks().forEach((x) => x.stop());
-        normalLocalStream &&
-          normalLocalStream.getTracks().forEach((x) => x.stop());
+    } else {
+      mediaRecorder.state !== "inactive" && mediaRecorder.stop();
+      setIsRecording(!isRecording);
+      if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
       }
-    };
-  }, [isRecording]);
+      currentStream && currentStream.getTracks().forEach((x) => x.stop());
+      currentNormalLocalStream &&
+        currentNormalLocalStream.getTracks().forEach((x) => x.stop());
+    }
+  };
   useEffect(() => {
     if (mediaRecorder) {
       let recordedChunks = [];
@@ -119,12 +126,7 @@ export default function Vlog() {
               "bg-green-500 hover:bg-green-700": !isRecording,
               "bg-red-500 hover:bg-red-700": isRecording,
             })}`}
-            onClick={() => {
-              if (isRecording) {
-                mediaRecorder.state !== "inactive" && mediaRecorder.stop();
-              }
-              setIsRecording(!isRecording);
-            }}
+            onClick={handleRecording}
           >
             {`${pageTitle || "Start recording"}...`}
           </button>
