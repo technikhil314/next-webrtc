@@ -27,21 +27,19 @@ export default function Vlog() {
   }, []);
 
   const handleRecording = async () => {
-    let currentNormalLocalStream = normalLocalStream.current;
-    let currentStream = stream.current;
     if (!isRecording) {
       try {
-        currentStream = await navigator.mediaDevices.getDisplayMedia({
+        stream.current = await navigator.mediaDevices.getDisplayMedia({
           video: true,
         });
-        currentNormalLocalStream = await navigator.mediaDevices.getUserMedia(
+        normalLocalStream.current = await navigator.mediaDevices.getUserMedia(
           userMediaConstraints
         );
-        currentStream.addTrack(currentNormalLocalStream.getAudioTracks()[0]);
+        stream.current.addTrack(normalLocalStream.current.getAudioTracks()[0]);
         setMediaRecorder(
-          new MediaRecorder(currentStream, vlogRecordingVideoCodecType)
+          new MediaRecorder(stream.current, vlogRecordingVideoCodecType)
         );
-        localVideoElement.current.srcObject = currentNormalLocalStream;
+        localVideoElement.current.srcObject = normalLocalStream.current;
         localVideoElement.current.play();
         localVideoElement.current.onloadedmetadata = async () => {
           !document.pictureInPictureElement &&
@@ -49,7 +47,7 @@ export default function Vlog() {
         };
         setIsRecording(true);
       } catch (err) {
-        currentStream = currentNormalLocalStream = null;
+        stream.current = normalLocalStream.current = null;
         setIsRecording(false);
       }
     } else {
@@ -58,9 +56,9 @@ export default function Vlog() {
       if (document.pictureInPictureElement) {
         await document.exitPictureInPicture();
       }
-      currentStream && currentStream.getTracks().forEach((x) => x.stop());
-      currentNormalLocalStream &&
-        currentNormalLocalStream.getTracks().forEach((x) => x.stop());
+      stream.current && stream.current.getTracks().forEach((x) => x.stop());
+      normalLocalStream.current &&
+        normalLocalStream.current.getTracks().forEach((x) => x.stop());
     }
   };
   useEffect(() => {
@@ -77,7 +75,7 @@ export default function Vlog() {
           document.body.appendChild(a);
           a.style = "display: none";
           a.href = url;
-          a.download = "test.webm";
+          a.download = `${new Date().toISOString()}.webm`;
           a.click();
           window.URL.revokeObjectURL(url);
           setIsRecording(false);
