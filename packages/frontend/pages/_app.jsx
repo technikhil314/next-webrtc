@@ -31,14 +31,16 @@ function MyApp({ Component, pageProps }) {
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@technikhil314" />
       </Head>
-      <noscript>
-        <iframe
+      <noscript
+        dangerouslySetInnerHTML={{
+          __html: `<iframe
           src="https://www.googletagmanager.com/ns.html?id=GTM-5LL2N68"
           height="0"
           width="0"
           style="display:none;visibility:hidden"
-        ></iframe>
-      </noscript>
+        ></iframe>`,
+        }}
+      ></noscript>
       <RhinoProvider>
         <Navbar />
         <main
