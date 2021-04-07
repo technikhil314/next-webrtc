@@ -1,15 +1,15 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
+import Modal from "../components/modal";
 import { classNames } from "../helpers/classNames";
 import usePageVisibility from "../hooks/pageVisibility";
 import {
   text,
-  userMediaConstraints,
   vlogRecordingVideoCodecType,
+  userMediaConstraints,
 } from "../utils/constants";
 import { capitalize } from "../utils/helpers";
-import { useRouter } from "next/router";
-import Modal from "../components/modal";
 export default function Vlog() {
   const router = useRouter();
   const [isRecording, setIsRecording] = useState(false);
@@ -20,12 +20,14 @@ export default function Vlog() {
   const localVideoElement = useRef();
   let stream = useRef(),
     normalLocalStream = useRef();
-  useEffect(() => {
-    if (!document.pictureInPictureEnabled) {
-      setShowError(true);
-    }
-  }, []);
-
+  const resetState = () => {
+    setIsRecording(false);
+    setMediaRecorder(null);
+    setRecorderState("");
+  };
+  const onModalClose = () => {
+    router.push("/");
+  };
   const handleRecording = async () => {
     if (!isRecording) {
       try {
@@ -42,17 +44,21 @@ export default function Vlog() {
         localVideoElement.current.srcObject = normalLocalStream.current;
         localVideoElement.current.play();
         localVideoElement.current.onloadedmetadata = async () => {
-          !document.pictureInPictureElement &&
-            localVideoElement.current.requestPictureInPicture();
+          if (!document.pictureInPictureElement) {
+            await localVideoElement.current.requestPictureInPicture();
+          }
         };
         setIsRecording(true);
       } catch (err) {
         stream.current = normalLocalStream.current = null;
-        setIsRecording(false);
+        resetState();
       }
     } else {
-      mediaRecorder.state !== "inactive" && mediaRecorder.stop();
-      setIsRecording(!isRecording);
+      if (mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+      } else {
+        resetState();
+      }
       if (document.pictureInPictureElement) {
         await document.exitPictureInPicture();
       }
@@ -61,6 +67,11 @@ export default function Vlog() {
         normalLocalStream.current.getTracks().forEach((x) => x.stop());
     }
   };
+  useEffect(() => {
+    if (!document.pictureInPictureEnabled) {
+      setShowError(true);
+    }
+  }, []);
   useEffect(() => {
     if (mediaRecorder) {
       let recordedChunks = [];
@@ -78,9 +89,7 @@ export default function Vlog() {
           a.download = `${new Date().toISOString()}.webm`;
           a.click();
           window.URL.revokeObjectURL(url);
-          setIsRecording(false);
-          setMediaRecorder(null);
-          setRecorderState("");
+          resetState();
         }
       };
       setRecorderState(capitalize(mediaRecorder.state));
@@ -98,9 +107,6 @@ export default function Vlog() {
       setRecorderState(capitalize(mediaRecorder.state));
     }
   }, [isPageVisible]);
-  const onModalClose = () => {
-    router.push("/");
-  };
   const pageTitle = mediaRecorder && recorderState;
   return (
     <>
@@ -153,6 +159,7 @@ export default function Vlog() {
         <video
           muted
           playsInline
+          controls
           className="hidden"
           ref={localVideoElement}
         ></video>
