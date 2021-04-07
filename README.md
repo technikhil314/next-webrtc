@@ -11,7 +11,7 @@ If you are using mac book you can use it to do screen recording just like loom w
 
 ### Code structure
 
-1. It is a monorepo managed by npm 7
+1. It is a monorepo managed by yarn
 2. There are two packages backend and frontend
 3. Backend is just a small websocket server used for signaling
 4. Frontend is actual UI built with nextjs
@@ -27,3 +27,9 @@ If you are using mac book you can use it to do screen recording just like loom w
 
 1. You dont need to build backend
 2. You can build frontend package with `npm run build --prefix packages/frontend` command
+
+### TO DO
+
+1. Handle if someone stops screen share in recording vlog
+   - This currently stops recording
+   - Ideally it should keep on recording but change video from screen to user
