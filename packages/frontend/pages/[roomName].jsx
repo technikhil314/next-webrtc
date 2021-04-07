@@ -51,7 +51,7 @@ export default function Main() {
   return (
     <>
       <PageHead />
-      <div className="w-full container mx-auto px-4 flex justify-center items-center">
+      <div className="w-full container mx-auto px-4 flex justify-center items-center mb-4">
         <button
           type="submit"
           className="bg-red-500 flex-grow-0 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"

@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps }) {
       <RhinoProvider>
         <Navbar />
         <main
-          className="my-8 mb-6"
+          className="my-4 mb-6"
           onDrop={(event) => {
             var data = event.dataTransfer.getData("text/plain").split(",");
             let dm = document.getElementById(data[0]);

@@ -6,7 +6,7 @@ import { text } from "../utils/constants";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <nav className="bg-gray-800 text-white">
+    <nav className="bg-gray-800 sticky text-white top-0 w-full z-50">
       <div className="container mx-auto px-4 h-full">
         <div className="relative flex items-center justify-between h-full">
           <button
