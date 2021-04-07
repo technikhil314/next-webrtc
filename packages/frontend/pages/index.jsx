@@ -25,7 +25,7 @@ export default function Main() {
               <li>
                 You can record your screen along with you in the screen and
                 store the recording <br /> To record click{" "}
-                <Link href="/" passHref>
+                <Link href="/vlog" passHref>
                   <a href="/" className="text-blue-500 underline">
                     Record vlog
                   </a>
