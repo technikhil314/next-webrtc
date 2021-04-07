@@ -45,7 +45,7 @@ export const LocalVideo = ({ isVlog }) => {
   }, [localStream]);
   return isStarted ? (
     <article
-      className="z-10 absolute cursor-move right-2 bottom-2 md:right-10 md:bottom-10 rounded w-1/4 md:w-1/5 lg:w-1/6 local-video"
+      className="z-10 cursor-move rounded w-1/4 md:w-1/5 lg:w-1/6 local-video"
       id="localVideo"
       data-username="you"
       draggable

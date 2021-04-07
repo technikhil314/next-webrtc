@@ -52,6 +52,7 @@ main {
 }
 
 .local-video {
-  max-height: 200px;
-  position: absolute;
+  position: sticky;
+  top: 100%;
+  left: 100%;
 }
