@@ -1,0 +1,65 @@
+@import "../../../node_modules/modern-normalize/modern-normalize.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+  font-family: Roboto, sans-serif;
+  background-color: #fff;
+  height: 100%;
+}
+
+#__next {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 60px 1fr;
+  grid-template-areas:
+    "nav"
+    "body";
+  min-height: 100%;
+}
+
+nav {
+  grid-area: nav;
+}
+
+main {
+  grid-area: body;
+  min-height: calc(100% - 60px - 4rem);
+}
+
+.remote-video,
+.local-video {
+  position: relative;
+  &::after {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 5px 10px;
+    width: min-content;
+    background-color: black;
+    color: white;
+    border-radius: 10px 0 10px 0;
+    content: attr(data-username);
+    height: min-content;
+    line-height: 1.1em;
+    vertical-align: middle;
+    text-align: center;
+    z-index: 2;
+    text-transform: capitalize;
+  }
+}
+
+.local-video {
+  position: absolute;
+}
+
+#localVideo {
+  max-height: 200px;
+}
+
+:picture-in-picture {
+  border-radius: 50%;
+  border: 10px solid green;
+}

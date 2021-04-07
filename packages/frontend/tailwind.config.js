@@ -1,12 +1,21 @@
 module.exports = {
-  purge: [],
-  darkMode: false, // or 'media' or 'class'
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  darkMode: "class", // or 'media' or 'class'
+  purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      gridAutoRows: {
+        "350px": "350px",
+      },
+      zIndex: {
+        "-1": -1,
+      },
+      translate: {
+        "-screen": "-100vw",
+      },
+    },
   },
   variants: {
     extend: {},
   },
   plugins: [],
-}
+};

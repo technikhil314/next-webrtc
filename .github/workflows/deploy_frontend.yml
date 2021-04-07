@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - declarative-rtc
 
 jobs:
   build:
@@ -18,20 +19,14 @@ jobs:
         with:
           node-version: "15.x"
 
-      - name: Build
+      - name: Install
         run: |
-          export NEXT_PUBLIC_WEBSOCKET_URL=wss://webrtc-next-demo.herokuapp.com/
-          npm ci
-          npm install sharp --prefix packages/frontend
-          npm run build --prefix packages/frontend
-          cd packages/frontend
-          npx next export
-          cp out/index.html out/200.html
-
-      - name: Install Surge
-        run: npm install -g surge
+          yarn --frozen-lockfile
 
       - name: Deploy
-        run: |
-          cd packages/frontend
-          surge out/ https://webrtc-next-demo.surge.sh --token ${{secrets.SURGE_TOKEN}}
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-args: "--prod"
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
