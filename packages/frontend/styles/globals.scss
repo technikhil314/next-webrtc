@@ -27,6 +27,7 @@ nav {
 main {
   grid-area: body;
   min-height: calc(100% - 60px - 4rem);
+  z-index: 1;
 }
 
 .remote-video,

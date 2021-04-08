@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-grey-300 shadow sticky -z-1 bottom-0 w-full">
+    <footer className="bg-grey-300 shadow sticky bottom-0 w-full">
       <section className="container mx-auto text-center">
         Made with ❤️ using Next.js and Tailwind by{" "}
         <a
