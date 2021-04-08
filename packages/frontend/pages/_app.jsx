@@ -23,11 +23,13 @@ function MyApp({ Component, pageProps }) {
   })(window,document,'script','dataLayer','GTM-5LL2N68');`,
           }}
         ></script>
+        {/* For discord */}
         <meta
           name="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-430x495.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/brand-430x495.png`}
         />
+        {/* For browser */}
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="apple-touch-icon" sizes="57x57" href="/57x57.png" />
@@ -45,26 +47,30 @@ function MyApp({ Component, pageProps }) {
         <meta name="og:url" content={process.env.NEXT_PUBLIC_URL} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@technikhil314" />
+        {/* For telegram */}
         <meta
           name="og:image"
-          content={`${process.env.NEXT_PUBLIC_URL}/brand-128x128.png`}
-          key={`${process.env.NEXT_PUBLIC_URL}/brand-128x128.png`}
+          content={`${process.env.NEXT_PUBLIC_URL}/128x128.png`}
+          key={`${process.env.NEXT_PUBLIC_URL}/128x128.png`}
         />
         <meta
           name="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-192x192.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/brand-192x192.png`}
         />
+        {/* for facebook */}
         <meta
           name="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-200x200.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/brand-200x200.png`}
         />
+        {/* for whatsapp */}
         <meta
           name="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
         />
+        {/* for linkedin 800x800 ideal is 1200x695 */}
         <meta
           name="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-800x800.png`}
@@ -76,6 +82,7 @@ function MyApp({ Component, pageProps }) {
           content={`${process.env.NEXT_PUBLIC_URL}/brand-800x800.png`}
         ></meta>
         <meta name="og:image:alt" content={text.titleDesc} />
+        {/* for twitter */}
         <meta
           name="twitter:image"
           content={`${process.env.NEXT_PUBLIC_URL}/128x128.png`}
