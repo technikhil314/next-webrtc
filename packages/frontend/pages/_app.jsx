@@ -23,6 +23,11 @@ function MyApp({ Component, pageProps }) {
   })(window,document,'script','dataLayer','GTM-5LL2N68');`,
           }}
         ></script>
+        <meta
+          name="og:image"
+          content={`${process.env.NEXT_PUBLIC_URL}/brand-430x495.png`}
+          key={`${process.env.NEXT_PUBLIC_URL}/brand-430x495.png`}
+        />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="apple-touch-icon" sizes="57x57" href="/57x57.png" />
@@ -54,11 +59,6 @@ function MyApp({ Component, pageProps }) {
           name="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-200x200.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/brand-200x200.png`}
-        />
-        <meta
-          name="og:image"
-          content={`${process.env.NEXT_PUBLIC_URL}/brand-430x495.png`}
-          key={`${process.env.NEXT_PUBLIC_URL}/brand-430x495.png`}
         />
         <meta
           name="og:image"
