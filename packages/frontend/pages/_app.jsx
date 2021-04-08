@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }) {
         <link rel="apple-touch-icon" sizes="144x144" href="/144x144.png" />
         <link rel="apple-touch-icon" sizes="152x152" href="/152x152.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/180x180.png" />
-        <meta property="og:type" content="website" />
+        <meta name="og:type" content="website" />
         <meta name="description" content={text.seoTagLine} />
         <meta name="og:description" content={text.seoTagLine} />
         <meta name="twitter:description" content={text.seoTagLine} />
