@@ -78,7 +78,7 @@ function MyApp({ Component, pageProps }) {
         <meta
           name="image"
           property="og:image"
-          content={`${process.env.NEXT_PUBLIC_URL}/brand-800x800.png`}
+          content={`${process.env.NEXT_PUBLIC_URL}/brand-1200x600.png`}
         ></meta>
         <meta name="og:image:alt" content={text.titleDesc} />
         {/* for twitter */}
