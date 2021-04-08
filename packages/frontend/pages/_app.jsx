@@ -23,6 +23,16 @@ function MyApp({ Component, pageProps }) {
   })(window,document,'script','dataLayer','GTM-5LL2N68');`,
           }}
         ></script>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="/57x57.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="/72x72.png" />
+        <link rel="apple-touch-icon" sizes="76x76" href="/76x76.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="/114x114.png" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/120x120.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="/144x144.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/152x152.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/180x180.png" />
         <meta property="og:type" content="website" />
         <meta name="description" content={text.seoTagLine} />
         <meta name="og:description" content={text.seoTagLine} />
@@ -30,6 +40,30 @@ function MyApp({ Component, pageProps }) {
         <meta name="og:url" content={process.env.NEXT_PUBLIC_URL} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@technikhil314" />
+        <meta
+          name="og:image"
+          content={`${process.env.NEXT_PUBLIC_URL}/brand-128x128.png`}
+          key={`${process.env.NEXT_PUBLIC_URL}/brand-128x128.png`}
+        />
+        <meta
+          name="og:image"
+          content={`${process.env.NEXT_PUBLIC_URL}/brand-192x192.png`}
+          key={`${process.env.NEXT_PUBLIC_URL}/brand-192x192.png`}
+        />
+        <meta
+          name="og:image"
+          content={`${process.env.NEXT_PUBLIC_URL}/brand-200x200.png`}
+          key={`${process.env.NEXT_PUBLIC_URL}/brand-200x200.png`}
+        />
+        <meta
+          name="og:image"
+          content={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
+          key={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
+        />
+        <meta
+          name="twitter:image"
+          content={`${process.env.NEXT_PUBLIC_URL}/128x128.png`}
+        />
       </Head>
       <noscript
         dangerouslySetInnerHTML={{
