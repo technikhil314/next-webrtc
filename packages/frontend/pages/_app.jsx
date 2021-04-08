@@ -61,6 +61,12 @@ function MyApp({ Component, pageProps }) {
           key={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
         />
         <meta
+          name="og:image"
+          content={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
+          key={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
+        />
+        <meta name="og:image:alt" content={text.titleDesc} />
+        <meta
           name="twitter:image"
           content={`${process.env.NEXT_PUBLIC_URL}/128x128.png`}
         />
