@@ -57,14 +57,24 @@ function MyApp({ Component, pageProps }) {
         />
         <meta
           name="og:image"
-          content={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
-          key={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
+          content={`${process.env.NEXT_PUBLIC_URL}/brand-430x495.png`}
+          key={`${process.env.NEXT_PUBLIC_URL}/brand-430x495.png`}
         />
         <meta
           name="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
         />
+        <meta
+          name="og:image"
+          content={`${process.env.NEXT_PUBLIC_URL}/brand-800x800.png`}
+          key={`${process.env.NEXT_PUBLIC_URL}/brand-800x800.png`}
+        />
+        <meta
+          name="image"
+          property="og:image"
+          content={`${process.env.NEXT_PUBLIC_URL}/brand-800x800.png`}
+        ></meta>
         <meta name="og:image:alt" content={text.titleDesc} />
         <meta
           name="twitter:image"
