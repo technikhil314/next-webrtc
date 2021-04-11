@@ -14,6 +14,10 @@ function MyApp({ Component, pageProps }) {
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
+        <meta
+          name="google-site-verification"
+          content="y76XmjuKHC8FEC0Mzf7SbK1235K4KzHHAHOVZfvLXwk"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
