@@ -57,3 +57,14 @@ main {
   top: 100%;
   left: 100%;
 }
+
+.ribbon {
+  top: 108px;
+  transform: rotate(45deg) translateY(-75px);
+}
+
+.footer {
+  .uppercase {
+    font-variant: small-caps;
+  }
+}
