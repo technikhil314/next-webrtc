@@ -67,6 +67,12 @@ export default function Navbar() {
             <div className="h-full flex items-center hover:bg-gray-700 hover:text-white">
               <h1 className="text-xl font-bold text-white flex-shrink-0 flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-2">
                 <a href="/" className="h-full">
+                  <img
+                    src="/57x57-no-bg.png"
+                    width={30}
+                    alt=""
+                    className="inline mr-3"
+                  />
                   {text.appName}
                 </a>
               </h1>
