@@ -79,7 +79,7 @@ export default function Navbar() {
               })}
             >
               <div className="bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white flex h-full w-full items-center md:w-auto">
-                <Link href="/vlog" passHref>
+                <Link href="/" passHref>
                   <a
                     href="/"
                     className="inline-block mx-auto my-4 text-md font-semibold bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white md:my-0 md:mx-4 focus:bg-gray-700 focus:outline-none focus:shadow-outline"
@@ -89,9 +89,9 @@ export default function Navbar() {
                 </Link>
               </div>
               <div className="bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white flex h-full w-full items-center md:w-auto">
-                <Link href="/" passHref>
+                <Link href="/meeting" passHref>
                   <a
-                    href="/"
+                    href="/meeting"
                     className="inline-block mx-auto my-4 text-md font-semibold bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white md:my-0 md:mx-4 focus:bg-gray-700 focus:outline-none focus:shadow-outline"
                   >
                     Create Meeting

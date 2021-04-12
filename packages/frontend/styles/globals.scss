@@ -26,7 +26,7 @@ nav {
 
 main {
   grid-area: body;
-  min-height: calc(100% - 60px - 4rem);
+  min-height: calc(100vh - 60px - 2rem);
   z-index: 1;
 }
 
