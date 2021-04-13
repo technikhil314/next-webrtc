@@ -10,6 +10,12 @@ import {
   userMediaConstraints,
 } from "../utils/constants";
 import { capitalize } from "../utils/helpers";
+
+export async function getStaticProps() {
+  return {
+    props: {},
+  };
+}
 export default function Vlog() {
   const router = useRouter();
   const [isRecording, setIsRecording] = useState(false);

@@ -2,6 +2,11 @@ import Head from "next/head";
 import RoomDetails from "../components/roomDetails";
 import { text } from "../utils/constants";
 const pageTitle = `${text.appName} | ${text.titleDesc}`;
+export async function getStaticProps() {
+  return {
+    props: {},
+  };
+}
 export default function Main() {
   return (
     <>
