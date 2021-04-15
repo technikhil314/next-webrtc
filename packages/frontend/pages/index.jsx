@@ -60,6 +60,9 @@ export default function Vlog() {
         resetState();
       }
     } else {
+      stream.current && stream.current.getTracks().forEach((x) => x.stop());
+      normalLocalStream.current &&
+        normalLocalStream.current.getTracks().forEach((x) => x.stop());
       if (mediaRecorder.state !== "inactive") {
         mediaRecorder.stop();
       } else {
@@ -68,9 +71,6 @@ export default function Vlog() {
       if (document.pictureInPictureElement) {
         await document.exitPictureInPicture();
       }
-      stream.current && stream.current.getTracks().forEach((x) => x.stop());
-      normalLocalStream.current &&
-        normalLocalStream.current.getTracks().forEach((x) => x.stop());
     }
   };
   useEffect(() => {
@@ -81,23 +81,25 @@ export default function Vlog() {
   useEffect(() => {
     if (mediaRecorder) {
       let recordedChunks = [];
-      mediaRecorder.ondataavailable = (event) => {
+      mediaRecorder.addEventListener("dataavailable", (event) => {
         if (event.data.size > 0) {
           recordedChunks.push(event.data);
-          let blob = new Blob(recordedChunks, {
-            type: "video/webm",
-          });
-          let url = URL.createObjectURL(blob);
-          let a = document.createElement("a");
-          document.body.appendChild(a);
-          a.style = "display: none";
-          a.href = url;
-          a.download = `${new Date().toISOString()}.webm`;
-          a.click();
-          window.URL.revokeObjectURL(url);
-          resetState();
         }
-      };
+      });
+      mediaRecorder.addEventListener("stop", () => {
+        let blob = new Blob(recordedChunks, {
+          type: "video/webm",
+        });
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        a.href = url;
+        a.download = `${new Date().toISOString()}.webm`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        resetState();
+      });
       setRecorderState(capitalize(mediaRecorder.state));
     }
   }, [mediaRecorder]);
