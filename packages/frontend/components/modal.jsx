@@ -12,14 +12,14 @@ export default function Modal({ title, children, onClose = () => {} }) {
     onClose();
   };
   return (
-    <section className="fixed inset-0 w-screen h-screen flex items-center">
-      <div className="fixed inset-0 filter blur-lg backdrop-filter backdrop-blur-lg bg-black bg-opacity-25"></div>
+    <section className="fixed inset-0 flex items-center w-screen h-screen">
+      <div className="fixed inset-0 bg-black bg-opacity-25 filter blur-lg backdrop-filter backdrop-blur-lg"></div>
       <dialog
         {...dialogProp}
-        className="w-10/12 md:w-1/4 shadow-xl relative pt-10 rounded-md bg"
+        className="relative w-10/12 pt-10 rounded-md shadow-xl md:w-1/4 bg"
       >
         <h3
-          className="w-10/12 text-lg font-semibold absolute py-4 top-0"
+          className="absolute top-0 w-10/12 py-4 text-lg font-semibold"
           title={title}
         >
           {title}

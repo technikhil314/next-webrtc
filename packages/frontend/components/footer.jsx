@@ -2,11 +2,11 @@ import ExternalLink from "./externalLink";
 
 export default function Footer() {
   return (
-    <footer className="footer text-md bg-gray-300 shadow-md">
-      <div className="container mx-auto p-4">
+    <footer className="bg-gray-300 shadow-md footer text-md">
+      <div className="container p-4 mx-auto">
         <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:flex-wrap">
           <section className="flex flex-col gap-2 text-gray-900">
-            <h3 className="text-lg font-bold text-gray-700 uppercase w-full">
+            <h3 className="w-full text-lg font-bold text-gray-700 uppercase">
               Follow me
             </h3>
             <ExternalLink
@@ -101,7 +101,7 @@ export default function Footer() {
             </ExternalLink>
           </section>
           <section className="flex flex-col gap-2">
-            <h3 className="text-lg font-bold text-gray-700 uppercase w-full">
+            <h3 className="w-full text-lg font-bold text-gray-700 uppercase">
               My work
             </h3>
             <span>
@@ -130,7 +130,7 @@ export default function Footer() {
             </span>
           </section>
           <section className="flex flex-col gap-2">
-            <h3 className="text-lg font-bold text-gray-700 uppercase w-full">
+            <h3 className="w-full text-lg font-bold text-gray-700 uppercase">
               About me
             </h3>
             <span>
@@ -159,7 +159,7 @@ export default function Footer() {
             </span>
           </section>
           <section className="flex flex-col gap-2">
-            <h3 className="text-lg font-bold text-gray-700 uppercase w-full">
+            <h3 className="w-full text-lg font-bold text-gray-700 uppercase">
               Sponsor my projects
             </h3>
             <span>
@@ -182,7 +182,7 @@ export default function Footer() {
         </div>
       </div>
       <section className="py-4 mt-2 bg-gray-50">
-        <div className="container text-center mx-auto">
+        <div className="container mx-auto text-center">
           Made with ❤️ using Next.js and Tailwind by{" "}
           <ExternalLink
             href="https://technikhil314.netlify.app/"

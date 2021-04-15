@@ -32,14 +32,14 @@ export default function Main() {
     return (
       <>
         <PageHead />
-        <section className="w-full container mx-auto px-4 grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 min-h-full">
-          <div className="flex flex-col justify-around md:justify-center items-center">
+        <section className="container grid w-full min-h-full grid-cols-1 grid-rows-2 px-4 mx-auto md:grid-rows-1 md:grid-cols-2">
+          <div className="flex flex-col items-center justify-around md:justify-center">
             <h1 className="text-2xl font-bold text-center md:mb-8">
               An open source alternative to video conferencing
             </h1>
             <UserDetails />
           </div>
-          <article className="w-full md:w-2/3 text-center mx-auto flex flex-col justify-center min-h-full">
+          <article className="flex flex-col justify-center w-full min-h-full mx-auto text-center md:w-2/3">
             <h1 className="text-2xl font-bold text-center md:mb-8">
               Hello, This is an attempt to respect your privacy.
             </h1>
@@ -51,10 +51,10 @@ export default function Main() {
   return (
     <>
       <PageHead />
-      <div className="w-full container mx-auto px-4 flex justify-center items-center mb-4">
+      <div className="container flex items-center justify-center w-full px-4 mx-auto mb-4">
         <button
           type="submit"
-          className="bg-red-500 flex-grow-0 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
+          className="flex-grow-0 px-4 py-2 font-bold text-white transition bg-red-500 rounded hover:bg-red-700"
           onClick={stop}
         >
           Stop

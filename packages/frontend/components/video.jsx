@@ -10,11 +10,11 @@ export default function Video({ peer, userName }) {
   }, [peer]);
   return peer && peer.stream ? (
     <article
-      className="remote-video w-full rounded-lg shadow-md h-full bg-black"
+      className="w-full h-full bg-black rounded-lg shadow-md remote-video"
       data-username={userName}
     >
       <video
-        className="w-full rounded-lg shadow-md h-full bg-black"
+        className="w-full h-full bg-black rounded-lg shadow-md"
         playsInline
         ref={vRef}
         controls

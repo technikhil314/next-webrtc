@@ -119,28 +119,28 @@ export default function Vlog() {
       <Head>
         <title>{`${pageTitle || "Vlog"} | ${text.appName}`}</title>
       </Head>
-      <section className="w-full container mx-auto px-4 flex flex-wrap items-center justify-center h-full">
+      <section className="container flex flex-wrap items-center justify-center w-full h-full px-4 mx-auto">
         {showError && (
           <Modal title="Oops..." onClose={onModalClose}>
             <p>
-              Opps.... You browser does not support required features to record
+              Opps.... Your browser does not support required features to record
               vlog. We recommend using latest version of chrome.
             </p>
           </Modal>
         )}
         <div className="w-full text-center">
           <div className="w-full text-left md:text-center">
-            <h3 className="text-lg font-semibold mb-1">
+            <h3 className="mb-1 text-lg font-semibold">
               What all can you do here?
             </h3>
-            <ul className="text-md mx-auto w-11/12 text-left md:text-center md:w-10/12 lg:w-9/12 flex flex-col gap-1 mb-5">
+            <ul className="flex flex-col w-11/12 gap-1 mx-auto mb-5 text-left text-md md:text-center md:w-10/12 lg:w-9/12">
               <li>
                 You can record your screen along with you in the screen and
                 store the recording <br /> To record click button below.
               </li>
             </ul>
           </div>
-          <h3 className="text-md font-semibold mb-3">
+          <h3 className="mb-3 font-semibold text-md">
             Read this before clicking on the button below
           </h3>
           <ul className="text-md mx-auto w-10/12 text-left list-outside list-decimal md:list-inside md:text-center md:w-8/12 lg:w-5/12 flex flex-col gap-1.5">
@@ -177,7 +177,7 @@ export default function Vlog() {
           muted
           playsInline
           controls
-          className="hidden"
+          className="hidden transform -scale-x-1"
           ref={localVideoElement}
         ></video>
       </section>

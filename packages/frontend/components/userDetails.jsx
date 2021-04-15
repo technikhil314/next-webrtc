@@ -22,20 +22,20 @@ export default function UserDetails() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full lg:w-1/2 text-center mx-auto flex flex-col justify-center"
+      className="flex flex-col justify-center w-full mx-auto text-center lg:w-1/2"
     >
       <input
         ref={input}
         autoFocus
         type="text"
         name="userName"
-        className="w-full px-3 py-2 border border-gray-500 rounded-md mb-4 shadow-sm"
+        className="w-full px-3 py-2 mb-4 border border-gray-500 rounded-md shadow-sm"
         placeholder="Enter your name"
         required
       />
       <button
         type="submit"
-        className="bg-blue-500 flex-grow-0 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition"
+        className="flex-grow-0 px-4 py-2 font-bold text-white transition bg-blue-500 rounded hover:bg-blue-700"
       >
         Start
       </button>

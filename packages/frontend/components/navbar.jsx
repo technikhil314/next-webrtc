@@ -8,7 +8,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <p className="px-4 py-1 bg-gray-900 text-white text-center fixed z-50 right-0 w-60 transform rotate-45 ribbon">
+      <p className="fixed right-0 z-50 px-4 py-1 text-center text-white transform rotate-45 bg-gray-900 w-60 ribbon">
         <ExternalLink
           className="text-gray-200 hover:text-gray-300"
           href="https://github.com/technikhil314/next-webrtc"
@@ -16,12 +16,12 @@ export default function Navbar() {
           Fork me on GitHub
         </ExternalLink>
       </p>
-      <nav className="bg-gray-800 sticky text-white top-0 w-full z-40">
-        <div className="container mx-auto px-4 h-full">
+      <nav className="sticky top-0 z-40 w-full text-white bg-gray-800">
+        <div className="container h-full px-4 mx-auto">
           <div className="relative flex items-center justify-between h-full">
             <button
               type="button"
-              className="md:hidden inline-flex items-center justify-center rounded-md text-gray-400 active:hover:text-white active:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              className="inline-flex items-center justify-center text-gray-400 rounded-md md:hidden active:hover:text-white active:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
               aria-controls="mobile-menu"
               aria-expanded="false"
               onClick={() => setIsOpen(!isOpen)}
@@ -64,8 +64,8 @@ export default function Navbar() {
                 />
               </svg>
             </button>
-            <div className="h-full flex items-center hover:bg-gray-700 hover:text-white">
-              <h1 className="text-xl font-bold text-white flex-shrink-0 flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-2">
+            <div className="flex items-center h-full hover:bg-gray-700 hover:text-white">
+              <h1 className="flex items-center flex-shrink-0 px-2 text-xl font-bold text-white text-gray-300 hover:bg-gray-700 hover:text-white">
                 <a href="/" className="h-full">
                   <img
                     src="/57x57-no-bg.png"
@@ -84,30 +84,30 @@ export default function Navbar() {
                 "-translate-y-screen": !isOpen,
               })}
             >
-              <div className="bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white flex h-full w-full items-center md:w-auto">
+              <div className="flex items-center w-full h-full text-gray-300 bg-transparent hover:bg-gray-700 hover:text-white md:w-auto">
                 <Link href="/" passHref>
                   <a
                     href="/"
-                    className="inline-block mx-auto my-4 text-md font-semibold bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white md:my-0 md:mx-4 focus:bg-gray-700 focus:outline-none focus:shadow-outline"
+                    className="inline-block mx-auto my-4 font-semibold text-gray-300 bg-transparent text-md hover:bg-gray-700 hover:text-white md:my-0 md:mx-4 focus:bg-gray-700 focus:outline-none focus:shadow-outline"
                   >
                     Record vlog
                   </a>
                 </Link>
               </div>
-              <div className="bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white flex h-full w-full items-center md:w-auto">
+              <div className="flex items-center w-full h-full text-gray-300 bg-transparent hover:bg-gray-700 hover:text-white md:w-auto">
                 <Link href="/meeting" passHref>
                   <a
                     href="/meeting"
-                    className="inline-block mx-auto my-4 text-md font-semibold bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white md:my-0 md:mx-4 focus:bg-gray-700 focus:outline-none focus:shadow-outline"
+                    className="inline-block mx-auto my-4 font-semibold text-gray-300 bg-transparent text-md hover:bg-gray-700 hover:text-white md:my-0 md:mx-4 focus:bg-gray-700 focus:outline-none focus:shadow-outline"
                   >
                     Create Meeting
                   </a>
                 </Link>
               </div>
             </div>
-            <div className="h-full flex items-center">
+            <div className="flex items-center h-full">
               <ExternalLink
-                className="inline-block h-full flex items-center text-sm font-semibold bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-gray-700 focus:text-white focus:outline-none focus:shadow-outline px-3"
+                className="flex items-center inline-block h-full px-3 text-sm font-semibold text-gray-300 bg-transparent hover:bg-gray-700 hover:text-white focus:bg-gray-700 focus:text-white focus:outline-none focus:shadow-outline"
                 href="https://github.com/technikhil314/next-webrtc"
               >
                 <svg

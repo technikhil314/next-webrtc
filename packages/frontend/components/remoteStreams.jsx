@@ -192,7 +192,7 @@ export const RemoteStreams = ({ myUserId, socket }) => {
     }
   }, [localStream]);
   return (
-    <section className="container mx-auto grid grid-cols-1 auto-rows-350px md:grid-cols-2 lg:grid-cols-3 gap-3">
+    <section className="container grid grid-cols-1 gap-3 mx-auto auto-rows-350px md:grid-cols-2 lg:grid-cols-3">
       <RemoteVideos peers={peers} userNames={userNames} />
     </section>
   );
