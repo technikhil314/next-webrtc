@@ -38,7 +38,11 @@ export default function Vlog() {
     if (!isRecording) {
       try {
         stream.current = await navigator.mediaDevices.getDisplayMedia({
-          video: true,
+          video: {
+            width: 1280,
+            height: 720,
+            sampleRate: 72000,
+          },
         });
         normalLocalStream.current = await navigator.mediaDevices.getUserMedia(
           userMediaConstraints
