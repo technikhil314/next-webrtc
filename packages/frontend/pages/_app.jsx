@@ -30,6 +30,7 @@ function MyApp({ Component, pageProps }) {
         {/* For discord */}
         <meta
           name="og:image"
+          property="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-430x495.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/brand-430x495.png`}
         />
@@ -43,38 +44,60 @@ function MyApp({ Component, pageProps }) {
         <link rel="apple-touch-icon" sizes="144x144" href="/144x144.png" />
         <link rel="apple-touch-icon" sizes="152x152" href="/152x152.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/180x180.png" />
-        <meta name="og:type" content="website" />
+        <meta name="og:type" property="og:type" content="website" />
         <meta name="description" content={text.seoTagLine} />
-        <meta name="og:description" content={text.seoTagLine} />
+        <meta
+          name="og:description"
+          property="og:description"
+          content={text.seoTagLine}
+        />
         <meta name="twitter:description" content={text.seoTagLine} />
-        <meta name="og:url" content={process.env.NEXT_PUBLIC_URL} />
+        <meta
+          name="og:url"
+          property="og:url"
+          content={process.env.NEXT_PUBLIC_URL}
+        />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@technikhil314" />
+        <meta
+          property="og:title"
+          name="og:title"
+          content={`${text.appName} | ${text.titleDesc}`}
+        />
+        <meta
+          name="twitter:title"
+          content={`${text.appName} | ${text.titleDesc}`}
+        />
         {/* For telegram */}
         <meta
+          property="og:image"
           name="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/128x128.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/128x128.png`}
         />
         <meta
+          property="og:image"
           name="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-192x192.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/brand-192x192.png`}
         />
         {/* for facebook */}
         <meta
+          property="og:image"
           name="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-200x200.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/brand-200x200.png`}
         />
         {/* for whatsapp */}
         <meta
+          property="og:image"
           name="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/brand-512x512.png`}
         />
         {/* for linkedin 800x800 ideal is 1200x695 */}
         <meta
+          property="og:image"
           name="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-800x800.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/brand-800x800.png`}
@@ -84,7 +107,11 @@ function MyApp({ Component, pageProps }) {
           property="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/brand-1200x600.png`}
         ></meta>
-        <meta name="og:image:alt" content={text.titleDesc} />
+        <meta
+          property="og:image:alt"
+          name="og:image:alt"
+          content={text.titleDesc}
+        />
         {/* for twitter */}
         <meta
           name="twitter:image"
