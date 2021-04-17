@@ -1,14 +1,9 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Modal from "../components/modal";
 import { classNames } from "../helpers/classNames";
 import usePageVisibility from "../hooks/pageVisibility";
-import {
-  text,
-  vlogRecordingVideoCodecType,
-  userMediaConstraints,
-} from "../utils/constants";
+import { text, userMediaConstraints } from "../utils/constants";
 import { capitalize } from "../utils/helpers";
 
 export async function getStaticProps() {
@@ -17,53 +12,60 @@ export async function getStaticProps() {
   };
 }
 export default function Vlog() {
-  const router = useRouter();
   const [isRecording, setIsRecording] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [showError, setShowError] = useState();
   const [mediaRecorder, setMediaRecorder] = useState();
   const [recorderState, setRecorderState] = useState();
   const isPageVisible = usePageVisibility();
   const localVideoElement = useRef();
+  const isPiPSupported = useRef(true);
   let stream = useRef(),
     normalLocalStream = useRef();
   const resetState = () => {
     setIsRecording(false);
     setMediaRecorder(null);
     setRecorderState("");
+    setIsInitialized(false);
   };
   const onModalClose = () => {
-    router.push("/meeting");
+    setShowError(false);
   };
-  const handleRecording = async () => {
-    if (!isRecording) {
+  const initialize = async () => {
+    if (!isInitialized) {
       try {
         stream.current = await navigator.mediaDevices.getDisplayMedia({
           video: {
-            width: 1280,
-            height: 720,
-            sampleRate: 72000,
+            width: 1920,
+            height: 1080,
+            displaySurface: {
+              exact: "monitor",
+            },
           },
         });
-        normalLocalStream.current = await navigator.mediaDevices.getUserMedia(
-          userMediaConstraints
-        );
-        stream.current.addTrack(normalLocalStream.current.getAudioTracks()[0]);
-        setMediaRecorder(
-          new MediaRecorder(stream.current, vlogRecordingVideoCodecType)
-        );
+        normalLocalStream.current = await navigator.mediaDevices.getUserMedia({
+          ...userMediaConstraints,
+          video: true,
+        });
         localVideoElement.current.srcObject = normalLocalStream.current;
         localVideoElement.current.play();
-        localVideoElement.current.onloadedmetadata = async () => {
-          if (!document.pictureInPictureElement) {
-            await localVideoElement.current.requestPictureInPicture();
-          }
-        };
-        setIsRecording(true);
+        setIsInitialized(true);
       } catch (err) {
         stream.current = normalLocalStream.current = null;
         resetState();
       }
-    } else {
+    }
+  };
+  const handleRecording = async () => {
+    if (isInitialized && !isRecording) {
+      if (isPiPSupported.current) {
+        await localVideoElement.current.requestPictureInPicture();
+      }
+      stream.current.addTrack(normalLocalStream.current.getAudioTracks()[0]);
+      const mediaRec = new MediaRecorder(stream.current);
+      setMediaRecorder(mediaRec);
+      setIsRecording(true);
+    } else if (isRecording && isInitialized) {
       stream.current && stream.current.getTracks().forEach((x) => x.stop());
       normalLocalStream.current &&
         normalLocalStream.current.getTracks().forEach((x) => x.stop());
@@ -80,6 +82,7 @@ export default function Vlog() {
   useEffect(() => {
     if (!document.pictureInPictureEnabled) {
       setShowError(true);
+      isPiPSupported.current = false;
     }
   }, []);
   useEffect(() => {
@@ -112,9 +115,9 @@ export default function Vlog() {
       if (!isPageVisible && mediaRecorder.state === "inactive") {
         mediaRecorder.start();
       } else if (mediaRecorder.state === "recording") {
-        mediaRecorder.pause();
+        mediaRecorder.pause && mediaRecorder.pause();
       } else if (mediaRecorder.state === "paused") {
-        mediaRecorder.resume();
+        mediaRecorder.resume && mediaRecorder.resume();
       }
       setRecorderState(capitalize(mediaRecorder.state));
     }
@@ -130,7 +133,11 @@ export default function Vlog() {
           <Modal title="Oops..." onClose={onModalClose}>
             <p>
               Opps.... Your browser does not support required features to record
-              vlog. We recommend using latest version of chrome.
+              vlog. <br />{" "}
+              <h3 className="text-lg font-bold">
+                But don{`'`}t worry all you need to do is put the video in
+                picture in picture mode.
+              </h3>
             </p>
           </Modal>
         )}
@@ -170,9 +177,20 @@ export default function Vlog() {
           <button
             type="submit"
             className={`${classNames({
+              "bg-green-500 hover:bg-green-700 flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full md:w-1/4 lg:w-1/6 mt-8": true,
+              hidden: isInitialized,
+            })}`}
+            onClick={initialize}
+          >
+            Initialize
+          </button>
+          <button
+            type="submit"
+            className={`${classNames({
               "flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full md:w-1/4 lg:w-1/6 mt-8": true,
               "bg-green-500 hover:bg-green-700": !isRecording,
               "bg-red-500 hover:bg-red-700": isRecording,
+              hidden: !isInitialized,
             })}`}
             onClick={handleRecording}
           >
@@ -183,7 +201,11 @@ export default function Vlog() {
           muted
           playsInline
           controls
-          className="hidden transform -scale-x-1"
+          width={200}
+          className={classNames({
+            "transform -scale-x-1": recorderState,
+            "opacity-0": isPiPSupported.current,
+          })}
           ref={localVideoElement}
         ></video>
       </section>
