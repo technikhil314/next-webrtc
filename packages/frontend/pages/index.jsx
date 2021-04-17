@@ -142,6 +142,10 @@ export default function Vlog() {
           </Modal>
         )}
         <div className="w-full text-center">
+          <h1 className="text-lg font-bold">
+            An in browser video recording software for developers to create live
+            coding videos and share their knowledge
+          </h1>
           <div className="w-full text-left md:text-center">
             <h3 className="mb-1 text-lg font-semibold">
               What all can you do here?
