@@ -67,6 +67,7 @@ module.exports = {
   },
   globals: {
     globalThis: true,
+    bodyPix: true,
   },
   plugins: ["react", "react-hooks", "jsx-a11y", "import"],
   overrides: [

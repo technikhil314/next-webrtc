@@ -6,6 +6,7 @@ import usePageVisibility from "../hooks/pageVisibility";
 import { text, userMediaConstraints } from "../utils/constants";
 import { capitalize } from "../utils/helpers";
 
+let done = false;
 export async function getStaticProps() {
   return {
     props: {},
@@ -20,6 +21,8 @@ export default function Vlog() {
   const isPageVisible = usePageVisibility();
   const localVideoElement = useRef();
   const isPiPSupported = useRef(true);
+  const canvasRef = useRef();
+  const displayVideoElement = useRef();
   let stream = useRef(),
     normalLocalStream = useRef();
   const resetState = () => {
@@ -31,6 +34,67 @@ export default function Vlog() {
   const onModalClose = () => {
     setShowError(false);
   };
+  const loadBodyPix = async () => {
+    const options = {
+      multiplier: 0.75,
+      stride: 32,
+      quantBytes: 4,
+    };
+    const net = await bodyPix.load(options);
+    return net;
+  };
+
+  const blurVideo = async ({
+    backgroundBlurAmount,
+    edgeBlurAmount,
+    flipHorizontal,
+    net,
+  }) => {
+    const segmentation = await net.segmentPerson(localVideoElement.current);
+    bodyPix.drawBokehEffect(
+      canvasRef.current,
+      localVideoElement.current,
+      segmentation,
+      backgroundBlurAmount,
+      edgeBlurAmount,
+      flipHorizontal
+    );
+    if (!done) {
+      displayVideoElement.current.srcObject = canvasRef.current.captureStream(
+        60
+      );
+      displayVideoElement.current.addEventListener("loadedmetadata", () => {
+        displayVideoElement.current.play();
+        displayVideoElement.current.requestPictureInPicture();
+      });
+      done = true;
+    }
+    requestAnimationFrame(() =>
+      blurVideo({
+        backgroundBlurAmount,
+        edgeBlurAmount,
+        flipHorizontal,
+        net,
+      })
+    );
+  };
+
+  useEffect(async () => {
+    const backgroundBlurAmount = 6;
+    const edgeBlurAmount = 2;
+    const flipHorizontal = true;
+    if (isRecording) {
+      const net = await loadBodyPix();
+      requestAnimationFrame(async () => {
+        blurVideo({
+          backgroundBlurAmount,
+          edgeBlurAmount,
+          flipHorizontal,
+          net,
+        });
+      });
+    }
+  }, [isRecording]);
   const initialize = async () => {
     if (!isInitialized) {
       try {
@@ -58,9 +122,9 @@ export default function Vlog() {
   };
   const handleRecording = async () => {
     if (isInitialized && !isRecording) {
-      if (isPiPSupported.current) {
-        await localVideoElement.current.requestPictureInPicture();
-      }
+      // if (isPiPSupported.current) {
+      //   await localVideoElement.current.requestPictureInPicture();
+      // }
       stream.current.addTrack(normalLocalStream.current.getAudioTracks()[0]);
       const mediaRec = new MediaRecorder(stream.current);
       setMediaRecorder(mediaRec);
@@ -122,11 +186,20 @@ export default function Vlog() {
       setRecorderState(capitalize(mediaRecorder.state));
     }
   }, [isPageVisible]);
+
   const pageTitle = mediaRecorder && recorderState;
   return (
     <>
       <Head>
         <title>{`${pageTitle || "Vlog"} | ${text.appName}`}</title>
+        <script
+          src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.2"
+          async
+        ></script>
+        <script
+          src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.0"
+          defer
+        ></script>
       </Head>
       <section className="container flex flex-wrap items-center justify-center w-full h-full px-4 mx-auto">
         {showError && (
@@ -142,6 +215,7 @@ export default function Vlog() {
           </Modal>
         )}
         <div className="w-full text-center">
+          <canvas ref={canvasRef} className="hidden"></canvas>
           <h1 className="text-lg font-bold">
             An in browser video recording software for developers to create live
             coding videos and share their knowledge
@@ -205,12 +279,22 @@ export default function Vlog() {
           muted
           playsInline
           controls
+          height={150}
+          width={200}
+          className="hidden"
+          ref={localVideoElement}
+        ></video>
+        <video
+          muted
+          playsInline
+          controls
           width={200}
           className={classNames({
             "transform -scale-x-1": recorderState,
             "opacity-0": isPiPSupported.current,
+            hidden: true,
           })}
-          ref={localVideoElement}
+          ref={displayVideoElement}
         ></video>
       </section>
     </>
