@@ -192,14 +192,8 @@ export default function Vlog() {
     <>
       <Head>
         <title>{`${pageTitle || "Vlog"} | ${text.appName}`}</title>
-        <script
-          src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.2"
-          async
-        ></script>
-        <script
-          src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.0"
-          defer
-        ></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.0"></script>
       </Head>
       <section className="container flex flex-wrap items-center justify-center w-full h-full px-4 mx-auto">
         {showError && (
