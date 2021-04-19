@@ -95,47 +95,69 @@ export default function Vlog() {
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.2"></script>
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.0"></script>
       </Head>
-      <section className="container flex flex-wrap items-center justify-center w-full h-full px-4 mx-auto">
+      <section className="container flex flex-wrap items-center content-center justify-center w-full h-full px-4 mx-auto">
         {showError && (
           <Modal title="Oops..." onClose={onModalClose}>
             <p>Opps.... Your browser does not support required features to record vlog.</p>
           </Modal>
         )}
-        <div className="w-full text-center">
-          <h1 className="text-lg font-bold">
-            An in browser video recording software for developers to create live coding videos and share their knowledge
-          </h1>
+        <h1 className="w-11/12 mb-10 text-3xl font-bold text-center lg:w-8/12">
+          An in browser video recording software for developers to create live coding videos and share their knowledge
+        </h1>
+        <div
+          className={classNames({
+            "w-1/2": isInitialized,
+            "w-full": !isInitialized,
+            "text-center": true,
+          })}
+        >
           <div className="w-full text-left md:text-center">
             <h3 className="mb-1 text-lg font-semibold">What all can you do here?</h3>
-            <ul className="flex flex-col w-11/12 gap-1 mx-auto mb-5 text-left text-md md:text-center md:w-10/12 lg:w-9/12">
+            <ul
+              className={classNames({
+                "flex flex-col w-11/12 gap-1 mx-auto mb-5 text-left text-md": true,
+                "md:text-center md:w-10/12 lg:w-9/12": !isInitialized,
+              })}
+            >
               <li>
                 You can record your screen along with you in the screen and store the recording <br /> To record click
                 button below.
               </li>
             </ul>
           </div>
-          <h3 className="mb-3 font-semibold text-md">Read this before clicking on the button below</h3>
-          <ul className="text-md mx-auto w-10/12 text-left list-outside list-decimal md:list-inside md:text-center md:w-8/12 lg:w-5/12 flex flex-col gap-1.5">
-            <li>This works all on your device locally. No data is sent to any server.</li>
-            <li>The recording will automatically pause when you focus on this window.</li>
-            <li>The title of this browser window will tell you the status.</li>
-            <li>The recording will start/resume when you focus on other windows.</li>
-            <li>Click on the button below anytime to stop and download the recording.</li>
-          </ul>
           <button
             type="submit"
             className={`${classNames({
-              "bg-green-500 hover:bg-green-700 flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full md:w-1/4 lg:w-1/6 mt-8": true,
+              "bg-green-500 hover:bg-green-700 flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full mt-8": true,
+              "md:w-1/4 lg:w-1/6": !isInitialized,
               hidden: isInitialized,
             })}`}
             onClick={() => setIsInitialized(!isInitialized)}
           >
             Initialize
           </button>
+          {isInitialized && (
+            <>
+              <h3 className="mb-3 font-semibold text-md">Read this before clicking on the button below</h3>
+              <ul
+                className={classNames({
+                  "text-md mx-auto w-10/12 text-left list-outside list-decimal flex flex-col gap-1.5": true,
+                  "md:list-inside md:text-center md:w-8/12 lg:w-5/12": !isInitialized,
+                })}
+              >
+                <li>This works all on your device locally. No data is sent to any server.</li>
+                <li>The recording will automatically pause when you focus on this window.</li>
+                <li>The title of this browser window will tell you the status.</li>
+                <li>The recording will start/resume when you focus on other windows.</li>
+                <li>Click on the button below anytime to stop and download the recording.</li>
+              </ul>
+            </>
+          )}
           <button
             type="submit"
             className={`${classNames({
-              "flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full md:w-1/4 lg:w-1/6 mt-8": true,
+              "flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full mt-8": true,
+              "md:w-1/2 lg:w-1/4": isInitialized,
               "bg-green-500 hover:bg-green-700": !isRecording,
               "bg-red-500 hover:bg-red-700": isRecording,
               hidden: !isInitialized,
@@ -144,8 +166,12 @@ export default function Vlog() {
           >
             {`${pageTitle || "Start recording"}...`}
           </button>
-          {isInitialized && <VlogVideo isRecording={isRecording} ref={streamRef} />}
         </div>
+        {isInitialized && (
+          <div className="w-1/2 text-center">
+            <VlogVideo isRecording={isRecording} ref={streamRef} />
+          </div>
+        )}
       </section>
     </>
   );

@@ -141,7 +141,7 @@ function VlogVideo({ isRecording }, ref) {
           height={300}
           width={400}
           className={classNames({
-            "border border-1 rounded-md shadow-md w-full md:w-1/3": true,
+            "border border-1 rounded-md shadow-md w-full md:w-8/12": true,
           })}
         ></canvas>
         <video muted playsInline controls height={300} width={400} className="hidden" ref={localVideoElement}></video>
