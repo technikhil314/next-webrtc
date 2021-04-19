@@ -92,8 +92,8 @@ export default function Vlog() {
     <>
       <Head>
         <title>{`${pageTitle || "Vlog"} | ${text.appName}`}</title>
-        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.2"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.4.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.1"></script>
       </Head>
       <section className="container flex flex-wrap items-center content-center justify-center w-full h-full px-4 mx-auto">
         {showError && (
@@ -157,7 +157,7 @@ export default function Vlog() {
             type="submit"
             className={`${classNames({
               "flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full mt-8": true,
-              "md:w-1/2 lg:w-1/4": isInitialized,
+              "md:w-1/2 lg:w-1/3": isInitialized,
               "bg-green-500 hover:bg-green-700": !isRecording,
               "bg-red-500 hover:bg-red-700": isRecording,
               hidden: !isInitialized,
