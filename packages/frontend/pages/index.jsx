@@ -98,11 +98,11 @@ export default function Vlog() {
       <section className="container flex flex-wrap items-center content-center justify-center w-full h-full px-4 mx-auto">
         {showError && (
           <Modal title="Oops..." onClose={onModalClose}>
-            <p>Opps.... Your browser does not support required features to record vlog.</p>
+            <p>Opps.... Your browser does not support required features to record video.</p>
           </Modal>
         )}
         <h1 className="w-11/12 mb-10 text-3xl font-bold text-center lg:w-8/12">
-          An in browser video recording software for developers to create live coding videos and share their knowledge
+          Simple in browser video recording for developers to create live coding videos.
         </h1>
         <div
           className={classNames({
