@@ -1,12 +1,12 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Modal from "../components/modal";
+import VlogVideo from "../components/vlogVideo";
 import { classNames } from "../helpers/classNames";
 import usePageVisibility from "../hooks/pageVisibility";
-import { text, userMediaConstraints } from "../utils/constants";
+import { text } from "../utils/constants";
 import { capitalize } from "../utils/helpers";
-
-let done = false;
 export async function getStaticProps() {
   return {
     props: {},
@@ -19,12 +19,8 @@ export default function Vlog() {
   const [mediaRecorder, setMediaRecorder] = useState();
   const [recorderState, setRecorderState] = useState();
   const isPageVisible = usePageVisibility();
-  const localVideoElement = useRef();
-  const isPiPSupported = useRef(true);
-  const canvasRef = useRef();
-  const displayVideoElement = useRef();
-  let stream = useRef(),
-    normalLocalStream = useRef();
+  const streamRef = useRef();
+  const router = useRouter();
   const resetState = () => {
     setIsRecording(false);
     setMediaRecorder(null);
@@ -32,121 +28,25 @@ export default function Vlog() {
     setIsInitialized(false);
   };
   const onModalClose = () => {
-    setShowError(false);
-  };
-  const loadBodyPix = async () => {
-    const options = {
-      multiplier: 0.75,
-      stride: 32,
-      quantBytes: 4,
-    };
-    const net = await bodyPix.load(options);
-    return net;
+    router.push("/meetings");
   };
 
-  const blurVideo = async ({
-    backgroundBlurAmount,
-    edgeBlurAmount,
-    flipHorizontal,
-    net,
-  }) => {
-    const segmentation = await net.segmentPerson(localVideoElement.current);
-    bodyPix.drawBokehEffect(
-      canvasRef.current,
-      localVideoElement.current,
-      segmentation,
-      backgroundBlurAmount,
-      edgeBlurAmount,
-      flipHorizontal
-    );
-    if (!done) {
-      displayVideoElement.current.srcObject = canvasRef.current.captureStream(
-        60
-      );
-      displayVideoElement.current.addEventListener("loadedmetadata", () => {
-        displayVideoElement.current.play();
-        displayVideoElement.current.requestPictureInPicture();
-      });
-      done = true;
-    }
-    requestAnimationFrame(() =>
-      blurVideo({
-        backgroundBlurAmount,
-        edgeBlurAmount,
-        flipHorizontal,
-        net,
-      })
-    );
-  };
-
-  useEffect(async () => {
-    const backgroundBlurAmount = 6;
-    const edgeBlurAmount = 2;
-    const flipHorizontal = true;
-    if (isRecording) {
-      const net = await loadBodyPix();
-      requestAnimationFrame(async () => {
-        blurVideo({
-          backgroundBlurAmount,
-          edgeBlurAmount,
-          flipHorizontal,
-          net,
-        });
-      });
-    }
-  }, [isRecording]);
-  const initialize = async () => {
-    if (!isInitialized) {
-      try {
-        stream.current = await navigator.mediaDevices.getDisplayMedia({
-          video: {
-            width: 1920,
-            height: 1080,
-            displaySurface: {
-              exact: "monitor",
-            },
-          },
-        });
-        normalLocalStream.current = await navigator.mediaDevices.getUserMedia({
-          ...userMediaConstraints,
-          video: true,
-        });
-        localVideoElement.current.srcObject = normalLocalStream.current;
-        localVideoElement.current.play();
-        setIsInitialized(true);
-      } catch (err) {
-        stream.current = normalLocalStream.current = null;
-        resetState();
-      }
-    }
-  };
   const handleRecording = async () => {
     if (isInitialized && !isRecording) {
-      // if (isPiPSupported.current) {
-      //   await localVideoElement.current.requestPictureInPicture();
-      // }
-      stream.current.addTrack(normalLocalStream.current.getAudioTracks()[0]);
-      const mediaRec = new MediaRecorder(stream.current);
+      const mediaRec = new MediaRecorder(streamRef.current.getStream());
       setMediaRecorder(mediaRec);
       setIsRecording(true);
     } else if (isRecording && isInitialized) {
-      stream.current && stream.current.getTracks().forEach((x) => x.stop());
-      normalLocalStream.current &&
-        normalLocalStream.current.getTracks().forEach((x) => x.stop());
       if (mediaRecorder.state !== "inactive") {
         mediaRecorder.stop();
       } else {
         resetState();
-      }
-      if (document.pictureInPictureElement) {
-        await document.exitPictureInPicture();
       }
     }
   };
   useEffect(() => {
     if (!document.pictureInPictureEnabled) {
       setShowError(true);
-      isPiPSupported.current = false;
     }
   }, []);
   useEffect(() => {
@@ -198,53 +98,29 @@ export default function Vlog() {
       <section className="container flex flex-wrap items-center justify-center w-full h-full px-4 mx-auto">
         {showError && (
           <Modal title="Oops..." onClose={onModalClose}>
-            <p>
-              Opps.... Your browser does not support required features to record
-              vlog. <br />{" "}
-              <h3 className="text-lg font-bold">
-                But don{`'`}t worry all you need to do is put the video in
-                picture in picture mode.
-              </h3>
-            </p>
+            <p>Opps.... Your browser does not support required features to record vlog.</p>
           </Modal>
         )}
         <div className="w-full text-center">
-          <canvas ref={canvasRef} className="hidden"></canvas>
           <h1 className="text-lg font-bold">
-            An in browser video recording software for developers to create live
-            coding videos and share their knowledge
+            An in browser video recording software for developers to create live coding videos and share their knowledge
           </h1>
           <div className="w-full text-left md:text-center">
-            <h3 className="mb-1 text-lg font-semibold">
-              What all can you do here?
-            </h3>
+            <h3 className="mb-1 text-lg font-semibold">What all can you do here?</h3>
             <ul className="flex flex-col w-11/12 gap-1 mx-auto mb-5 text-left text-md md:text-center md:w-10/12 lg:w-9/12">
               <li>
-                You can record your screen along with you in the screen and
-                store the recording <br /> To record click button below.
+                You can record your screen along with you in the screen and store the recording <br /> To record click
+                button below.
               </li>
             </ul>
           </div>
-          <h3 className="mb-3 font-semibold text-md">
-            Read this before clicking on the button below
-          </h3>
+          <h3 className="mb-3 font-semibold text-md">Read this before clicking on the button below</h3>
           <ul className="text-md mx-auto w-10/12 text-left list-outside list-decimal md:list-inside md:text-center md:w-8/12 lg:w-5/12 flex flex-col gap-1.5">
-            <li>
-              This works all on your device locally. No data is sent to any
-              server.
-            </li>
-            <li>
-              The recording will automatically pause when you focus on this
-              window.
-            </li>
+            <li>This works all on your device locally. No data is sent to any server.</li>
+            <li>The recording will automatically pause when you focus on this window.</li>
             <li>The title of this browser window will tell you the status.</li>
-            <li>
-              The recording will start/resume when you focus on other windows.
-            </li>
-            <li>
-              Click on the button below anytime to stop and download the
-              recording.
-            </li>
+            <li>The recording will start/resume when you focus on other windows.</li>
+            <li>Click on the button below anytime to stop and download the recording.</li>
           </ul>
           <button
             type="submit"
@@ -252,7 +128,7 @@ export default function Vlog() {
               "bg-green-500 hover:bg-green-700 flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full md:w-1/4 lg:w-1/6 mt-8": true,
               hidden: isInitialized,
             })}`}
-            onClick={initialize}
+            onClick={() => setIsInitialized(!isInitialized)}
           >
             Initialize
           </button>
@@ -268,28 +144,8 @@ export default function Vlog() {
           >
             {`${pageTitle || "Start recording"}...`}
           </button>
+          {isInitialized && <VlogVideo isRecording={isRecording} ref={streamRef} />}
         </div>
-        <video
-          muted
-          playsInline
-          controls
-          height={150}
-          width={200}
-          className="hidden"
-          ref={localVideoElement}
-        ></video>
-        <video
-          muted
-          playsInline
-          controls
-          width={200}
-          className={classNames({
-            "transform -scale-x-1": recorderState,
-            "opacity-0": isPiPSupported.current,
-            hidden: true,
-          })}
-          ref={displayVideoElement}
-        ></video>
       </section>
     </>
   );

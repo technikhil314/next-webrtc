@@ -6,9 +6,7 @@ export default function Footer() {
       <div className="container p-4 mx-auto">
         <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:flex-wrap">
           <section className="flex flex-col gap-2 text-gray-900">
-            <h3 className="w-full text-lg font-bold text-gray-700 uppercase">
-              Follow me
-            </h3>
+            <h3 className="w-full text-lg font-bold text-gray-700 uppercase">Follow me</h3>
             <ExternalLink
               href="https://www.linkedin.com/in/technikhil314/"
               className="inline-flex items-center hover:text-gray-600"
@@ -25,11 +23,7 @@ export default function Footer() {
               >
                 <rect width="512" height="512" rx="15%" fill="#0077b5" />
                 <circle cx="142" cy="138" r="37" />
-                <path
-                  stroke="#fff"
-                  strokeWidth="66"
-                  d="M244 194v198M142 194v198"
-                />
+                <path stroke="#fff" strokeWidth="66" d="M244 194v198M142 194v198" />
                 <path d="M276 282c0-20 13-40 36-40 24 0 33 18 33 45v105h66V279c0-61-32-89-76-89-34 0-51 19-59 32" />
               </svg>
               <span>LinkedIn</span>
@@ -101,80 +95,50 @@ export default function Footer() {
             </ExternalLink>
           </section>
           <section className="flex flex-col gap-2">
-            <h3 className="w-full text-lg font-bold text-gray-700 uppercase">
-              My work
-            </h3>
+            <h3 className="w-full text-lg font-bold text-gray-700 uppercase">My work</h3>
             <span>
-              <ExternalLink
-                href="https://technikhil314.netlify.app/daterangepicker"
-                className="hover:text-gray-600"
-              >
+              <ExternalLink href="https://technikhil314.netlify.app/daterangepicker" className="hover:text-gray-600">
                 Angular Date time range picker
               </ExternalLink>
             </span>
             <span>
-              <ExternalLink
-                href="https://technikhil314.netlify.app/carousel"
-                className="hover:text-gray-600"
-              >
+              <ExternalLink href="https://technikhil314.netlify.app/carousel" className="hover:text-gray-600">
                 Carousel web component
               </ExternalLink>
             </span>
             <span>
-              <ExternalLink
-                href="https://technikhil314.netlify.app/autobadger"
-                className="hover:text-gray-600"
-              >
+              <ExternalLink href="https://technikhil314.netlify.app/autobadger" className="hover:text-gray-600">
                 Git auto badger
               </ExternalLink>
             </span>
           </section>
           <section className="flex flex-col gap-2">
-            <h3 className="w-full text-lg font-bold text-gray-700 uppercase">
-              About me
-            </h3>
+            <h3 className="w-full text-lg font-bold text-gray-700 uppercase">About me</h3>
             <span>
-              <ExternalLink
-                href="https://technikhil314.netlify.app/"
-                className="hover:text-gray-600"
-              >
+              <ExternalLink href="https://technikhil314.netlify.app/" className="hover:text-gray-600">
                 My portfolio
               </ExternalLink>
             </span>
             <span>
-              <ExternalLink
-                href="https://technikhil314.netlify.app/about"
-                className="hover:text-gray-600"
-              >
+              <ExternalLink href="https://technikhil314.netlify.app/about" className="hover:text-gray-600">
                 More about me
               </ExternalLink>
             </span>
             <span>
-              <ExternalLink
-                href="https://technikhil314.netlify.app/blog"
-                className="hover:text-gray-600"
-              >
+              <ExternalLink href="https://technikhil314.netlify.app/blog" className="hover:text-gray-600">
                 My Blog
               </ExternalLink>
             </span>
           </section>
           <section className="flex flex-col gap-2">
-            <h3 className="w-full text-lg font-bold text-gray-700 uppercase">
-              Sponsor my projects
-            </h3>
+            <h3 className="w-full text-lg font-bold text-gray-700 uppercase">Sponsor my projects</h3>
             <span>
-              <ExternalLink
-                href="https://www.buymeacoffee.com/technikhil314"
-                className="hover:text-gray-600"
-              >
+              <ExternalLink href="https://www.buymeacoffee.com/technikhil314" className="hover:text-gray-600">
                 Buy me a coffee
               </ExternalLink>
             </span>
             <span>
-              <ExternalLink
-                href="https://www.paypal.com/paypalme/technikhil314"
-                className="hover:text-gray-600"
-              >
+              <ExternalLink href="https://www.paypal.com/paypalme/technikhil314" className="hover:text-gray-600">
                 Paypal
               </ExternalLink>
             </span>
@@ -183,11 +147,8 @@ export default function Footer() {
       </div>
       <section className="py-4 mt-2 bg-gray-50">
         <div className="container mx-auto text-center">
-          Made with ❤️ using Next.js and Tailwind by{" "}
-          <ExternalLink
-            href="https://technikhil314.netlify.app/"
-            className="underline"
-          >
+          Made with ❤️ using Next.js and TailwindCSS by{" "}
+          <ExternalLink href="https://technikhil314.netlify.app/" className="underline">
             Nikhil Mehta
           </ExternalLink>
         </div>
