@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { classNames } from "../helpers/classNames";
 import { userMediaConstraints } from "../utils/constants";
-const backgroundBlurAmount = 6;
+let backgroundBlurAmount = 6;
 const edgeBlurAmount = 0;
 const flipHorizontal = true;
 function VlogVideo({ isRecording }, ref) {
@@ -103,16 +103,33 @@ function VlogVideo({ isRecording }, ref) {
   }, []);
   return (
     <section className="flex flex-col gap-4 mt-5">
-      <div className="controls">
-        <label className="inline-flex items-center">
+      <div className="flex justify-center gap-4">
+        <div className="inline-flex items-center">
+          <label className="ml-2 mr-2 text-gray-700" htmlFor="toggleBlur">
+            Toggle blur
+          </label>
           <input
+            id="toggleBlur"
             type="checkbox"
             className="w-5 h-5 text-orange-600"
             defaultChecked={true}
             onClick={() => (isBlurRef.current = !isBlurRef.current)}
           />
-          <span className="ml-2 text-gray-700">Background blur</span>
-        </label>
+        </div>
+        <div className="inline-flex items-center">
+          <label className="ml-2 mr-2 text-gray-700" htmlFor="blurAmount">
+            Blur Amount
+          </label>
+          <input
+            id="blurAmount"
+            type="range"
+            className="blurAmount"
+            min={2}
+            max={10}
+            defaultValue={backgroundBlurAmount}
+            onChange={(e) => (backgroundBlurAmount = e.target.value)}
+          />
+        </div>
       </div>
       <div className="flex flex-col items-center justify-center">
         <h4 className="text-lg fond-bold">
