@@ -102,7 +102,7 @@ export default function Vlog() {
           </Modal>
         )}
         <h1 className="w-11/12 mb-10 text-3xl font-bold text-center lg:w-8/12">
-          Simple in browser video recording for developers to create live coding videos.
+          Simple in browser <wbr /> video recording for developers <wbr /> to create live coding videos.
         </h1>
         <div
           className={classNames({
@@ -111,16 +111,16 @@ export default function Vlog() {
             "text-center": true,
           })}
         >
-          <div className="w-full text-left md:text-center">
-            <h3 className="mb-1 text-lg font-semibold">What all can you do here?</h3>
+          <div className="w-full text-center">
+            <h3 className="text-lg font-semibold">What all can you do here?</h3>
             <ul
               className={classNames({
-                "flex flex-col w-11/12 gap-1 mx-auto mb-5 text-left text-md": true,
+                "flex flex-col w-11/12 gap-1 mx-auto mb-5 text-left text-lg": true,
                 "md:text-center md:w-10/12 lg:w-9/12": !isInitialized,
               })}
             >
               <li>
-                You can record your screen along with you in the screen and store the recording <br /> To record click
+                You can record your screen along with you in the video and store the recording <wbr /> To record click
                 button below.
               </li>
             </ul>

@@ -9,11 +9,7 @@ export default function RoomDetails() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const roomName = formData
-      .get("roomName")
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .trim();
+    const roomName = formData.get("roomName").toLowerCase().replace(/\s+/g, "-").trim();
     router.push(`/${roomName}`);
     setRoomName(roomName);
   };
@@ -21,10 +17,7 @@ export default function RoomDetails() {
     input.current.focus();
   });
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col justify-center w-full mx-auto text-center lg:w-1/2"
-    >
+    <form onSubmit={handleSubmit} className="flex flex-col justify-center w-full mx-auto text-center lg:w-1/2">
       <input
         ref={input}
         autoFocus

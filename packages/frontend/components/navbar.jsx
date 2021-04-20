@@ -9,7 +9,7 @@ export default function Navbar() {
   const router = useRouter();
   return (
     <>
-      <p className="fixed right-0 z-50 px-4 py-1 text-center text-white transform rotate-45 bg-gray-900 w-60 ribbon">
+      <p className="fixed right-0 z-50 hidden px-4 py-1 text-center text-white transform rotate-45 bg-gray-900 md:block w-60 ribbon">
         <ExternalLink className="text-gray-200 hover:text-gray-300" href="https://github.com/technikhil314/next-webrtc">
           Fork me on GitHub
         </ExternalLink>
