@@ -2,10 +2,13 @@ import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { classNames } from "../helpers/classNames";
 import { userMediaConstraints } from "../utils/constants";
 let backgroundBlurAmount = 6;
-const edgeBlurAmount = 0;
-const flipHorizontal = true;
+let edgeBlurAmount = 0;
+let enableMirrorEffect = false;
+let enableVirtualBackground = false;
+let removeBackground = false;
+let enableBlur = false;
+let backgroundImage = null;
 function VlogVideo({ isRecording }, ref) {
-  const isBlurRef = useRef(true);
   const localVideoElement = useRef();
   const canvasRef = useRef();
   const displayVideoElement = useRef();
@@ -21,26 +24,61 @@ function VlogVideo({ isRecording }, ref) {
   const loadBodyPix = async () => {
     const options = {
       multiplier: 0.75,
-      stride: 32,
-      quantBytes: 4,
+      stride: 16,
+      quantBytes: 2,
     };
     const net = await bodyPix.load(options);
     return net;
   };
 
-  const blurVideo = async (net) => {
-    const segmentation = await net.segmentPerson(localVideoElement.current);
-    let _backgroundBlurAmount = isBlurRef.current ? backgroundBlurAmount : 0;
+  const blurVideoBg = (segmentation) => {
+    let _backgroundBlurAmount = enableBlur ? backgroundBlurAmount : 0;
     bodyPix.drawBokehEffect(
       canvasRef.current,
       localVideoElement.current,
       segmentation,
       _backgroundBlurAmount,
       edgeBlurAmount,
-      flipHorizontal
+      enableMirrorEffect
     );
+  };
+
+  async function removeBg(segmentation) {
+    const foregroundColor = { r: 0, g: 0, b: 0, a: 255 };
+    const backgroundColor = { r: 0, g: 0, b: 0, a: 0 };
+    const backgroundDarkeningMask = bodyPix.toMask(segmentation, foregroundColor, backgroundColor, false);
+    const ctx = canvasRef.current.getContext("2d");
+    ctx.globalCompositeOperation = "source-over";
+    ctx.putImageData(backgroundDarkeningMask, 0, 0);
+    ctx.globalCompositeOperation = "source-in";
+    ctx.drawImage(localVideoElement.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+  }
+  async function addVirtualBg() {
+    const ctx = canvasRef.current.getContext("2d");
+    ctx.globalCompositeOperation = "destination-atop";
+    ctx.drawImage(backgroundImage, 0, 0, canvasRef.current.width, canvasRef.current.height);
+  }
+
+  const processVideo = async (net) => {
+    const segmentation = await net.segmentPerson(localVideoElement.current, {
+      flipHorizontal: false,
+      internalResolution: "medium",
+      segmentationThreshold: 0.5,
+    });
+    if (enableVirtualBackground) {
+      removeBg(segmentation);
+      addVirtualBg();
+    } else if (removeBackground) {
+      removeBg(segmentation);
+    } else if (enableBlur) {
+      blurVideoBg(segmentation);
+    } else {
+      const ctx = canvasRef.current.getContext("2d");
+      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      ctx.drawImage(localVideoElement.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+    }
     requestAnimationFrame(() => {
-      blurVideo(net);
+      processVideo(net);
     });
   };
   useImperativeHandle(
@@ -55,6 +93,13 @@ function VlogVideo({ isRecording }, ref) {
     }),
     [displayStream.current, normalLocalStream.current]
   );
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/virtual-bgs/1.jpg";
+    img.onload = () => {
+      backgroundImage = img;
+    };
+  }, []);
   useEffect(() => {
     if (isRecording) {
       displayVideoElement.current.srcObject = canvasRef.current.captureStream(60);
@@ -91,9 +136,7 @@ function VlogVideo({ isRecording }, ref) {
         localVideoElement.current.play();
         localVideoElement.current.addEventListener("loadeddata", async () => {
           const net = await loadBodyPix();
-          requestAnimationFrame(async () => {
-            blurVideo(net);
-          });
+          processVideo(net);
         });
       } catch (err) {
         cleanUp();
@@ -112,8 +155,8 @@ function VlogVideo({ isRecording }, ref) {
             id="toggleBlur"
             type="checkbox"
             className="w-5 h-5 text-orange-600"
-            defaultChecked={true}
-            onClick={() => (isBlurRef.current = !isBlurRef.current)}
+            defaultChecked={enableBlur}
+            onClick={() => (enableBlur = !enableBlur)}
           />
         </div>
         <div className="inline-flex items-center">
@@ -131,6 +174,34 @@ function VlogVideo({ isRecording }, ref) {
           />
         </div>
       </div>
+      <div className="inline-flex items-center justify-center">
+        <input
+          id="enableVirtualBackground"
+          type="checkbox"
+          className="w-5 h-5 text-orange-600"
+          min={2}
+          max={10}
+          defaultChecked={enableVirtualBackground}
+          onChange={() => (enableVirtualBackground = !enableVirtualBackground)}
+        />
+        <label className="ml-2 mr-2 text-gray-700" htmlFor="enableVirtualBackground">
+          Enable virtual background
+        </label>
+      </div>
+      <div className="inline-flex items-center justify-center">
+        <input
+          id="removeBackground"
+          type="checkbox"
+          className="w-5 h-5 text-orange-600"
+          min={2}
+          max={10}
+          defaultChecked={removeBackground}
+          onChange={() => (removeBackground = !removeBackground)}
+        />
+        <label className="ml-2 mr-2 text-gray-700" htmlFor="enableVirtualBackground">
+          Remove background
+        </label>
+      </div>
       <div className="flex flex-col items-center justify-center">
         <h4 className="text-lg fond-bold">
           This is how you will appear in video at bottom right corner <br /> but once recording starts you can drag and
@@ -141,10 +212,18 @@ function VlogVideo({ isRecording }, ref) {
           height={300}
           width={400}
           className={classNames({
-            "border border-1 rounded-md shadow-md w-full md:w-8/12": true,
+            "border border-1 rounded-md shadow-md w-full md:w-8/12 transform -scale-x-1": true,
           })}
         ></canvas>
-        <video muted playsInline controls height={300} width={400} className="hidden" ref={localVideoElement}></video>
+        <video
+          muted
+          playsInline
+          controls
+          height={300}
+          width={400}
+          className="hidden transform -scale-x-1"
+          ref={localVideoElement}
+        ></video>
         <video
           muted
           playsInline

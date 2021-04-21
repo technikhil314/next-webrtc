@@ -1,6 +1,7 @@
 module.exports = {
   darkMode: "class", // or 'media' or 'class'
   purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  mode: "jit",
   theme: {
     extend: {
       gridAutoRows: {
@@ -11,6 +12,9 @@ module.exports = {
       },
       translate: {
         "-screen": "-100vw",
+      },
+      scale: {
+        "-1": "-1",
       },
     },
   },
