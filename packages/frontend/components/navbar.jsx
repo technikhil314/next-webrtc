@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
-import { classNames } from "../helpers/classNames";
+import { classNames } from "../utils/classNames";
 import { text } from "../utils/constants";
 import ExternalLink from "./externalLink";
 import { useRouter } from "next/router";

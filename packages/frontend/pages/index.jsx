@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Modal from "../components/modal";
 import VlogVideo from "../components/vlogVideo";
-import { classNames } from "../helpers/classNames";
 import usePageVisibility from "../hooks/pageVisibility";
+import { classNames } from "../utils/classNames";
 import { text } from "../utils/constants";
 import { capitalize } from "../utils/helpers";
 export async function getStaticProps() {

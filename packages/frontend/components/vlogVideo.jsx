@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-import { classNames } from "../helpers/classNames";
+import { classNames } from "../utils/classNames";
 import { userMediaConstraints } from "../utils/constants";
+import { loadBodyPix } from "../utils/helpers";
 let backgroundBlurAmount = 6;
 let edgeBlurAmount = 0;
 let enableMirrorEffect = false;
@@ -19,16 +20,6 @@ function VlogVideo({ isRecording }, ref) {
     displayStream.current && displayStream.current.getTracks().forEach((x) => x.stop());
     normalLocalStream.current && normalLocalStream.current.getTracks().forEach((x) => x.stop());
     displayStream.current = normalLocalStream.current = null;
-  };
-
-  const loadBodyPix = async () => {
-    const options = {
-      multiplier: 0.75,
-      stride: 16,
-      quantBytes: 2,
-    };
-    const net = await bodyPix.load(options);
-    return net;
   };
 
   const blurVideoBg = (segmentation) => {

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { LocalVideo } from "../components/localVideos";
 import { RemoteStreams } from "../components/remoteStreams";
 import UserDetails from "../components/userDetails";
-import { classNames } from "../helpers/classNames";
+import { classNames } from "../utils/classNames";
 import useSocketConnection from "../hooks/socketConnection";
 import { useRhinoState } from "../store/states";
 import { text } from "../utils/constants";
