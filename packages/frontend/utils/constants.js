@@ -1,8 +1,6 @@
 export const text = {
-  seoTagLine:
-    "Bringing the privacy first video conferencing & web based video recording to the world.",
-  titleDesc:
-    "An open source alternative to video conferencing & video recording.",
+  seoTagLine: "Bringing the web based video recording & privacy first video conferencing to the world.",
+  titleDesc: "An open source alternative to video recording & video conferencing.",
   appName: "OpenRTC",
 };
 

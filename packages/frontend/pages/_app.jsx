@@ -10,14 +10,8 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <meta charSet="utf-8" />
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <meta
-          name="google-site-verification"
-          content="y76XmjuKHC8FEC0Mzf7SbK1235K4KzHHAHOVZfvLXwk"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="google-site-verification" content="y76XmjuKHC8FEC0Mzf7SbK1235K4KzHHAHOVZfvLXwk" />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -46,28 +40,13 @@ function MyApp({ Component, pageProps }) {
         <link rel="apple-touch-icon" sizes="180x180" href="/180x180.png" />
         <meta name="og:type" property="og:type" content="website" />
         <meta name="description" content={text.seoTagLine} />
-        <meta
-          name="og:description"
-          property="og:description"
-          content={text.seoTagLine}
-        />
+        <meta name="og:description" property="og:description" content={text.seoTagLine} />
         <meta name="twitter:description" content={text.seoTagLine} />
-        <meta
-          name="og:url"
-          property="og:url"
-          content={process.env.NEXT_PUBLIC_URL}
-        />
+        <meta name="og:url" property="og:url" content={process.env.NEXT_PUBLIC_URL} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@technikhil314" />
-        <meta
-          property="og:title"
-          name="og:title"
-          content={`${text.appName} | ${text.titleDesc}`}
-        />
-        <meta
-          name="twitter:title"
-          content={`${text.appName} | ${text.titleDesc}`}
-        />
+        <meta property="og:title" name="og:title" content={`${text.appName} | ${text.titleDesc}`} />
+        <meta name="twitter:title" content={`${text.appName} | ${text.titleDesc}`} />
         {/* For telegram */}
         <meta
           property="og:image"
@@ -102,21 +81,10 @@ function MyApp({ Component, pageProps }) {
           content={`${process.env.NEXT_PUBLIC_URL}/brand-800x800.png`}
           key={`${process.env.NEXT_PUBLIC_URL}/brand-800x800.png`}
         />
-        <meta
-          name="image"
-          property="og:image"
-          content={`${process.env.NEXT_PUBLIC_URL}/brand-1200x600.png`}
-        ></meta>
-        <meta
-          property="og:image:alt"
-          name="og:image:alt"
-          content={text.titleDesc}
-        />
+        <meta name="image" property="og:image" content={`${process.env.NEXT_PUBLIC_URL}/brand-1200x600.png`}></meta>
+        <meta property="og:image:alt" name="og:image:alt" content={text.titleDesc} />
         {/* for twitter */}
-        <meta
-          name="twitter:image"
-          content={`${process.env.NEXT_PUBLIC_URL}/128x128.png`}
-        />
+        <meta name="twitter:image" content={`${process.env.NEXT_PUBLIC_URL}/128x128.png`} />
       </Head>
       <noscript
         dangerouslySetInnerHTML={{
