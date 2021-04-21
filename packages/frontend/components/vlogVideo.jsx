@@ -200,7 +200,7 @@ function VlogVideo({ isRecording }, ref) {
       </div>
       <div className="flex items-center justify-center gap-4">
         <div className="inline-flex items-center">
-          <label className="ml-2 mr-2 text-gray-700" htmlFor="enableVirtualBackground">
+          <label className="ml-2 mr-2 text-gray-700" htmlFor="removeBackground">
             Remove background
           </label>
           <input
