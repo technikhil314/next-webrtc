@@ -1,7 +1,7 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { classNames } from "../utils/classNames";
 import { userMediaConstraints } from "../utils/constants";
-import { loadBodyPix } from "../utils/helpers";
+import { loadBodyPix, readAsObjectURL } from "../utils/helpers";
 let backgroundBlurAmount = 6;
 let edgeBlurAmount = 0;
 let enableMirrorEffect = false;
@@ -14,6 +14,7 @@ function VlogVideo({ isRecording }, ref) {
   const localVideoElement = useRef();
   const canvasRef = useRef();
   const displayVideoElement = useRef();
+  const [customBackgroundImage, setCustomBackgroundImage] = useState();
   let displayStream = useRef(),
     normalLocalStream = useRef();
 
@@ -94,6 +95,23 @@ function VlogVideo({ isRecording }, ref) {
     }),
     [displayStream.current, normalLocalStream.current]
   );
+
+  useEffect(() => {
+    let objectUrl;
+    if (customBackgroundImage) {
+      (async () => {
+        objectUrl = await readAsObjectURL(customBackgroundImage);
+        const img = new Image();
+        img.src = objectUrl;
+        img.onload = () => {
+          backgroundImage = img;
+        };
+      })();
+    }
+    return () => {
+      objectUrl && URL.revokeObjectURL(objectUrl);
+    };
+  }, [customBackgroundImage]);
   useEffect(() => {
     const img = new Image();
     img.src = "/virtual-bgs/1.jpg";
@@ -147,21 +165,40 @@ function VlogVideo({ isRecording }, ref) {
   }, []);
   return (
     <section className="flex flex-col gap-4 mt-5">
-      <div className="inline-flex items-center justify-center">
-        <label className="ml-2 mr-2 text-gray-700" htmlFor="enableVirtualBackground">
-          Enable virtual background
-        </label>
-        <input
-          id="enableVirtualBackground"
-          type="checkbox"
-          className="w-5 h-5 text-orange-600"
-          min={2}
-          max={10}
-          defaultChecked={enableVirtualBackground}
-          onChange={() => (enableVirtualBackground = !enableVirtualBackground)}
-        />
+      <div className="flex items-center justify-center gap-4">
+        <div className="inline-flex items-center justify-center">
+          <label className="ml-2 mr-2 text-gray-700" htmlFor="enableVirtualBackground">
+            Enable virtual background
+          </label>
+          <input
+            id="enableVirtualBackground"
+            type="checkbox"
+            className="w-5 h-5 text-orange-600"
+            min={2}
+            max={10}
+            defaultChecked={enableVirtualBackground}
+            onChange={() => (enableVirtualBackground = !enableVirtualBackground)}
+          />
+        </div>
+        <div className="relative inline-flex items-center justify-center">
+          <label className="ml-2 mr-2 text-gray-700" htmlFor="customVirtualBackground">
+            Custom Image
+          </label>
+          <div>
+            <input
+              id="customVirtualBackground"
+              type="file"
+              accept="image/*"
+              className="absolute inset-0 w-full text-orange-600 opacity-0"
+              onChange={(e) => setCustomBackgroundImage(e.target.files[0])}
+            />
+            <button className="flex-grow-0 px-4 py-2 text-sm font-bold text-white transition bg-green-500 rounded pointer-events-none hover:bg-green-700">
+              Choose file
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center gap-4">
         <div className="inline-flex items-center">
           <label className="ml-2 mr-2 text-gray-700" htmlFor="enableVirtualBackground">
             Remove background
@@ -183,10 +220,11 @@ function VlogVideo({ isRecording }, ref) {
           <input
             type="color"
             id="backgroundColor"
+            defaultValue={backgroundColor}
             onChange={(e) => {
               backgroundColor = e.target.value;
             }}
-            className="w-5 h-5"
+            className="w-8 h-8"
           />
         </div>
       </div>

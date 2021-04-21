@@ -22,3 +22,16 @@ export function classNames(classNameMap) {
   }
   return classNameString.trim();
 }
+
+export function readAsObjectURL(file) {
+  return new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const blob = new Blob([e.target.result]);
+      const url = URL.createObjectURL(blob);
+      res(url);
+    };
+    reader.onerror = (e) => rej(e);
+    reader.readAsArrayBuffer(file);
+  });
+}
