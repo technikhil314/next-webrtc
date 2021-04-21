@@ -9,6 +9,7 @@ let enableVirtualBackground = false;
 let removeBackground = false;
 let enableBlur = false;
 let backgroundImage = null;
+let backgroundColor = "#FFFFFF";
 function VlogVideo({ isRecording }, ref) {
   const localVideoElement = useRef();
   const canvasRef = useRef();
@@ -29,25 +30,32 @@ function VlogVideo({ isRecording }, ref) {
       localVideoElement.current,
       segmentation,
       _backgroundBlurAmount,
-      edgeBlurAmount,
-      enableMirrorEffect
+      edgeBlurAmount
     );
   };
 
   async function removeBg(segmentation) {
     const foregroundColor = { r: 0, g: 0, b: 0, a: 255 };
     const backgroundColor = { r: 0, g: 0, b: 0, a: 0 };
-    const backgroundDarkeningMask = bodyPix.toMask(segmentation, foregroundColor, backgroundColor, false);
+    const backgroundDarkeningMask = bodyPix.toMask(segmentation, foregroundColor, backgroundColor);
     const ctx = canvasRef.current.getContext("2d");
-    ctx.globalCompositeOperation = "source-over";
     ctx.putImageData(backgroundDarkeningMask, 0, 0);
     ctx.globalCompositeOperation = "source-in";
     ctx.drawImage(localVideoElement.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
   }
-  async function addVirtualBg() {
+  function addVirtualBg() {
     const ctx = canvasRef.current.getContext("2d");
     ctx.globalCompositeOperation = "destination-atop";
     ctx.drawImage(backgroundImage, 0, 0, canvasRef.current.width, canvasRef.current.height);
+  }
+
+  function addSolidBg() {
+    const ctx = canvasRef.current.getContext("2d");
+    ctx.globalCompositeOperation = "destination-atop";
+    ctx.beginPath();
+    ctx.rect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    ctx.fillStyle = backgroundColor;
+    ctx.fill();
   }
 
   const processVideo = async (net) => {
@@ -61,6 +69,7 @@ function VlogVideo({ isRecording }, ref) {
       addVirtualBg();
     } else if (removeBackground) {
       removeBg(segmentation);
+      addSolidBg();
     } else if (enableBlur) {
       blurVideoBg(segmentation);
     } else {
@@ -138,6 +147,49 @@ function VlogVideo({ isRecording }, ref) {
   }, []);
   return (
     <section className="flex flex-col gap-4 mt-5">
+      <div className="inline-flex items-center justify-center">
+        <label className="ml-2 mr-2 text-gray-700" htmlFor="enableVirtualBackground">
+          Enable virtual background
+        </label>
+        <input
+          id="enableVirtualBackground"
+          type="checkbox"
+          className="w-5 h-5 text-orange-600"
+          min={2}
+          max={10}
+          defaultChecked={enableVirtualBackground}
+          onChange={() => (enableVirtualBackground = !enableVirtualBackground)}
+        />
+      </div>
+      <div className="flex items-center justify-center">
+        <div className="inline-flex items-center">
+          <label className="ml-2 mr-2 text-gray-700" htmlFor="enableVirtualBackground">
+            Remove background
+          </label>
+          <input
+            id="removeBackground"
+            type="checkbox"
+            className="w-5 h-5 text-orange-600"
+            min={2}
+            max={10}
+            defaultChecked={removeBackground}
+            onChange={() => (removeBackground = !removeBackground)}
+          />
+        </div>
+        <div className="inline-flex items-center">
+          <label className="ml-2 mr-2 text-gray-700" htmlFor="backgroundColor">
+            Background color
+          </label>
+          <input
+            type="color"
+            id="backgroundColor"
+            onChange={(e) => {
+              backgroundColor = e.target.value;
+            }}
+            className="w-5 h-5"
+          />
+        </div>
+      </div>
       <div className="flex justify-center gap-4">
         <div className="inline-flex items-center">
           <label className="ml-2 mr-2 text-gray-700" htmlFor="toggleBlur">
@@ -166,34 +218,6 @@ function VlogVideo({ isRecording }, ref) {
           />
         </div>
       </div>
-      <div className="inline-flex items-center justify-center">
-        <input
-          id="enableVirtualBackground"
-          type="checkbox"
-          className="w-5 h-5 text-orange-600"
-          min={2}
-          max={10}
-          defaultChecked={enableVirtualBackground}
-          onChange={() => (enableVirtualBackground = !enableVirtualBackground)}
-        />
-        <label className="ml-2 mr-2 text-gray-700" htmlFor="enableVirtualBackground">
-          Enable virtual background
-        </label>
-      </div>
-      <div className="inline-flex items-center justify-center">
-        <input
-          id="removeBackground"
-          type="checkbox"
-          className="w-5 h-5 text-orange-600"
-          min={2}
-          max={10}
-          defaultChecked={removeBackground}
-          onChange={() => (removeBackground = !removeBackground)}
-        />
-        <label className="ml-2 mr-2 text-gray-700" htmlFor="enableVirtualBackground">
-          Remove background
-        </label>
-      </div>
       <div className="flex flex-col items-center justify-center">
         <h4 className="text-lg fond-bold">
           This is how you will appear in video at bottom right corner <br /> but once recording starts you can drag and
@@ -204,7 +228,8 @@ function VlogVideo({ isRecording }, ref) {
           height={300}
           width={400}
           className={classNames({
-            "border border-1 rounded-md shadow-md w-full md:w-8/12 transform -scale-x-1": true,
+            "border border-1 rounded-md shadow-md w-full md:w-8/12 transform": true,
+            "-scale-x-1": enableMirrorEffect,
           })}
         ></canvas>
         <video
@@ -213,7 +238,10 @@ function VlogVideo({ isRecording }, ref) {
           controls
           height={300}
           width={400}
-          className="hidden transform -scale-x-1"
+          className={classNames({
+            hidden: true,
+            "-scale-x-1": enableMirrorEffect,
+          })}
           ref={localVideoElement}
         ></video>
         <video
@@ -222,8 +250,9 @@ function VlogVideo({ isRecording }, ref) {
           controls
           width={200}
           className={classNames({
-            "transform -scale-x-1 rounded-md shadow-md w-1 h-1": true,
+            "transform rounded-md shadow-md w-1 h-1": true,
             hidden: !isRecording,
+            "-scale-x-1": enableMirrorEffect,
           })}
           ref={displayVideoElement}
           allowFullScreen
