@@ -74,6 +74,7 @@ function VlogVideo({ isRecording }, ref) {
       blurVideoBg(segmentation);
     } else {
       const ctx = canvasRef.current.getContext("2d");
+      ctx.globalCompositeOperation = "source-over";
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       ctx.drawImage(localVideoElement.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
     }
