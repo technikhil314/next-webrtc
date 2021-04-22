@@ -23,6 +23,12 @@ export default function usePageVisibility() {
         setIsVisible(true);
       }
     };
+    window.onblur = (e) => {
+      setIsVisible(false);
+    };
+    window.onfocus = (e) => {
+      setIsVisible(true);
+    };
     document.addEventListener(visibilityChange, handleVisibilityChange, true);
     return () => {
       document.removeEventListener(visibilityChange, handleVisibilityChange);
