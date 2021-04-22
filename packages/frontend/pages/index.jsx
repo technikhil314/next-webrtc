@@ -93,8 +93,8 @@ export default function Vlog() {
     <>
       <Head>
         <title>{`${pageTitle || "Vlog"} | ${text.appName}`}</title>
-        <script src="http://unpkg.com/@tensorflow/tfjs@3.4.0"></script>
-        <script src="http://unpkg.com/@tensorflow-models/body-pix@2.1"></script>
+        <script src="https://unpkg.com/@tensorflow/tfjs@3.4.0"></script>
+        <script src="https://unpkg.com/@tensorflow-models/body-pix@2.1"></script>
       </Head>
       <section className="container flex flex-wrap items-center content-center justify-center w-full h-full px-4 mx-auto">
         {showError && (
