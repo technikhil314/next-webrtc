@@ -70,3 +70,9 @@ export const iceConfig = {
     },
   ],
 };
+
+export const browserRegexes = {
+  chrome: /(chrome|omniweb|arora|[tizenoka]{5} ?browser)\/v?([\w\.]+)/i,
+  edge: /edg(?:e|ios|a)?\/([\w\.]+)/i,
+  firefox: /(mozilla)\/([\w\.]+) .+rv\:.+gecko\/\d+/i,
+};

@@ -6,7 +6,7 @@ import VlogVideo from "../components/vlogVideo";
 import usePageVisibility from "../hooks/pageVisibility";
 import { classNames } from "../utils/classNames";
 import { text } from "../utils/constants";
-import { capitalize } from "../utils/helpers";
+import { capitalize, getBrowserName } from "../utils/helpers";
 export async function getStaticProps() {
   return {
     props: {},
@@ -45,7 +45,8 @@ export default function Vlog() {
     }
   };
   useEffect(() => {
-    if (!document.pictureInPictureEnabled) {
+    const browserName = getBrowserName(navigator.userAgent);
+    if (!document.pictureInPictureEnabled || (browserName !== "chrome" && browserName !== "firefox")) {
       setShowError(true);
     }
   }, []);
@@ -98,7 +99,10 @@ export default function Vlog() {
       <section className="container flex flex-wrap items-center content-center justify-center w-full h-full px-4 mx-auto">
         {showError && (
           <Modal title="Oops..." onClose={onModalClose}>
-            <p>Opps.... Your browser does not support required features to record video.</p>
+            <p>
+              Opps.... Your browser does not support required features to record video. <br /> We recommend using latest
+              version of chrome dekstop.
+            </p>
           </Modal>
         )}
         <h1 className="w-11/12 mb-10 text-3xl font-bold text-center lg:w-8/12">
@@ -132,6 +136,7 @@ export default function Vlog() {
               "md:w-1/4 lg:w-1/6": !isInitialized,
               hidden: isInitialized,
             })}`}
+            id="initialize"
             onClick={() => setIsInitialized(!isInitialized)}
           >
             Initialize
@@ -162,6 +167,7 @@ export default function Vlog() {
               "bg-red-500 hover:bg-red-700": isRecording,
               hidden: !isInitialized,
             })}`}
+            id="startRecording"
             onClick={handleRecording}
           >
             {`${pageTitle || "Start recording"}...`}
