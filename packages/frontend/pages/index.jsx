@@ -28,7 +28,7 @@ export default function Vlog() {
     setIsInitialized(false);
   };
   const onModalClose = () => {
-    router.push("/meetings");
+    router.push("/meeting");
   };
 
   const handleRecording = async () => {
