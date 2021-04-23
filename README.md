@@ -1,8 +1,26 @@
-# A video conferencing and screen/vlog recording web app for live coders with nextjs
+# An open source live screen share and webcam video recorder
 
-### This can be an open source alternative to [loom](https://www.loom.com/screen-recorder)
+- [An open source live screen share and webcam video recorder](#an-open-source-live-screen-share-and-webcam-video-recorder)
+  - [Deploy to vercel](#deploy-to-vercel)
+  - [Features](#features)
+  - [Contributions](#contributions)
+    - [Requirements](#requirements)
+    - [Code structure](#code-structure)
+    - [How to run](#how-to-run)
+    - [How to build](#how-to-build)
+  - [TO DO](#to-do)
 
-If you are using mac book you can use it to do screen recording just like loom without any installation. All you need is chrome and quicktime player thats it.
+## Deploy to vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Ftechnikhil314%2Fnext-webrtc)
+
+## Features
+
+- Background removal
+- Virtual backgrounds
+- Background blur
+
+## Contributions
 
 ### Requirements
 
@@ -28,7 +46,7 @@ If you are using mac book you can use it to do screen recording just like loom w
 1. You dont need to build backend
 2. You can build frontend package with `npm run build --prefix packages/frontend` command
 
-### TO DO
+## TO DO
 
 1. Handle if someone stops screen share in recording vlog
    - This currently stops recording
