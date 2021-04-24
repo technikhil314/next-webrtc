@@ -9,7 +9,10 @@ let enableVirtualBackground = false;
 let removeBackground = false;
 let enableBlur = false;
 let backgroundImage = null;
+let enableGreenScreen = false;
 let backgroundColor = "#FFFFFF";
+let greenScreenWorker = null;
+let seriously = null;
 function VlogVideo({ isRecording }, ref) {
   const localVideoElement = useRef();
   const canvasRef = useRef();
@@ -59,25 +62,45 @@ function VlogVideo({ isRecording }, ref) {
     ctx.fill();
   }
 
+  const processGreenScreen = () => {
+    const ctx = canvasRef.current.getContext("2d");
+    const frame = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
+    greenScreenWorker.postMessage(frame);
+  };
+
   const processVideo = async (net) => {
-    const segmentation = await net.segmentPerson(localVideoElement.current, {
-      flipHorizontal: false,
-      internalResolution: "medium",
-      segmentationThreshold: 0.5,
-    });
-    if (enableVirtualBackground) {
-      removeBg(segmentation);
-      addVirtualBg();
-    } else if (removeBackground) {
-      removeBg(segmentation);
-      addSolidBg();
-    } else if (enableBlur) {
-      blurVideoBg(segmentation);
+    if (enableGreenScreen && !seriously) {
+      seriously = new Seriously();
+      let source = seriously.source("#localVideoElement");
+      let target = seriously.target("#recorderCanvas");
+      let chroma = seriously.effect("chroma");
+      chroma.source = source;
+      target.source = chroma;
+      let r = 98 / 255;
+      let g = 175 / 255;
+      let b = 116 / 255;
+      chroma.screen = [r, g, b, 1];
+      seriously.go();
     } else {
-      const ctx = canvasRef.current.getContext("2d");
-      ctx.globalCompositeOperation = "source-over";
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      ctx.drawImage(localVideoElement.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+      const segmentation = await net.segmentPerson(localVideoElement.current, {
+        flipHorizontal: false,
+        internalResolution: "medium",
+        segmentationThreshold: 0.5,
+      });
+      if (enableVirtualBackground) {
+        removeBg(segmentation);
+        addVirtualBg();
+      } else if (removeBackground) {
+        removeBg(segmentation);
+        addSolidBg();
+      } else if (enableBlur) {
+        blurVideoBg(segmentation);
+      } else {
+        const ctx = canvasRef.current.getContext("2d");
+        ctx.globalCompositeOperation = "source-over";
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        ctx.drawImage(localVideoElement.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+      }
     }
     requestAnimationFrame(() => {
       processVideo(net);
@@ -166,6 +189,22 @@ function VlogVideo({ isRecording }, ref) {
   return (
     <section className="flex flex-col gap-4 mt-5">
       <div className="flex items-center justify-center gap-4">
+        <div className="inline-flex items-center">
+          <label className="ml-2 mr-2 text-gray-700" htmlFor="enableGreenScreen">
+            Enable Green Screen
+          </label>
+          <input
+            id="enableGreenScreen"
+            type="checkbox"
+            className="w-5 h-5 text-orange-600"
+            min={2}
+            max={10}
+            defaultChecked={enableGreenScreen}
+            onChange={() => (enableGreenScreen = !enableGreenScreen)}
+          />
+        </div>
+      </div>
+      <div className="flex items-center justify-center gap-4">
         <div className="inline-flex items-center justify-center">
           <label className="ml-2 mr-2 text-gray-700" htmlFor="enableVirtualBackground">
             Enable virtual background
@@ -207,8 +246,6 @@ function VlogVideo({ isRecording }, ref) {
             id="removeBackground"
             type="checkbox"
             className="w-5 h-5 text-orange-600"
-            min={2}
-            max={10}
             defaultChecked={removeBackground}
             onChange={() => (removeBackground = !removeBackground)}
           />
@@ -262,6 +299,15 @@ function VlogVideo({ isRecording }, ref) {
           drop yourself anywhere in the screen and resize yourself too
         </h4>
         <canvas
+          id="recorderCanvas"
+          height={300}
+          width={400}
+          className={classNames({
+            "border border-1 rounded-md shadow-md w-full md:w-8/12 transform": true,
+            "-scale-x-1": enableMirrorEffect,
+          })}
+        ></canvas>
+        <canvas
           ref={canvasRef}
           height={300}
           width={400}
@@ -276,6 +322,7 @@ function VlogVideo({ isRecording }, ref) {
           controls
           height={300}
           width={400}
+          id="localVideoElement"
           className={classNames({
             hidden: true,
             "-scale-x-1": enableMirrorEffect,

@@ -48,3 +48,4 @@ export function getBrowserName(uaString) {
   const [browserName] = browserMatch;
   return browserName;
 }
+
