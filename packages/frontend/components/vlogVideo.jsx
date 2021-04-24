@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { classNames } from "../utils/classNames";
 import { userMediaConstraints } from "../utils/constants";
-import { loadBodyPix, readAsObjectURL } from "../utils/helpers";
+import { loadBodyPix, readAsObjectURL, rgb2hsl } from "../utils/helpers";
 let backgroundBlurAmount = 6;
 let edgeBlurAmount = 0;
 let enableMirrorEffect = false;
@@ -10,6 +10,7 @@ let removeBackground = false;
 let enableBlur = false;
 let backgroundImage = null;
 let backgroundColor = "#FFFFFF";
+let enableGreenScreen = false;
 function VlogVideo({ isRecording }, ref) {
   const localVideoElement = useRef();
   const canvasRef = useRef();
@@ -59,6 +60,23 @@ function VlogVideo({ isRecording }, ref) {
     ctx.fill();
   }
 
+  const replaceGreenScreen = (e) => {
+    const ctx = canvasRef.current.getContext("2d");
+    let frame = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
+    let data = frame.data;
+    let len = data.length;
+    for (let i = 0, j = 0; j < len; i++, j += 4) {
+      let hsl = rgb2hsl(data[j], data[j + 1], data[j + 2]);
+      let h = hsl[0],
+        s = hsl[1],
+        l = hsl[2];
+      if (h >= 90 && h <= 160 && s >= 25 && s <= 90 && l >= 20 && l <= 75) {
+        data[j + 3] = 0;
+      }
+    }
+    ctx.putImageData(frame, 0, 0);
+  };
+
   const processVideo = async (net) => {
     const segmentation = await net.segmentPerson(localVideoElement.current, {
       flipHorizontal: false,
@@ -78,6 +96,9 @@ function VlogVideo({ isRecording }, ref) {
       ctx.globalCompositeOperation = "source-over";
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       ctx.drawImage(localVideoElement.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+    }
+    if (enableGreenScreen) {
+      replaceGreenScreen();
     }
     requestAnimationFrame(() => {
       processVideo(net);
@@ -167,6 +188,20 @@ function VlogVideo({ isRecording }, ref) {
     <section className="flex flex-col gap-4 mt-5">
       <div className="flex items-center justify-center gap-4">
         <div className="inline-flex items-center justify-center">
+          <label className="ml-2 mr-2 text-gray-700" htmlFor="enableGreenScreen">
+            Enable green screen
+          </label>
+          <input
+            id="enableGreenScreen"
+            type="checkbox"
+            className="w-5 h-5 text-orange-600"
+            defaultChecked={enableGreenScreen}
+            onChange={() => (enableGreenScreen = !enableGreenScreen)}
+          />
+        </div>
+      </div>
+      <div className="flex items-center justify-center gap-4">
+        <div className="inline-flex items-center justify-center">
           <label className="ml-2 mr-2 text-gray-700" htmlFor="enableVirtualBackground">
             Enable virtual background
           </label>
@@ -174,8 +209,6 @@ function VlogVideo({ isRecording }, ref) {
             id="enableVirtualBackground"
             type="checkbox"
             className="w-5 h-5 text-orange-600"
-            min={2}
-            max={10}
             defaultChecked={enableVirtualBackground}
             onChange={() => (enableVirtualBackground = !enableVirtualBackground)}
           />
