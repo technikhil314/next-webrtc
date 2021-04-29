@@ -7,12 +7,17 @@
     - [Requirements](#requirements)
     - [Code structure](#code-structure)
     - [How to run](#how-to-run)
+    - [.env contents](#env-contents)
     - [How to build](#how-to-build)
   - [TO DO](#to-do)
 
 ## Deploy to vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Ftechnikhil314%2Fnext-webrtc)
+1. [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Ftechnikhil314%2Fnext-webrtc)
+2. Add required env variables
+   - NEXT_PUBLIC_WEBSOCKET_URL - URL to your websocket server. The backend deployment. If you want to use meeting feature
+   - NEXT_PUBLIC_URL - URL of your site
+   - NODE_ENV - `development` or `production`
 
 ## Features
 
@@ -22,10 +27,13 @@
 
 ## Contributions
 
+Welcome :)
+
 ### Requirements
 
 1. Node >= v15.x
 2. npm >= v7
+3. yarn 1.x
 
 ### Code structure
 
@@ -37,14 +45,23 @@
 
 ### How to run
 
-1. Install all dependencies using `npm ci`
-1. npm run start --prefix packages/frontend
-1. npm run start --prefix packages/backend
+1. Install all dependencies using `yarn --frozen-lockfile`
+2. add `.env` see the contents [below](#env-contents)
+3. run backend using `yarn workspaces @openrtc/backend start`
+4. run frontend using `yarn workspaces @openrtc/frontend start`
+
+### .env contents
+
+```bash
+NEXT_PUBLIC_WEBSOCKET_URL=wss://localhost:4000/
+NODE_ENV=development
+NEXT_PUBLIC_URL=http://localhost:3000
+```
 
 ### How to build
 
 1. You dont need to build backend
-2. You can build frontend package with `npm run build --prefix packages/frontend` command
+1. You can build frontend package with `yarn workspaces @openrtc/frontend build` command
 
 ## TO DO
 
