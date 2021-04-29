@@ -1,7 +1,7 @@
 # An open source live screen share and webcam video recorder
 
 - [An open source live screen share and webcam video recorder](#an-open-source-live-screen-share-and-webcam-video-recorder)
-  - [Deploy to vercel](#deploy-to-vercel)
+  - [Deploy your instance](#deploy-your-instance)
   - [Features](#features)
   - [Contributions](#contributions)
     - [Requirements](#requirements)
@@ -11,10 +11,11 @@
     - [How to build](#how-to-build)
   - [TO DO](#to-do)
 
-## Deploy to vercel
+## Deploy your instance
 
-1. [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Ftechnikhil314%2Fnext-webrtc)
-2. Add required env variables
+1. Deploy the backend project to some cloud (heroku etc) to consume websockets.
+1. Deploy the frontend project to vercel with single click [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Ftechnikhil314%2Fnext-webrtc)
+1. Add required env variables
    - NEXT_PUBLIC_WEBSOCKET_URL - URL to your websocket server. The backend deployment. If you want to use meeting feature
    - NEXT_PUBLIC_URL - URL of your site
    - NODE_ENV - `development` or `production`
