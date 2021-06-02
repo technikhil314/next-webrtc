@@ -1,7 +1,6 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import Modal from "../components/modal";
+import ErrorModal from "../components/errorModal";
 import VlogVideo from "../components/vlogVideo";
 import usePageVisibility from "../hooks/pageVisibility";
 import { classNames } from "../utils/classNames";
@@ -20,15 +19,11 @@ export default function Vlog() {
   const [recorderState, setRecorderState] = useState();
   const isPageVisible = usePageVisibility();
   const streamRef = useRef();
-  const router = useRouter();
   const resetState = () => {
     setIsRecording(false);
     setMediaRecorder(null);
     setRecorderState("");
     setIsInitialized(false);
-  };
-  const onModalClose = () => {
-    router.push("/meeting");
   };
 
   const handleRecording = async () => {
@@ -97,14 +92,7 @@ export default function Vlog() {
         <script src="https://unpkg.com/@tensorflow-models/body-pix@2.1"></script>
       </Head>
       <section className="container flex flex-wrap items-center content-center justify-center w-full h-full px-4 mx-auto">
-        {showError && (
-          <Modal title="Oops..." onClose={onModalClose}>
-            <p>
-              Opps.... Your browser does not support required features to record video. <br /> We recommend using latest
-              version of chrome dekstop.
-            </p>
-          </Modal>
-        )}
+        {showError && <ErrorModal />}
         <h1 className="w-11/12 mb-10 text-3xl font-bold text-center lg:w-8/12">
           Simple in browser <wbr /> video recording for developers <wbr /> to create live coding videos.
         </h1>
