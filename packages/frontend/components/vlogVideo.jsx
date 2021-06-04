@@ -11,7 +11,7 @@ let enableBlur = false;
 let backgroundImage = null;
 let backgroundColor = "#FFFFFF";
 let enableGreenScreen = false;
-function VlogVideo({ isRecording }, ref) {
+function VlogVideo({ isRecording, devices }, ref) {
   const localVideoElement = useRef();
   const canvasRef = useRef();
   const displayVideoElement = useRef();
@@ -170,7 +170,14 @@ function VlogVideo({ isRecording }, ref) {
         });
         normalLocalStream.current = await navigator.mediaDevices.getUserMedia({
           ...userMediaConstraints,
-          video: true,
+          audio: {
+            ...userMediaConstraints.audio,
+            deviceId: { exact: devices.audioDevice },
+          },
+          video: {
+            ...userMediaConstraints.video,
+            deviceId: { exact: devices.videoDevice },
+          },
         });
         localVideoElement.current.srcObject = normalLocalStream.current;
         localVideoElement.current.play();

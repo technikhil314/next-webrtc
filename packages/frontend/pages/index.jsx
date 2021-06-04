@@ -6,6 +6,7 @@ import usePageVisibility from "../hooks/pageVisibility";
 import { classNames } from "../utils/classNames";
 import { text } from "../utils/constants";
 import { capitalize, getBrowserName } from "../utils/helpers";
+import useGetDevices from "../utils/hooks";
 export async function getStaticProps() {
   return {
     props: {},
@@ -18,12 +19,28 @@ export default function Vlog() {
   const [mediaRecorder, setMediaRecorder] = useState();
   const [recorderState, setRecorderState] = useState();
   const isPageVisible = usePageVisibility();
+  const devices = useGetDevices();
   const streamRef = useRef();
+  const defaultAudioDevice = devices.audio.find((x) => x.deviceId === "default") || {};
+  const defaultVideoDevice = devices.video.find((x) => x.deviceId === "default") || {};
   const resetState = () => {
     setIsRecording(false);
     setMediaRecorder(null);
     setRecorderState("");
     setIsInitialized(false);
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    let json = {
+      audioDevice: defaultAudioDevice.deviceId,
+      videoDevice: defaultVideoDevice.deviceId,
+    };
+    formData.forEach((value, key) => {
+      json[key] = value;
+    });
+    setIsInitialized(json);
   };
 
   const handleRecording = async () => {
@@ -117,18 +134,83 @@ export default function Vlog() {
               </li>
             </ul>
           </div>
-          <button
-            type="submit"
-            className={`${classNames({
-              "bg-green-500 hover:bg-green-700 flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full mt-8": true,
-              "md:w-1/4 lg:w-1/6": !isInitialized,
-              hidden: isInitialized,
-            })}`}
-            id="initialize"
-            onClick={() => setIsInitialized(!isInitialized)}
-          >
-            Initialize
-          </button>
+          <form className="w-full mx-auto md:w-1/4" onSubmit={handleFormSubmit}>
+            {!isInitialized && (
+              <>
+                {devices.audio.length && (
+                  <div className="flex flex-col">
+                    <label className="w-full font-semibold" htmlFor="audioDevice">
+                      Select audio input
+                    </label>
+                    <div className="relative inline-flex items-center mb-2">
+                      <svg
+                        className="absolute top-0 right-0 w-2 h-2 m-4 pointer-events-none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 412 232"
+                      >
+                        <path
+                          d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z"
+                          fill="#648299"
+                          fillRule="nonzero"
+                        />
+                      </svg>
+                      <select
+                        name="audioDevice"
+                        id="audioDevice"
+                        defaultValue={defaultAudioDevice.deviceId}
+                        className="w-full h-10 pl-5 pr-10 text-gray-600 bg-white border border-gray-300 rounded-full appearance-none hover:border-gray-400 focus:outline-none"
+                      >
+                        {devices.audio.map((audioDevice) => (
+                          <option key={audioDevice.deviceId} value={audioDevice.deviceId}>
+                            {audioDevice.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                )}
+                {devices.video.length && (
+                  <div className="flex flex-col">
+                    <label className="w-full font-semibold" htmlFor="videoDevice">
+                      Select video input
+                    </label>
+                    <div className="relative inline-flex items-center">
+                      <svg
+                        className="absolute top-0 right-0 w-2 h-2 m-4 pointer-events-none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 412 232"
+                      >
+                        <path
+                          d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z"
+                          fill="#648299"
+                          fillRule="nonzero"
+                        />
+                      </svg>
+                      <select
+                        name="videoDevice"
+                        id="videoDevice"
+                        defaultValue={defaultVideoDevice.deviceId}
+                        className="w-full h-10 pl-5 pr-10 text-gray-600 bg-white border border-gray-300 rounded-full appearance-none hover:border-gray-400 focus:outline-none"
+                      >
+                        {devices.video.map((videoDevice) => (
+                          <option key={videoDevice.deviceId} value={videoDevice.deviceId}>
+                            {videoDevice.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                )}
+                <button
+                  type="submit"
+                  className="flex-grow-0 w-full px-4 py-2 mt-5 font-bold text-white transition bg-green-500 rounded hover:bg-green-700"
+                  id="initialize"
+                >
+                  Initialize
+                </button>
+              </>
+            )}
+          </form>
           {isInitialized && (
             <>
               <h3 className="mb-3 font-semibold text-md">Read this before clicking on the button below</h3>
@@ -163,7 +245,7 @@ export default function Vlog() {
         </div>
         {isInitialized && (
           <div className="w-1/2 text-center">
-            <VlogVideo isRecording={isRecording} ref={streamRef} />
+            <VlogVideo devices={isInitialized} isRecording={isRecording} ref={streamRef} />
           </div>
         )}
       </section>

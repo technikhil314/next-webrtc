@@ -5,12 +5,12 @@ export const text = {
 };
 
 export const userMediaConstraints = {
-  video: true,
   audio: {
     echoCancellation: true,
     noiseSuppression: true,
     sampleRate: 44100,
   },
+  video: {},
 };
 
 export const vlogRecordingVideoCodecType = {

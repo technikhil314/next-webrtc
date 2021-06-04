@@ -12,9 +12,7 @@ export const LocalVideo = ({ isVlog }) => {
       normalLocalStream;
     (async () => {
       let videoTrack, audioTrack;
-      let normalLocalStream = await navigator.mediaDevices.getUserMedia(
-        userMediaConstraints
-      );
+      let normalLocalStream = await navigator.mediaDevices.getUserMedia(userMediaConstraints);
       if (shareScreen) {
         stream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
@@ -30,8 +28,7 @@ export const LocalVideo = ({ isVlog }) => {
       setLocalStream(new MediaStream([audioTrack, videoTrack]));
     })();
     return () => {
-      normalLocalStream &&
-        normalLocalStream.getTracks().forEach((x) => x.stop());
+      normalLocalStream && normalLocalStream.getTracks().forEach((x) => x.stop());
     };
   }, [shareScreen, isStarted, isVlog]);
   useEffect(() => {
@@ -53,9 +50,9 @@ export const LocalVideo = ({ isVlog }) => {
         var style = getComputedStyle(event.target, null);
         event.dataTransfer.setData(
           "text/plain",
-          `localVideo,${
-            parseInt(style.getPropertyValue("left"), 10) - event.clientX
-          },${parseInt(style.getPropertyValue("top"), 10) - event.clientY}`
+          `localVideo,${parseInt(style.getPropertyValue("left"), 10) - event.clientX},${
+            parseInt(style.getPropertyValue("top"), 10) - event.clientY
+          }`
         );
       }}
     >
