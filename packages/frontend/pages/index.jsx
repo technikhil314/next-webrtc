@@ -14,7 +14,7 @@ export async function getStaticProps() {
 }
 export default function Vlog() {
   const [isRecording, setIsRecording] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [initialState, setInitialState] = useState(false);
   const [showError, setShowError] = useState();
   const [mediaRecorder, setMediaRecorder] = useState();
   const [recorderState, setRecorderState] = useState();
@@ -23,11 +23,12 @@ export default function Vlog() {
   const streamRef = useRef();
   const defaultAudioDevice = devices.audio.find((x) => x.deviceId === "default") || {};
   const defaultVideoDevice = devices.video.find((x) => x.deviceId === "default") || {};
+  const isWithoutVideo = initialState.withoutVideo === "on";
   const resetState = () => {
     setIsRecording(false);
     setMediaRecorder(null);
     setRecorderState("");
-    setIsInitialized(false);
+    setInitialState(false);
   };
 
   const handleFormSubmit = (e) => {
@@ -40,15 +41,15 @@ export default function Vlog() {
     formData.forEach((value, key) => {
       json[key] = value;
     });
-    setIsInitialized(json);
+    setInitialState(json);
   };
 
   const handleRecording = async () => {
-    if (isInitialized && !isRecording) {
+    if (initialState && !isRecording) {
       const mediaRec = new MediaRecorder(streamRef.current.getStream());
       setMediaRecorder(mediaRec);
       setIsRecording(true);
-    } else if (isRecording && isInitialized) {
+    } else if (isRecording && initialState) {
       if (mediaRecorder.state !== "inactive") {
         mediaRecorder.stop();
       } else {
@@ -115,8 +116,8 @@ export default function Vlog() {
         </h1>
         <div
           className={classNames({
-            "w-1/2": isInitialized,
-            "w-full": !isInitialized,
+            "w-1/2": initialState && !isWithoutVideo,
+            "w-full": !initialState,
             "text-center": true,
           })}
         >
@@ -125,7 +126,7 @@ export default function Vlog() {
             <ul
               className={classNames({
                 "flex flex-col w-11/12 gap-1 mx-auto mb-5 text-left text-lg": true,
-                "md:text-center md:w-10/12 lg:w-9/12": !isInitialized,
+                "md:text-center md:w-10/12 lg:w-9/12": !initialState,
               })}
             >
               <li>
@@ -135,14 +136,14 @@ export default function Vlog() {
             </ul>
           </div>
           <form className="w-full mx-auto md:w-1/4" onSubmit={handleFormSubmit}>
-            {!isInitialized && (
+            {!initialState && (
               <>
                 {devices.audio.length ? (
-                  <div className="flex flex-col">
+                  <div className="flex flex-col mb-2">
                     <label className="w-full font-semibold" htmlFor="audioDevice">
                       Select audio input
                     </label>
-                    <div className="relative inline-flex items-center mb-2">
+                    <div className="relative inline-flex items-center">
                       <svg
                         className="absolute top-0 right-0 w-2 h-2 m-4 pointer-events-none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +171,7 @@ export default function Vlog() {
                   </div>
                 ) : null}
                 {devices.video.length ? (
-                  <div className="flex flex-col">
+                  <div className="flex flex-col mb-2">
                     <label className="w-full font-semibold" htmlFor="videoDevice">
                       Select video input
                     </label>
@@ -201,6 +202,12 @@ export default function Vlog() {
                     </div>
                   </div>
                 ) : null}
+                <div className="inline-flex items-center">
+                  <input type="checkbox" name="withoutVideo" id="withoutVideo" className="mr-2" />
+                  <label htmlFor="withoutVideo" className="font-semibold">
+                    Without Video
+                  </label>
+                </div>
                 <button
                   type="submit"
                   className="flex-grow-0 w-full px-4 py-2 mt-5 font-bold text-white transition bg-green-500 rounded hover:bg-green-700"
@@ -211,13 +218,13 @@ export default function Vlog() {
               </>
             )}
           </form>
-          {isInitialized && (
+          {initialState && (
             <>
               <h3 className="mb-3 font-semibold text-md">Read this before clicking on the button below</h3>
               <ul
                 className={classNames({
                   "text-md mx-auto w-10/12 text-left list-outside list-decimal flex flex-col gap-1.5": true,
-                  "md:list-inside md:text-center md:w-8/12 lg:w-5/12": !isInitialized,
+                  "md:list-inside md:text-center md:w-8/12 lg:w-5/12": !initialState,
                 })}
               >
                 <li>This works all on your device locally. No data is sent to any server.</li>
@@ -231,11 +238,11 @@ export default function Vlog() {
           <button
             type="submit"
             className={`${classNames({
-              "flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full mt-8": true,
-              "md:w-1/2 lg:w-1/3": isInitialized,
+              "flex-grow-0 text-white font-bold py-2 px-4 rounded transition w-full lg:w-1/2 mt-8": true,
+              "md:w-1/2 lg:w-1/3": initialState && isWithoutVideo,
               "bg-green-500 hover:bg-green-700": !isRecording,
               "bg-red-500 hover:bg-red-700": isRecording,
-              hidden: !isInitialized,
+              hidden: !initialState,
             })}`}
             id="startRecording"
             onClick={handleRecording}
@@ -243,9 +250,9 @@ export default function Vlog() {
             {`${pageTitle || "Start recording"}...`}
           </button>
         </div>
-        {isInitialized && (
+        {initialState && (
           <div className="w-1/2 text-center">
-            <VlogVideo devices={isInitialized} isRecording={isRecording} ref={streamRef} />
+            <VlogVideo config={initialState} isRecording={isRecording} ref={streamRef} />
           </div>
         )}
       </section>

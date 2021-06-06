@@ -11,11 +11,12 @@ let enableBlur = false;
 let backgroundImage = null;
 let backgroundColor = "#FFFFFF";
 let enableGreenScreen = false;
-function VlogVideo({ isRecording, devices }, ref) {
+function VlogVideo({ isRecording, config }, ref) {
   const localVideoElement = useRef();
   const canvasRef = useRef();
   const displayVideoElement = useRef();
   const [customBackgroundImage, setCustomBackgroundImage] = useState();
+  const isWithoutVideo = config.withoutVideo === "on";
   let displayStream = useRef(),
     normalLocalStream = useRef();
 
@@ -141,7 +142,7 @@ function VlogVideo({ isRecording, devices }, ref) {
     };
   }, []);
   useEffect(() => {
-    if (isRecording) {
+    if (isRecording && !isWithoutVideo) {
       displayVideoElement.current.srcObject = canvasRef.current.captureStream(60);
       displayVideoElement.current.play();
       if (document.pictureInPictureEnabled) {
@@ -168,29 +169,38 @@ function VlogVideo({ isRecording, devices }, ref) {
             },
           },
         });
-        normalLocalStream.current = await navigator.mediaDevices.getUserMedia({
+        let finalMediaConstraints = {
           ...userMediaConstraints,
           audio: {
             ...userMediaConstraints.audio,
-            deviceId: { exact: devices.audioDevice },
+            deviceId: { exact: config.audioDevice },
           },
           video: {
             ...userMediaConstraints.video,
-            deviceId: { exact: devices.videoDevice },
+            deviceId: { exact: config.videoDevice },
           },
-        });
-        localVideoElement.current.srcObject = normalLocalStream.current;
-        localVideoElement.current.play();
-        localVideoElement.current.addEventListener("loadeddata", async () => {
-          const net = await loadBodyPix();
-          processVideo(net);
-        });
+        };
+        if (isWithoutVideo) {
+          delete finalMediaConstraints.video;
+        }
+        normalLocalStream.current = await navigator.mediaDevices.getUserMedia(finalMediaConstraints);
+        if (!isWithoutVideo) {
+          localVideoElement.current.srcObject = normalLocalStream.current;
+          localVideoElement.current.play();
+          localVideoElement.current.addEventListener("loadeddata", async () => {
+            const net = await loadBodyPix();
+            processVideo(net);
+          });
+        }
       } catch (err) {
         cleanUp();
       }
     })();
     return cleanUp;
   }, []);
+  if (isWithoutVideo) {
+    return null;
+  }
   return (
     <section className="flex flex-col gap-4 mt-5">
       <div className="flex items-center justify-center gap-4">
