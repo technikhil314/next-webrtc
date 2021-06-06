@@ -6,7 +6,7 @@ import usePageVisibility from "../hooks/pageVisibility";
 import { classNames } from "../utils/classNames";
 import { text } from "../utils/constants";
 import { capitalize, getBrowserName } from "../utils/helpers";
-import useGetDevices from "../utils/hooks";
+import useGetDevices from "../hooks/useGetDevices";
 export async function getStaticProps() {
   return {
     props: {},
@@ -137,7 +137,7 @@ export default function Vlog() {
           <form className="w-full mx-auto md:w-1/4" onSubmit={handleFormSubmit}>
             {!isInitialized && (
               <>
-                {devices.audio.length && (
+                {devices.audio.length ? (
                   <div className="flex flex-col">
                     <label className="w-full font-semibold" htmlFor="audioDevice">
                       Select audio input
@@ -168,8 +168,8 @@ export default function Vlog() {
                       </select>
                     </div>
                   </div>
-                )}
-                {devices.video.length && (
+                ) : null}
+                {devices.video.length ? (
                   <div className="flex flex-col">
                     <label className="w-full font-semibold" htmlFor="videoDevice">
                       Select video input
@@ -200,7 +200,7 @@ export default function Vlog() {
                       </select>
                     </div>
                   </div>
-                )}
+                ) : null}
                 <button
                   type="submit"
                   className="flex-grow-0 w-full px-4 py-2 mt-5 font-bold text-white transition bg-green-500 rounded hover:bg-green-700"
