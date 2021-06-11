@@ -59,8 +59,20 @@ main {
 }
 
 .ribbon {
-  top: 108px;
-  transform: rotate(45deg) translateY(-75px);
+  @apply bg-gray-900;
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  svg {
+    position: absolute;
+    left: 65%;
+    top: 20%;
+    transform-origin: top center;
+    transform: rotate(45deg);
+  }
 }
 
 .footer {
