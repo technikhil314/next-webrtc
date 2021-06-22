@@ -162,8 +162,8 @@ function VlogVideo({ isRecording, config }, ref) {
       try {
         displayStream.current = await navigator.mediaDevices.getDisplayMedia({
           video: {
-            width: 1920,
-            height: 1080,
+            width: globalThis.screen.width,
+            height: globalThis.screen.height,
             displaySurface: {
               exact: "monitor",
             },
