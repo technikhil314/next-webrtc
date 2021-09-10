@@ -4,6 +4,7 @@
   "private": true,
   "description": "Frontend for openrtc",
   "scripts": {
+    "prepare": "husky install",
     "serve": "next start",
     "build": "next build",
     "start": "next dev"
