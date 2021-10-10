@@ -1,12 +1,12 @@
 import { useLayoutEffect, useState } from "react";
-import { useRhinoState } from "../store/states";
+import { useRhinoValue } from "react-rhino";
 import { iceConfig } from "../utils/constants";
 import RemoteVideos from "./remoteVideos";
 export const RemoteStreams = ({ myUserId, socket }) => {
   const [peers, setPeers] = useState({});
   const [userNames, setUserNames] = useState([]);
-  const [localStream] = useRhinoState("localStream");
-  const [userName] = useRhinoState("userName");
+  const localStream = useRhinoValue("localStream");
+  const userName = useRhinoValue("userName");
   const getPeerConnection = (peerId) => {
     const peer = peers[peerId];
     let sendChannel, receiveChannel;
@@ -182,9 +182,7 @@ export const RemoteStreams = ({ myUserId, socket }) => {
   useLayoutEffect(() => {
     for (let prop in peers) {
       const peerConnection = peers[prop].connection;
-      let videoSender = peerConnection
-        .getSenders()
-        .find((x) => x.track.kind === "video");
+      let videoSender = peerConnection.getSenders().find((x) => x.track.kind === "video");
       if (localStream) {
         let newVideoTrack = localStream.getVideoTracks()[0];
         videoSender.replaceTrack(newVideoTrack);
