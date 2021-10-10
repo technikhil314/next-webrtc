@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Deploy to webrtc-next-demo.surge.sh
+    name: Deploy to openrtc.vercel.app
     runs-on: ubuntu-latest
 
     steps:
