@@ -21,7 +21,7 @@ jobs:
 
       - name: Install
         run: |
-          yarn --frozen-lockfile
+          npm ci
 
       - name: Deploy
         uses: amondnet/vercel-action@v20
