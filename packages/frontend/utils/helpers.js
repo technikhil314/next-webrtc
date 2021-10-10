@@ -1,4 +1,7 @@
+/* eslint-disable-next-line */
+import * as tf from "@tensorflow/tfjs";
 import { browserRegexes } from "./constants";
+import * as bodyPix from "@tensorflow-models/body-pix";
 
 export function capitalize(s) {
   if (typeof s !== "string") return "";
@@ -7,8 +10,9 @@ export function capitalize(s) {
 
 export async function loadBodyPix() {
   const options = {
-    multiplier: 0.75,
-    stride: 8,
+    architecture: "ResNet50",
+    multiplier: 1,
+    stride: 16,
     quantBytes: 4,
   };
   const net = await bodyPix.load(options);
