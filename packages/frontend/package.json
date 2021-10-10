@@ -7,7 +7,7 @@
     "prepare": "husky install",
     "serve": "next start",
     "build": "next build",
-    "start": "next dev",
+    "start": "npx next dev",
     "export": "next export"
   },
   "dependencies": {

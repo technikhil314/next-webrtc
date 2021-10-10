@@ -1,3 +1,6 @@
+/* eslint-disable-next-line */
+import * as tf from "@tensorflow/tfjs";
+import * as bodyPix from "@tensorflow-models/body-pix";
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { classNames } from "../utils/classNames";
 import { userMediaConstraints } from "../utils/constants";
