@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Deploy to webrtc-next-demo.surge.sh
+    name: Deploy to openrtc.vercel.app
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +21,7 @@ jobs:
 
       - name: Install
         run: |
-          yarn --frozen-lockfile
+          npm ci
 
       - name: Deploy
         uses: amondnet/vercel-action@v20
