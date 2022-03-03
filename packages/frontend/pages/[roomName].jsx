@@ -1,20 +1,20 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useRhinoValue, useRhinoState } from "react-rhino";
 import { LocalVideo } from "../components/localVideos";
 import { RemoteStreams } from "../components/remoteStreams";
 import UserDetails from "../components/userDetails";
 import { classNames } from "../utils/classNames";
 import useSocketConnection from "../hooks/socketConnection";
-import { useRhinoState } from "../store/states";
 import { text } from "../utils/constants";
 import { capitalize } from "../utils/helpers";
 
 export default function Main() {
   const [isStarted, setIsStarted] = useRhinoState("isStarted");
-  const [userName] = useRhinoState("userName");
-  const [localStream] = useRhinoState("localStream");
+  const userName = useRhinoValue("userName");
+  const localStream = useRhinoValue("localStream");
   const [shareScreen, setShareScreen] = useRhinoState("shareScreen");
-  const [roomName] = useRhinoState("roomName");
+  const roomName = useRhinoValue("roomName");
   const { userId: myUserId, socket } = useSocketConnection(isStarted, userName);
   const router = useRouter();
   const stop = () => {

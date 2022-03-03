@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
-import { useRhinoState } from "../store/states";
+import { useSetRhinoState } from "react-rhino";
 import { useRouter } from "next/router";
 
 export default function UserDetails() {
-  const [, setIsStarted] = useRhinoState("isStarted");
-  const [, setUserName] = useRhinoState("userName");
-  const [, setRoomName] = useRhinoState("roomName");
+  const setIsStarted = useSetRhinoState("isStarted");
+  const setUserName = useSetRhinoState("userName");
+  const setRoomName = useSetRhinoState("roomName");
   const router = useRouter();
   const input = useRef();
   useEffect(() => {
@@ -20,10 +20,7 @@ export default function UserDetails() {
     setIsStarted(true);
   };
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col justify-center w-full mx-auto text-center lg:w-1/2"
-    >
+    <form onSubmit={handleSubmit} className="flex flex-col justify-center w-full mx-auto text-center lg:w-1/2">
       <input
         ref={input}
         autoFocus

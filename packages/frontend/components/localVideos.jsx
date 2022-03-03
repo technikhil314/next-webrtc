@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
-import { useRhinoState } from "../store/states";
+import { useRhinoState, useRhinoValue } from "react-rhino";
 import { userMediaConstraints } from "../utils/constants";
 export const LocalVideo = ({ isVlog }) => {
   const localVideoElement = useRef();
   const [localStream, setLocalStream] = useRhinoState("localStream");
   const [shareScreen, setShareScreen] = useRhinoState("shareScreen");
-  const [isStarted] = useRhinoState("isStarted");
+  const isStarted = useRhinoValue("isStarted");
 
   useEffect(() => {
     let stream = {},

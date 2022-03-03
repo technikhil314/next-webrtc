@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-import { useRhinoState } from "../store/states";
+import { useSetRhinoState } from "react-rhino";
 
 export default function RoomDetails() {
-  const [, setRoomName] = useRhinoState("roomName");
+  const setRoomName = useSetRhinoState("roomName");
   const router = useRouter();
   const input = useRef();
   const handleSubmit = (e) => {

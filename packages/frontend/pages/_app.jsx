@@ -1,8 +1,9 @@
 import Head from "next/head";
+import { RhinoProvider } from "react-rhino";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
-import { RhinoProvider } from "../store/states";
 import "../styles/globals.scss";
+import store from "../store/store";
 import { text } from "../utils/constants";
 function MyApp({ Component, pageProps }) {
   return (
@@ -96,7 +97,7 @@ function MyApp({ Component, pageProps }) {
         ></iframe>`,
         }}
       ></noscript>
-      <RhinoProvider>
+      <RhinoProvider store={store}>
         <Navbar />
         <main
           className="my-4 mb-6"
