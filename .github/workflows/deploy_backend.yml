@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - declarative-rtc
+      - react-rhino-update
 
 jobs:
   build:
