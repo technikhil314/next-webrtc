@@ -3,7 +3,6 @@ import * as tf from "@tensorflow/tfjs";
 import * as bodyPix from "@tensorflow-models/body-pix";
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { classNames } from "../utils/classNames";
-import { userMediaConstraints } from "../utils/constants";
 import { loadBodyPix, readAsObjectURL, rgb2hsl } from "../utils/helpers";
 let backgroundBlurAmount = 6;
 let edgeBlurAmount = 0;
@@ -69,7 +68,7 @@ function VlogVideo({ isRecording, config }, ref) {
     let frame = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
     let data = frame.data;
     let len = data.length;
-    for (let i = 0, j = 0; j < len; i++, j += 4) {
+    for (let j = 0; j < len; j += 4) {
       let hsl = rgb2hsl(data[j], data[j + 1], data[j + 2]);
       let h = hsl[0],
         s = hsl[1],
@@ -164,24 +163,11 @@ function VlogVideo({ isRecording, config }, ref) {
     (async () => {
       try {
         displayStream.current = await navigator.mediaDevices.getDisplayMedia({
-          video: {
-            width: globalThis.screen.width,
-            height: globalThis.screen.height,
-            displaySurface: {
-              exact: "monitor",
-            },
-          },
+          video: {},
         });
         let finalMediaConstraints = {
-          ...userMediaConstraints,
-          audio: {
-            ...userMediaConstraints.audio,
-            deviceId: { exact: config.audioDevice },
-          },
-          video: {
-            ...userMediaConstraints.video,
-            deviceId: { exact: config.videoDevice },
-          },
+          audio: {},
+          video: {},
         };
         if (isWithoutVideo) {
           delete finalMediaConstraints.video;

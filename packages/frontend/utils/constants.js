@@ -5,11 +5,7 @@ export const text = {
 };
 
 export const userMediaConstraints = {
-  audio: {
-    echoCancellation: true,
-    noiseSuppression: true,
-    sampleRate: 44100,
-  },
+  audio: {},
   video: {},
 };
 

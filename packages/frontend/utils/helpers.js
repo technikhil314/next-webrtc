@@ -91,3 +91,9 @@ export function rgb2hsl(r, g, b) {
 
   return [h, s * 100, l * 100];
 }
+
+export function debug(...msg) {
+  if (process.env.NEXT_PUBLIC_DEBUG) {
+    console.debug(msg);
+  }
+}

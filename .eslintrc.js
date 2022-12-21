@@ -33,7 +33,7 @@ module.exports = {
   },
   rules: {
     "no-alert": 0,
-    "no-console": ["error", { allow: ["error", "info"] }],
+    "no-console": ["error", { allow: ["error", "info", "debug"] }],
     "react/prop-types": 0,
     "react/sort-prop-types": 0,
     "import/order": 0,
@@ -78,10 +78,5 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: [
-    "stories/**/*",
-    "node_modules/**/*",
-    "build/**/*",
-    "canvasjs.min.jsx",
-  ],
+  ignorePatterns: ["stories/**/*", "node_modules/**/*", "build/**/*", "canvasjs.min.jsx"],
 };

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { debug } from "../utils/helpers";
 
 export default function useGetDevices() {
   let defaultDevices = {
@@ -6,6 +7,7 @@ export default function useGetDevices() {
     video: [],
   };
   const [devices, setDevices] = useState(defaultDevices);
+  debug(devices);
   useEffect(() => {
     (async () => {
       if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
@@ -14,7 +16,7 @@ export default function useGetDevices() {
       try {
         const cameraPermission = await navigator.permissions.query({ name: "camera" });
         const micPermission = await navigator.permissions.query({ name: "microphone" });
-        //toggleLoader()
+        debug({ cameraPermission, micPermission });
         if (cameraPermission.state !== "granted" || micPermission.state !== "granted") {
           const stream = await navigator.mediaDevices.getUserMedia({
             video: true,

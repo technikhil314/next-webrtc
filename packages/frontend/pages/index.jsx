@@ -136,7 +136,7 @@ export default function Vlog() {
           <form className="w-full mx-auto md:w-1/4" onSubmit={handleFormSubmit}>
             {!initialState && (
               <>
-                {devices.audio.length ? (
+                {/* {devices.audio.length ? (
                   <div className="flex flex-col mb-2">
                     <label className="w-full font-semibold" htmlFor="audioDevice">
                       Select audio input
@@ -205,7 +205,7 @@ export default function Vlog() {
                   <label htmlFor="withoutVideo" className="font-semibold">
                     Without Video
                   </label>
-                </div>
+                </div> */}
                 <button
                   type="submit"
                   className="flex-grow-0 w-full px-4 py-2 mt-5 font-bold text-white transition bg-green-500 rounded hover:bg-green-700"
