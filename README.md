@@ -1,3 +1,6 @@
+⚠️ This project is not being maintained actively. I will get back to it if time permits. Thank you all for all your support even after this being inactive for so many days.. 👍
+
+
 # An open source live screen share and webcam video recorder
 
 - [An open source live screen share and webcam video recorder](#an-open-source-live-screen-share-and-webcam-video-recorder)
